@@ -1,9 +1,7 @@
 import React from "react";
 import dynamic from "next/dynamic";
-import Menu from "./menu";
 import Logo from "./Logo";
 import Settings from "./Settings";
-import SearchBar from "./SearchBar";
 import CartIcon from "../cart/CartIcon";
 import Language from "./language/Language";
 
@@ -19,7 +17,7 @@ const index = () => {
     <header className="md:fixed left-0 right-0 top-0 md:bg-palette-fill shadow-sm pt-4 z-[1000]">
       <div className="flex flex-col md:px-4 mb-2">
         <div className="flex items-center justify-between md:order-2 md:mt-2  relative">
-          <Menu />
+          {/* <Menu /> */}
           <div className="md:hidden">
             <Logo />
           </div>
@@ -35,10 +33,11 @@ const index = () => {
             <Logo />
           </div>
           <div className="flex-grow">
-            <SearchBar />
+            {/* commenting this code out because they are not required */}
+            {/* <SearchBar /> */}
           </div>
           <div className="ltr:ml-2 rtl:mr-2 sm:ltr:ml-4 sm:rtl:mr-4 flex items-center justify-between ">
-            <UserBox />
+            {/* <UserBox /> */}
             <CartIcon />
           </div>
         </div>

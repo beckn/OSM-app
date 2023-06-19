@@ -8,7 +8,7 @@ import SectionTitle from "../UI/SectionTitle";
 const Category = () => {
   return (
     <div className="flex flex-col items-center my-4 md:my-8">
-      <SectionTitle title={"CategoryOfGoods"} />
+      <SectionTitle title={"BrowseByCategory"} />
 
       {/* 📱 sm and md break point */}
       <div className="flex flex-wrap justify-around items-center lg:hidden">
