@@ -16,7 +16,6 @@ const en: { [key: string]: string } = {
   order: "Order",
   orderSummary: "Order Summary",
   cartIsEmpty: "Cart is empty",
-  CategoryOfGoods: "Category of Goods",
   categories: "Categories",
   seeAllProduct: "See All product in this category",
   offer: "Offers and Discounts",
@@ -78,7 +77,6 @@ const en: { [key: string]: string } = {
   toys: "Toys and Baby",
   cosmetic: "Cosmetic",
   home: "Furniture and kitchen",
-  sport: "Sport and Trip",
   stationery: "Books, Stationery and Art",
   noProduct:
     "There are no products in this category yet! New products will be added soon.",
@@ -110,20 +108,14 @@ const en: { [key: string]: string } = {
   seeAll: "See All",
   specialSale: "Special Sale",
   seeAllNewProducts: "See All New Products",
-  digitalCategoryTitle: "Digital Products",
   digitalCategoryDescription:
     "We offer the newest products at the most competitive prices",
-  fashionCategoryTitle: "Fashion and Clothes",
   fashionCategoryDescription:
     "The most popular brands with the most reasonable prices",
-  beautyCategoryTitle: "Cosmetic Products",
   beautyCategoryDescription:
     "Anti-allergy products suitable for all skin types from reputable brands",
-  sportCategoryTitle: "Sport and Trip",
   sportCategoryDescription: "High-quality and durable products",
-  houseCategoryTitle: "Furniture and kitchen",
   houseCategoryDescription: "In accordance with the designs of the day",
-  toyCategoryTitle: "Toys and Baby",
   toyCategoryDescription: "A combination of entertainment and creativity",
   stationeryCategoryTitle: "Books, Stationery and Art",
   stationeryCategoryDescription: "Variety in choice",
@@ -238,5 +230,16 @@ const en: { [key: string]: string } = {
   myName: "Kehyshow",
   cafeDX: "Work is meant to improve life, not the opposite.",
   productAddedToCartMsg: "Product added to cart successfully",
+  /**
+   * New strings that are added
+   */
+
+  BrowseByCategory: "Browse by Category",
+  meatAndFish: "Meat & Fish",
+  fruitsVegetablesTitle: "Fruits and Vegetables",
+  frozenFood: "Frozen Food",
+  beverages: "Beverages",
+  snacks: "Snacks",
+  dairy: "Dairy",
 };
 export default en;
