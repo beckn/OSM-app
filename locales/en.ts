@@ -241,5 +241,31 @@ const en: { [key: string]: string } = {
   beverages: "Beverages",
   snacks: "Snacks",
   dairy: "Dairy",
+  //
+  cashOnDelivery: "Cash on delivery",
+  selectPaymentMethod: "Select payment method",
+  orderDetails: "Order details",
+  trackOrder: "Track Order",
+  proceedToPay: "Proceed to Pay",
+  backToHome: "Go back to home",
+  contactSupport: "Contact Support",
+  orderDeliveredOnTime: "Order Delivered on time!",
+  shareYourfeedback: "Please share your feedback with us",
+  submitReview: "Submit Review",
+  skipForNow: "Skip for now",
+  orderConfirmed: "Order confirmed",
+  orderConfirmedMssg: "ABC Mart has confirmed your order",
+  orderConfirmedTime: "10.13 AM",
+  agentAssigned: "Delivery Agent Assigned",
+  agentAssignedMssg:
+    "Steve our delivery partner is at the store to pick up your order",
+  agentAssignedTime: "10.35AM",
+  OFD: "Out for delivery",
+  OFDMssg:
+    "Order has been picked up! Our delivery partner is on their way to your location for delivery.",
+  OFDTime: "11.27AM",
+  orderDelivered: "Order Delivered",
+  orderDeliveredMssg: "Order has been delivered ",
+  orderDeliveredTime: "12.23 PM",
 };
 export default en;

@@ -21,6 +21,7 @@
     --color-text-base: 66, 71, 80; /* #424750*/
     --color-text-muted: 107, 114, 128; /*#6b7280*/
     --color-text-side: 255, 231, 231; /*#fff*/
+    --text-color: 255, 255, 255; /* #fff  added for white color  */
     --font-family: iranyekan, "IRANSans", "Tahoma";
   }
 
@@ -212,4 +213,11 @@ select:-webkit-autofill:focus {
 ::placeholder {
   color: #b9b9b9;
   font-size: 14px;
+}
+.chakra-accordion__icon {
+  height: 24px !important;
+  width: 24px !important;
+}
+.chakra-accordion__icon path {
+  fill: #a71b4a;
 }
