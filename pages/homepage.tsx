@@ -34,12 +34,10 @@ fetch(url, {
 })
 	.then((response) => response.json())
 	.then((data) => {
-		console.log("Dank 9", data[0])
 		setCoords({lat: data[0].lat, long: data[0].lon})
 	});
 },[query])
 
-console.log("Dank",query);
 
 	return (
 		<div>
