@@ -1,39 +1,33 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from "react-leaflet";
 import React, { useEffect, useState } from "react";
 import "leaflet/dist/leaflet.css";
+import {data} from "./StoreMarkerData";
 import Icon from "./store-marker.svg";
 import L from "leaflet";
 
 
-const data = [
-	{ "lat": 28.539, "long": 77.393 },
-	{ "lat": 28.537, "long": 77.389 },
-	{ "lat": 28.534, "long": 77.388 },
-	{ "lat": 28.533, "long": 77.394 },
-	{ "lat": 28.536, "long": 77.397 },
-	{ "lat": 28.538, "long": 77.392 },
-	{ "lat": 28.532, "long": 77.391 },
-	{ "lat": 28.535, "long": 77.390 },
-	{ "lat": 28.537, "long": 77.395 },
-	{ "lat": 28.533, "long": 77.393 }
-]
+
+interface MapProps {
+
+	coords: {lat:number, long:number}
+}
 
 
-export default function Map({  }) {
+const Map:React.FC<MapProps> = ({coords})=> {
 
-	const coords = { latitude: 28.535, longitude: 77.393 };
-	const { latitude, longitude } = coords;
+	const { lat, long } = coords;
+	
 
 
-	// const customIcon = new L.Icon({
-	// 	iconUrl: Icon,
-	// 	iconSize: [25, 35],
-	// 	iconAnchor: [5, 30]
-	// });
+	const customIcon = new L.Icon({
+		iconUrl: Icon,
+		iconSize: [25, 35],
+		iconAnchor: [5, 30]
+	});
 
 	function MapView() {
 		let map = useMap();
-		map.setView([latitude, longitude], map.getZoom());
+		map.setView([lat, long], map.getZoom());
 
 		return null;
 	}
@@ -46,7 +40,7 @@ export default function Map({  }) {
 			
 				 <MapContainer
 				 style={{ height: '100vh' }}
-			center={[latitude, longitude]}
+			center={[lat, long]}
 			zoom={13}
 			scrollWheelZoom={true}
 		>
@@ -55,10 +49,10 @@ export default function Map({  }) {
         contributors'
 				url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 			/>
-			{/* {
-				data.map((item) => {
+			{
+				data.elements.map((item:any) => {
 					return (
-						<Marker key={item.long}  position={[item.lat, item.long]}
+						<Marker icon={customIcon} key={item.lon}  position={[item.lat, item.lon]}
 							eventHandlers={{
 								click: () => {
 								},
@@ -68,10 +62,20 @@ export default function Map({  }) {
 					)
 				})
 
-			} */}
+			}
+									<Marker icon={customIcon}   position={[46.603354, 1.8883335]}
+							eventHandlers={{
+								click: () => {
+								},
+							}}
+						>
+						</Marker>
+			
 			<MapView />
 		</MapContainer>
 
 		
 	);
 }
+
+export default Map;
