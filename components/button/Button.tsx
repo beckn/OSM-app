@@ -5,7 +5,7 @@ export interface ButtonPropsModel {
   buttonText: string;
   background: string;
   color: string;
-  handleOnClick: () => void;
+  handleOnClick?: () => void;
 }
 
 const Button: React.FC<ButtonPropsModel> = (props) => {

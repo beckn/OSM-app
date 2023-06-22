@@ -14,7 +14,7 @@ import orderDeliveredBlack from "../public/images/orderDeliveredBlack.svg";
 import lineRed from "../public/images/lineRed.svg";
 import lineBlack from "../public/images/lineBlack.svg";
 
-const trackOrder = () => {
+const TrackOrder = () => {
   const [activeSteps, setActiveSteps] = useState([true, false, false, false]);
   const { t } = useLanguage();
   const router = useRouter();
@@ -191,4 +191,4 @@ const trackOrder = () => {
   );
 };
 
-export default trackOrder;
+export default TrackOrder;

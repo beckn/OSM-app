@@ -7,25 +7,23 @@ import { useDispatch } from "react-redux";
 import { useLanguage } from "../../hooks/useLanguage";
 import { urlFor } from "../../lib/client";
 import { ICartRootState } from "../../lib/types/cart";
-import { IProduct } from "../../lib/types/products";
+import { IProduct, RetailItem } from "../../lib/types/products";
 import { cartActions } from "../../store/cart-slice";
 import ProductPrice from "../UI/ProductPrice";
 
 interface Props {
-  product: IProduct;
+  product: RetailItem;
 }
 const CartItem: React.FC<Props> = ({ product }) => {
   const productQuantity = useSelector(
     (state: ICartRootState) =>
-      state.cart.items.find(
-        (item) => item.slug.current === product.slug.current
-      )?.quantity
+      state.cart.items.find((item) => item.id === product.id)?.quantity
   );
   const [counter, setCounter] = useState(productQuantity);
   const dispatch = useDispatch();
   const { t } = useLanguage();
 
-  function increment(product: IProduct) {
+  function increment(product: RetailItem) {
     setCounter((prev) => ++prev!);
     dispatch(cartActions.addItemToCart({ product: product, quantity: 1 }));
   }
@@ -43,27 +41,27 @@ const CartItem: React.FC<Props> = ({ product }) => {
   return (
     <div className="flex items-center flex-wrap sm:my-4 sm:py-4 px-2 border-b-2">
       <div className="lg:w-1/2 sm:min-w-[290px]">
-        <Link
+        {/* <Link
           href={`/${product.category[0]}/${product.category[1]}/${product.category[2]}/${product.slug.current}`}
-        >
-          <a className="flex flex-wrap sm:flex-nowrap justify-center items-center flex-grow">
-            <div className="sm:min-w-[100px] md:min-w-[130px]">
-              <Image
-                src={urlFor(product?.image[0]).url()}
-                width={200}
-                height={200}
-                alt={product.name}
-                className="object-contain"
-              />
-            </div>
-            <div
-              className="flex-grow text-sm font-normal mb-2 sm:mb-0 mx-2 w-full"
-              style={{ direction: "ltr" }}
-            >
-              {product.name}
-            </div>
-          </a>
-        </Link>
+        > */}
+        <a className="flex flex-wrap sm:flex-nowrap justify-center items-center flex-grow">
+          <div className="sm:min-w-[100px] md:min-w-[130px]">
+            <Image
+              src={product.descriptor.images[0]}
+              width={200}
+              height={200}
+              alt={product.descriptor.name}
+              className="object-contain"
+            />
+          </div>
+          <div
+            className="flex-grow text-sm font-normal mb-2 sm:mb-0 mx-2 w-full"
+            style={{ direction: "ltr" }}
+          >
+            {product.descriptor.name}
+          </div>
+        </a>
+        {/* </Link> */}
       </div>
       <div className="flex flex-wrap flex-grow md:items-center mb-4 sm:mb-0">
         <div className="flex-grow my-2 sm:my-0">
@@ -80,17 +78,11 @@ const CartItem: React.FC<Props> = ({ product }) => {
               onChange={onInputNumberChangeHandler}
             />
             {counter === 1 ? (
-              <div
-                onClick={() => decrement(product.slug.current)}
-                className="p-1"
-              >
+              <div onClick={() => decrement(product.id)} className="p-1">
                 <HiOutlineTrash style={{ fontSize: "1.3rem", color: "red" }} />
               </div>
             ) : (
-              <div
-                onClick={() => decrement(product.slug.current)}
-                className="p-1"
-              >
+              <div onClick={() => decrement(product.id)} className="p-1">
                 <HiMinusSm style={{ fontSize: "1rem" }} />
               </div>
             )}
@@ -98,10 +90,7 @@ const CartItem: React.FC<Props> = ({ product }) => {
         </div>
         <div className="flex flex-col flex-grow font-normal rtl:mr-1 lrt:ml-1">
           <p>{t.totalAmount}</p>
-          <ProductPrice
-            price={product.price * counter!}
-            discount={product.discount}
-          />
+          <ProductPrice price={parseFloat(product.price.value) * counter!} />
         </div>
       </div>
     </div>

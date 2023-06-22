@@ -8,7 +8,7 @@ const nextConfig = {
     localeDetection: false,
   },
   images: {
-    domains: ["cdn.sanity.io"],
+    domains: ["cdn.sanity.io", "bazaar.becknprotocol.io", "mandi.succinct.in", "market.becknprotocol.io"],
   },
   webpack: function (config) {
     config.module.rules.push({

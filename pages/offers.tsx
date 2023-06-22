@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
 import { GetStaticProps } from "next";
 import { client } from "../lib/client";
-import { IProduct } from "../lib/types/products";
+import { RetailItem } from "../lib/types/products";
 import ProductList from "../components/productList/ProductList";
 
 const offers: NextPage<{
-  products: IProduct[];
+  products: RetailItem[];
 }> = ({ products }) => {
   return (
     <div>

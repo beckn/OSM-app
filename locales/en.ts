@@ -241,7 +241,6 @@ const en: { [key: string]: string } = {
   beverages: "Beverages",
   snacks: "Snacks",
   dairy: "Dairy",
-  //
   cashOnDelivery: "Cash on delivery",
   selectPaymentMethod: "Select payment method",
   orderDetails: "Order details",

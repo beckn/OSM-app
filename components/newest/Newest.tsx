@@ -4,7 +4,7 @@ import { useLanguage } from "../../hooks/useLanguage";
 import { useWindowDimensions } from "../../hooks/useWindowDimensions";
 import Link from "next/link";
 import Card from "../UI/card/Card";
-import { IProduct } from "../../lib/types/products";
+import { RetailItem } from "../../lib/types/products";
 import SectionTitle from "../UI/SectionTitle";
 
 const Newest = () => {
@@ -12,7 +12,7 @@ const Newest = () => {
   const { width } = useWindowDimensions();
   let numProductToShow = width >= 1536 ? 12 : 8;
 
-  const newestProducts: IProduct[] = useSelector(
+  const newestProducts: RetailItem[] = useSelector(
     (state: any) => state.newestProductsList.productsList
   );
 
@@ -24,8 +24,8 @@ const Newest = () => {
         {newestProducts
           ? newestProducts
               .slice(0, numProductToShow)
-              .map((product: IProduct) => {
-                return <Card key={product.name} product={product} />;
+              .map((product: RetailItem) => {
+                return <Card key={product.descriptor.name} product={product} />;
               })
           : null}
       </div>
