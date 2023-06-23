@@ -1,11 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { categorySmContent } from "../../mock/category-sm";
 import CategorySmBox from "./CategorySmBox";
 import { categoryLgContent } from "../../mock/category-lg";
 import CategoryLgBox from "./CategoryLgBox";
 import SectionTitle from "../UI/SectionTitle";
+import {Spinner} from "@chakra-ui/react"
+
+const Loading = ()=>{
+
+
+return <div className="h-[40vh] flex justify-center items-center">
+  <div className="flex flex-col items-center gap-2">
+
+  <Spinner color="#A71B4A" size="xl"  />
+  <h4 className="font-bold text-[16px] leading-[25px]">Please wait!</h4>
+  <p>Fetching store catalog from the network</p>
+  </div>
+</div>
+
+
+}
 
 const Category = () => {
+  const [loading, setLoading] = React.useState(true);
+  
+  useEffect(()=>{
+    setTimeout(()=>{
+      setLoading(false);
+    }, 2000)
+  },[])
+
+  if(loading) return (<Loading />)
+
   return (
     <div className="flex flex-col items-center my-4 md:my-8">
       <SectionTitle title={"BrowseByCategory"} />

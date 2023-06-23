@@ -974,3 +974,35 @@ export const data = {
 		}
 	]
 }
+
+
+export const optionData = [
+	{
+		tagName: 'amenity',
+		tagValue: 'restaurant',
+		iconUrl: '/images/store-options/Restaurants.svg',
+		iconUrl_light: '/images/store-options/Restaurants_light.svg'
+	},
+
+	{
+		tagName: 'amenity',
+		tagValue: 'Shopping',
+		iconUrl: '/images/store-options/Shopping.svg',
+		iconUrl_light: '/images/store-options/Shopping_light.svg'
+	},
+
+	{
+		tagName: 'amenity',
+		tagValue: 'Hotels',
+		iconUrl: '/images/store-options/Hotels.svg',
+		iconUrl_light: '/images/store-options/Hotels_light.svg'
+	},
+
+	{
+		tagName: 'amenity',
+		tagValue: 'Books',
+		iconUrl: '/images/store-options/Books.svg',
+		iconUrl_light: '/images/store-options/Books_light.svg'
+	},
+
+]
