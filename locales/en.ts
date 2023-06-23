@@ -266,5 +266,23 @@ const en: { [key: string]: string } = {
   orderDelivered: "Order Delivered",
   orderDeliveredMssg: "Order has been delivered ",
   orderDeliveredTime: "12.23 PM",
+  checkout: "Checkout",
+  items: "Items",
+  shipping: "Shipping",
+  changeText: "Change",
+  paymentText: "Payment",
+  orderDetailsCheckboxText: "Same as Order Details",
+  subtotalText: "Subtotal",
+  subtotalValue: "€229.684",
+  deliveryChargesText: "Delivery Charges",
+  deliveryChargesValue: "€0",
+  totalText: "Total",
+  totalValue: "€229.684",
+  orderpolicyText: "Order policy",
+  orderPolicyText:
+    "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on",
+  readMoreText: "Read more",
+  readLessText: "Read Less",
+  addShippingdetailsBtnText: "Add Shipping details",
 };
 export default en;

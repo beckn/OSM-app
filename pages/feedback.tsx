@@ -57,6 +57,7 @@ const Feedback = () => {
         handleOnClick={() => {
           router.push("/");
         }}
+        isDisabled={false}
       />
       <Button
         buttonText={t.skipForNow}
@@ -65,6 +66,7 @@ const Feedback = () => {
         handleOnClick={() => {
           router.push("/");
         }}
+        isDisabled={false}
       />
     </>
   );

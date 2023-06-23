@@ -17,6 +17,7 @@
     --house-category-bgc: #ccd5ae;
     --toy-category-bgc: #cce3de;
     --stationery-category-bgc: #fbb13c;
+    --disabled-btn-color: 223, 223, 223, 1; /*"#DFDFDF"*/
 
     --color-text-base: 66, 71, 80; /* #424750*/
     --color-text-muted: 107, 114, 128; /*#6b7280*/
@@ -220,4 +221,9 @@ select:-webkit-autofill:focus {
 }
 .chakra-accordion__icon path {
   fill: #a71b4a;
+}
+.css-690el4[aria-checked="true"],
+.css-690el4[data-checked] {
+  background: #a71b4a !important;
+  border-color: #a71b4a !important;
 }

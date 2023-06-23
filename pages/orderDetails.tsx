@@ -15,6 +15,7 @@ const OrderDetails = () => {
         background={"rgba(var(--color-primary))"}
         color={"rgba(var(--text-color))"}
         handleOnClick={() => {}}
+        isDisabled={false}
       />
     </>
   );
