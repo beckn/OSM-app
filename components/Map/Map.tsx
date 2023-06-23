@@ -6,21 +6,24 @@ import {GiHamburgerMenu} from 'react-icons/gi'
 import {data} from "./StoreMarkerData";
 import Icon from "./store-marker.svg";
 import L from "leaflet";
-import { IoReloadCircleOutline } from "react-icons/io5";
 
 
 
 interface MapProps {
 
 	coords: {lat:number, long:number}
+	handleModalOpen: ()=>void;
+	handleOptionDetailOpen: ()=>void;
+	setSelectedStore: React.Dispatch<React.SetStateAction<any>>;
 }
 
 
-const Map:React.FC<MapProps> = ({coords})=> {
+const Map:React.FC<MapProps> = ({coords,handleModalOpen,handleOptionDetailOpen,setSelectedStore})=> {
 
 	const { lat, long } = coords;
 	const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
 	const [flyToUserLocation, setFlyToUserLocation] = useState(false);
+
 
   useEffect(() => {
     // Get the user's current location using the browser's geolocation API
@@ -41,7 +44,6 @@ const Map:React.FC<MapProps> = ({coords})=> {
     if (userLocation && flyToUserLocation ) {
       map.flyTo(userLocation, 12);
     }
-		// if(flyToUserLocation) setFlyToUserLocation(false);
 
     return null;
   };
@@ -68,11 +70,13 @@ const Map:React.FC<MapProps> = ({coords})=> {
 
 
 
+
 	return (
 <MapContainer
 				 style={{ height: '100vh' }}
-			center={[lat, long]}
-			zoom={13}
+			// center={[lat, long]}
+			center={[ 46.603354,  1.8883335 ]}
+			zoom={15}
 			zoomControl={false}
 			scrollWheelZoom={true}
 			zoomAnimation={true}
@@ -84,17 +88,20 @@ const Map:React.FC<MapProps> = ({coords})=> {
 			/>
 			 <Control prepend position='topright'>
 				<div className="flex flex-col basis-4">
-				<button><img src="/images/hamburger1.svg" alt="..." /></button>
+				<button onClick={(e)=>handleModalOpen()}><img src="/images/hamburger1.svg" alt="..." /></button>
 				<button onClick={()=>setFlyToUserLocation(true)}><img src="/images/Location.svg" alt="..." /></button>
 				</div>
   </Control>
 			
 			{
 				data.elements.map((item:any) => {
+
 					return (
 						<Marker icon={customIcon} key={item.lon}  position={[item.lat, item.lon]}
 							eventHandlers={{
 								click: () => {
+									setSelectedStore(item);
+									handleOptionDetailOpen()
 								},
 							}}
 						>
@@ -116,4 +123,11 @@ const Map:React.FC<MapProps> = ({coords})=> {
 	);
 }
 
-export default Map;
+// React memo not working for some reason
+//TODO Needed because the map is re-rendered even if the co-ords are same causing a flickering issue on the map. Will fix this later
+export default React.memo(Map, (prevProps, nextProps) => {
+	if (prevProps.coords.lat === nextProps.coords.lat && prevProps.coords.long === nextProps.coords.long) {
+		return true;
+	}
+	return false;
+});
