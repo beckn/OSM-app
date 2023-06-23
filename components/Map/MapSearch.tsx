@@ -14,12 +14,7 @@ const SearchBar: React.FC<SearchBarProp> = ({setQuery,loading}) => {
   const { t } = useLanguage();
 
 
-	// In case of using onChange for searching
 	const [value,setValue] = useState<string>("");
-	// const debouncedQuery = useDebounce(value, 500);
-	// useEffect(() => {
-	// 	setQuery(debouncedQuery)
-	// }, [debouncedQuery]);
 
   return (
 <div className="max-w-[50rem] w-[90%] md:w-[90%] px-4 mx-auto mt-4 mb-3 border border-[#C9C9C9] border-solid  md:ltr:ml-4 md:rtl:mr-4 rounded-full  dark:bg-slate-800 flex items-center justify-center flex-grow">

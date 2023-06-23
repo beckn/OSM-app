@@ -88,7 +88,7 @@ const homepage = () => {
 	const fetchStoresByLocation = (lat: number, long: number, tagValue: string, tagName: string) => {
 
 		// using fetch because axios showing cors error. Discuss with team
-		let url = `https://api.osm-dev.becknprotocol.io/stores?tagName=${tagName}&tagValue=${tagValue}&latitude=${lat}&longitude=${long}`;
+		let url = `${process.env.NEXT_PUBLIC_BECKN_API_URL}/stores?tagName=${tagName}&tagValue=${tagValue}&latitude=${lat}&longitude=${long}`;
 
 		fetch(url, {
 			method: "GET",
