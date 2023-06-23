@@ -1,6 +1,6 @@
-import { IProduct } from "./products";
+import { RetailItem } from "./products";
 export interface IFavorite {
-  items: IProduct[];
+  items: RetailItem[];
 }
 
 export interface IFavoriteRootState {

@@ -102,4 +102,22 @@ export const categoryLgContent = [
     imgWidth: 130,
     imgHeight: 110,
   },
+  {
+    name: "stationery",
+    title: "stationeryCategoryTitle",
+    description: "stationeryCategoryDescription",
+    styles: {
+      backgroundColor: "var(--stationery-category-bgc)",
+      flexDirection: "row",
+      paddingInline: "0.75rem",
+      paddingBlock: "unset",
+      gridRow: "span 2 / span 2",
+      gridColumn: "span 2 / span 2",
+    },
+    href: "/stationery",
+    imgSrc: "/images/category-img/stationery-category.webp",
+    imgWidth: 130,
+    imgHeight: 250,
+    imgCustomStyles: { alignSelf: "flex-start" },
+  },
 ];

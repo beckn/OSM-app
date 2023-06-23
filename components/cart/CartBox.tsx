@@ -55,7 +55,7 @@ const CartBox = () => {
           <>
             {cartItems.length ? (
               cartItems.map((item) => {
-                return <CartItem key={item.slug.current} product={item} />;
+                return <CartItem key={item.id} product={item} />;
               })
             ) : (
               <p className="mt-20 text-center text-palette-mute font-normal">

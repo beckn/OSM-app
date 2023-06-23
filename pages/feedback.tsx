@@ -6,7 +6,7 @@ import StarRating from "../components/starRating/StarRating";
 import { useLanguage } from "../hooks/useLanguage";
 import feedbackImg from "../public/images/feedbackImg.svg";
 
-const feedback = () => {
+const Feedback = () => {
   const { t } = useLanguage();
   const router = useRouter();
   const [ratingForStore, setRatingForStore] = useState(0);
@@ -70,4 +70,4 @@ const feedback = () => {
   );
 };
 
-export default feedback;
+export default Feedback;

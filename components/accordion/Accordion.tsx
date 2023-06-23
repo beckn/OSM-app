@@ -20,7 +20,7 @@ const Accordion = () => {
     <>
       {accordionData.map((ele, ind) => {
         return (
-          <Card marginBottom={"20px"}>
+          <Card key={ind} marginBottom={"20px"}>
             <AccordionComp defaultIndex={[ind]} allowMultiple>
               <AccordionItem background={"unset"} border={"unset"}>
                 <CardBody>

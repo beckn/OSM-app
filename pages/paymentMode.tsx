@@ -5,7 +5,7 @@ import Button from "../components/button/Button";
 import CardWithCheckBox from "../components/card/Card";
 import { useLanguage } from "../hooks/useLanguage";
 
-function paymentMode() {
+function PaymentMode() {
   const { t } = useLanguage();
   return (
     <>
@@ -24,4 +24,4 @@ function paymentMode() {
   );
 }
 
-export default paymentMode;
+export default PaymentMode;

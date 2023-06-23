@@ -1,12 +1,12 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { urlFor } from "../../lib/client";
-import { IProduct, TImage } from "../../lib/types/products";
+import { RetailItem } from "../../lib/types/products";
 import ProductPageActions from "./ProductPageActions";
 
 interface Props {
-  imgArray: TImage[];
-  product: IProduct;
+  imgArray: string[];
+  product: RetailItem;
 }
 const ImageSection: React.FC<Props> = ({ imgArray, product }) => {
   const [selectedImg, setSelectedImg] = useState(0);
@@ -28,10 +28,10 @@ const ImageSection: React.FC<Props> = ({ imgArray, product }) => {
         </div>
 
         <div className="flex mt-4  md:p-4 w-full max-w-[350px] overflow-auto">
-          {imgArray.map((imgItem: TImage, index: number) => {
+          {imgArray.map((imgItem: string, index: number) => {
             return (
               <div
-                key={imgItem._key}
+                key={index}
                 className={`flex items-center justify-center p-2 md:p-4 rounded-lg  border-none transition-all duration-300 ease-in-out min-w-[80px] ${
                   index === selectedImg
                     ? "border-2 border-slate-300/60 shadow-md bg-palette-card/60"

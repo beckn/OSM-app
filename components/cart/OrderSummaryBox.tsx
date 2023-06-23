@@ -2,18 +2,49 @@ import Link from "next/link";
 import React from "react";
 import { useSelector } from "react-redux";
 import { useLanguage } from "../../hooks/useLanguage";
-import { ICartRootState } from "../../lib/types/cart";
+import {
+  CartItemForRequest,
+  ICartRootState,
+  TransactionIdRootState,
+} from "../../lib/types/cart";
 import ProductPrice from "../UI/ProductPrice";
 import { changeNumbersFormatEnToFa } from "../../utilities/changeNumbersFormatEnToFa";
+import {
+  getCartItemsPerBpp,
+  getPayloadForQuoteRequest,
+} from "../../utilities/cart-utils";
+import useRequest from "../../hooks/useRequest";
 
 const OrderSummaryBox = () => {
   const { t, locale } = useLanguage();
+  const { data, loading, error, fetchData } = useRequest();
   const totalAmount = useSelector(
     (state: ICartRootState) => state.cart.totalAmount
   );
+
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
   const totalQuantity = useSelector(
     (state: ICartRootState) => state.cart.totalQuantity
   );
+  const cartItems = useSelector((state: ICartRootState) => state.cart.items);
+
+  const transactionId = useSelector(
+    (state: { transactionId: TransactionIdRootState }) => state.transactionId
+  );
+
+  const getQuoteHandler = () => {
+    const cartItemsPerBppPerProvider = getCartItemsPerBpp(
+      cartItems as CartItemForRequest[]
+    );
+
+    const payLoadForQuoteRequest = getPayloadForQuoteRequest(
+      cartItemsPerBppPerProvider,
+      transactionId
+    );
+
+    fetchData(`${apiUrl}/client/v2/get_quote`, "POST", payLoadForQuoteRequest);
+  };
 
   return (
     <>
@@ -38,11 +69,14 @@ const OrderSummaryBox = () => {
               <ProductPrice price={totalAmount} />
             </div>
           </div>
-          <Link href="/">
-            <a className="block bg-palette-primary md:mt-8 py-3 rounded-lg text-palette-side text-center shadow-lg">
-              {t.order}
-            </a>
-          </Link>
+          {/* <Link href="/"> */}
+          <a
+            onClick={getQuoteHandler}
+            className="block bg-palette-primary md:mt-8 py-3 rounded-lg text-palette-side text-center shadow-lg"
+          >
+            {t.order}
+          </a>
+          {/* </Link> */}
         </div>
       ) : (
         <p className="text-palette-mute text-lg mx-auto mt-12">

@@ -5,7 +5,7 @@ import orderConfirmmark from "../public/images/orderConfirmmark.svg";
 import Button from "../components/button/Button";
 import { useLanguage } from "../hooks/useLanguage";
 
-const orderConfirmation = () => {
+const OrderConfirmation = () => {
   const { t } = useLanguage();
   return (
     <Box position={"relative"}>
@@ -39,4 +39,4 @@ const orderConfirmation = () => {
   );
 };
 
-export default orderConfirmation;
+export default OrderConfirmation;

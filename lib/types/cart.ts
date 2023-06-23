@@ -1,4 +1,4 @@
-import { IProductDetails, TSlug } from "./products";
+import { IProductDetails, RetailItem, TSlug } from "./products";
 
 export interface ICartProduct {
   image: any;
@@ -16,15 +16,31 @@ export interface ICartProduct {
   totalPrice: number;
 }
 
+export interface CartRetailItem extends RetailItem {
+  quantity: number;
+  totalPrice: number;
+}
+
+export interface CartItemForRequest extends CartRetailItem {
+  bpp_id: string;
+  bpp_uri: string;
+  providerId: string;
+  locations: any;
+}
+
+// export interface
+
 export interface ICartUI {
   cartBoxIsVisible: boolean;
 }
 
 export interface ICart {
-  items: ICartProduct[];
+  items: CartRetailItem[];
   totalQuantity: number;
   totalAmount: number;
 }
+
+export type ItemPerBpp = Record<string, CartRetailItem[]>;
 
 //RootState interface => use for state type in useSelector hook
 
@@ -33,4 +49,7 @@ export interface ICartUiRootState {
 }
 export interface ICartRootState {
   cart: ICart;
+}
+export interface TransactionIdRootState {
+  transactionId: string;
 }

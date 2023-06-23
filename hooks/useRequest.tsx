@@ -1,10 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
+import { ResponseModel } from "../lib/types/responseModel";
 
 const useRequest = () => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [data, setData] = useState<ResponseModel | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   const fetchData = async (
     url: string,
