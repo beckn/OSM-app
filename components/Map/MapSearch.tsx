@@ -15,7 +15,7 @@ const SearchBar: React.FC<SearchBarProp> = ({setQuery,loading}) => {
 
 
 	// In case of using onChange for searching
-	// const [value,setValue] = useState<string>("");
+	const [value,setValue] = useState<string>("");
 	// const debouncedQuery = useDebounce(value, 500);
 	// useEffect(() => {
 	// 	setQuery(debouncedQuery)
@@ -28,8 +28,8 @@ const SearchBar: React.FC<SearchBarProp> = ({setQuery,loading}) => {
         className="px-4 py-2 md:py-3 bg-transparent outline-none w-full "
         type="search"
         placeholder={`${t.search}`}
-				// onChange={(e)=>setValue(e.target.value)}
-				onKeyDown={(e)=>{if(e.key === "Enter") setQuery(e.target.value)}}
+				onChange={(e)=>setValue(e.target.value)}
+				onKeyDown={(e)=>{if(e.key === "Enter") setQuery(value)}}
 				 />
 				 {loading && <Spinner color="#A71B4A" size="sm" />}
 

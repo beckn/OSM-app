@@ -129,7 +129,7 @@ const homepage = () => {
 							const isSelected = option.tagValue === currentOption.tagValue;
 							const optionMeta = { tagName: currentOption.tagName, tagValue: currentOption.tagValue }
 							const optionIcons = { iconUrl: currentOption.iconUrl, iconUrlLight: currentOption.iconUrl_light }
-							return <OptionCard key={index} isSelected={isSelected} setOption={setOption} optionMeta={optionMeta} OptionIcon={GiHospital} optionIcons={optionIcons} />
+							return <OptionCard key={index} isSelected={isSelected} setOption={setOption} optionMeta={optionMeta}  optionIcons={optionIcons} />
 						})
 					}
 
@@ -143,10 +143,10 @@ const homepage = () => {
 						<p className='block font-bold text-[12px] leading-[18px]'>ABC Mart - Shopping Mall</p>
 					</div>
 					<div className='flex justify-between gap-2'>
-						<img src="/images/store-images/1.png" alt="" />
-						<img src="/images/store-images/2.png" alt="" />
-						<img src="/images/store-images/3.png" alt="" />
-						<img src="/images/store-images/4.png" alt="" />
+						<img src="/images/store-images/1.png" alt="store" />
+						<img src="/images/store-images/2.png" alt="store" />
+						<img src="/images/store-images/3.png" alt="store" />
+						<img src="/images/store-images/4.png" alt="store" />
 
 					</div>
 					<p className='font-semibold text-[12px] leading-[18px]'>Shopping mall</p>

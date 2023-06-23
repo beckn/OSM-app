@@ -8,20 +8,10 @@ import { client } from "../lib/client";
 const Category = dynamic(() => import("../components/category/Category"));
 
 import { IProduct } from "../lib/types/products";
-import { newestProductsFn } from "../utilities/sortByTimeStamp";
 
 const Home: NextPage<{ products: IProduct[] }> = ({ products }) => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    //add products to offers list
-    const offersProducts = products.filter((item) => item.discount);
-    dispatch(specialOfferProductsActions.addProducts(offersProducts));
-
-    //add products to newest list
-    const sortedProductsByTimeStamp = newestProductsFn(products);
-    dispatch(newestProductsActions.addProducts(sortedProductsByTimeStamp));
-  }, [dispatch, products]);
 
   return (
     <div>
@@ -38,13 +28,3 @@ const Home: NextPage<{ products: IProduct[] }> = ({ products }) => {
 
 export default Home;
 
-export const getStaticProps = async () => {
-  const productQuery = `*[_type=='product']`;
-  const products = await client.fetch(productQuery);
-
-  return {
-    props: {
-      products,
-    },
-  };
-};
