@@ -29,11 +29,15 @@ const OrderConfirmation = () => {
         buttonText={t.backToHome}
         background={"rgba(var(--color-primary))"}
         color={"rgba(var(--text-color))"}
+        handleOnClick={() => {}}
+        isDisabled={false}
       />
       <Button
         buttonText={t.orderDetails}
         background={"rgba(var(--text-color))"}
         color={"rgba(var(--color-primary))"}
+        handleOnClick={() => {}}
+        isDisabled={false}
       />
     </Box>
   );
