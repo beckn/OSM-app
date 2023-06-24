@@ -2,10 +2,10 @@ import React, { Profiler, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic';
 import BottomModal from '../components/BottomModal';
 import OptionCard from '../components/Map/OptionCard';
-import { GiHospital } from 'react-icons/gi';
 import { optionData } from '../components/Map/StoreMarkerData';
 import { useRouter } from 'next/router'
- 
+import useRequest from '../hooks/useRequest';
+
 
 
 
@@ -15,6 +15,7 @@ type Coords = {
 };
 
 import MapSearch from '../components/Map/MapSearch';
+import { isEmpty } from 'lodash';
 
 const Homepage = () => {
 
@@ -31,28 +32,34 @@ const Homepage = () => {
 		tagName: "amenity",
 		tagValue: "restaurant"
 	});
+
+	//TODO local store and coords states can be removed in further iterations
+	const [stores, setStores] = useState<any>([]);
 	const [selectedStore, setSelectedStore] = useState<any>(null);
+	const { data: searchedLocationData, loading, error, fetchData } = useRequest();
+	const { data: storesByLocation, loading:loadingStores, error:errorStores, fetchData:fetchStores } = useRequest();
 	const router = useRouter();
 
 
 
+
 	//TODO Pseudo loading for now. Need to figure out to do this using map load events
-	const [mapLoading,setMapLoading] = useState<boolean>(false);
+	const [mapLoading, setMapLoading] = useState<boolean>(false);
 
 
-	useEffect(()=>{
+	useEffect(() => {
 		setMapLoading(true);
-		setTimeout(()=>{
+		setTimeout(() => {
 			setMapLoading(false)
-		},1000)
+		}, 1000)
 
-	},[query])
+	}, [query])
 
 
 
-	 const handleModalOpen = () => {
+	const handleModalOpen = () => {
 		setIsOptionModalOpen((prevState) => (!prevState));
-			 }
+	}
 
 	const handleModalClose = () => {
 		setIsOptionModalOpen(false);
@@ -69,37 +76,34 @@ const Homepage = () => {
 
 
 	const fetchLocationByQuery = (query: string) => {
-		let url = "https://nominatim.openstreetmap.org/search?format=jsonv2" +
-			"&q=" + query;
-		fetch(url, {
-			method: "GET",
-			mode: 'cors',
-			headers: {
-				"Access-Control-Allow-Origin": "https://o2cj2q.csb.app"
-			}
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				setCoords({ lat: data[0].lat, long: data[0].lon })
-			});
+		let url = `${process.env.NEXT_PUBLIC_NOMINATIM_URL}/search?format=jsonv2&q=${query}`;
+
+		fetchData(url, "GET");
+
 
 	}
 
 	const fetchStoresByLocation = (lat: number, long: number, tagValue: string, tagName: string) => {
-
-		// using fetch because axios showing cors error. Discuss with team
 		let url = `${process.env.NEXT_PUBLIC_BECKN_API_URL}/stores?tagName=${tagName}&tagValue=${tagValue}&latitude=${lat}&longitude=${long}`;
 
-		fetch(url, {
-			method: "GET",
-			mode: 'no-cors',
-
-		})
-			.then((response) => console.log("Logging the stores data for now", response))
-
-
+		fetchStores(url, "GET");
 	}
 
+
+
+	useEffect(() => {
+		if (searchedLocationData && !isEmpty(searchedLocationData)) {
+			setCoords({ lat: searchedLocationData[0].lat, long: searchedLocationData[0].lon });
+		}
+
+	}, [searchedLocationData])
+
+	useEffect(()=>{
+		if(storesByLocation && !isEmpty(storesByLocation)){
+			setStores(storesByLocation);
+		}
+
+	},[storesByLocation])
 
 	useEffect(() => {
 		if (query.length < 1) return;
@@ -118,7 +122,7 @@ const Homepage = () => {
 		<div>
 			<MapSearch loading={mapLoading} setQuery={setQuery} />
 
-			<MapWithNoSSR coords={coords} handleModalOpen={handleModalOpen} handleOptionDetailOpen={handleOptionDetailOpen} setSelectedStore={setSelectedStore} />
+			<MapWithNoSSR stores={stores} coords={coords} handleModalOpen={handleModalOpen} handleOptionDetailOpen={handleOptionDetailOpen} setSelectedStore={setSelectedStore} />
 
 
 			<BottomModal isOpen={isOptionModalOpen} onClose={handleModalClose} >
@@ -129,7 +133,7 @@ const Homepage = () => {
 							const isSelected = option.tagValue === currentOption.tagValue;
 							const optionMeta = { tagName: currentOption.tagName, tagValue: currentOption.tagValue }
 							const optionIcons = { iconUrl: currentOption.iconUrl, iconUrlLight: currentOption.iconUrl_light }
-							return <OptionCard key={index} isSelected={isSelected} setOption={setOption} optionMeta={optionMeta}  optionIcons={optionIcons} />
+							return <OptionCard key={index} isSelected={isSelected} setOption={setOption} optionMeta={optionMeta} optionIcons={optionIcons} />
 						})
 					}
 
@@ -164,7 +168,7 @@ const Homepage = () => {
 						</div>
 
 					</div>
-					<button  onClick={()=>router.push("/category")} className='px-[47px] py-[12px] w-[50%] sm:w-[40%] bg-palette-primary rounded-md text-white' >
+					<button onClick={() => router.push("/category")} className='px-[47px] py-[12px] w-[50%] sm:w-[40%] bg-palette-primary rounded-md text-white' >
 						Shop
 
 					</button>
