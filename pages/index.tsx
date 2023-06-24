@@ -14,6 +14,16 @@ type Coords = {
 	long: number;
 };
 
+type OptionType = {
+	tagName: string;
+	tagValue: string;
+}
+
+const initialOption:OptionType = {
+	tagName: '',
+	tagValue: ''
+}
+
 import MapSearch from '../components/Map/MapSearch';
 import { isEmpty } from 'lodash';
 
@@ -28,7 +38,7 @@ const Homepage = () => {
 	const [coords, setCoords] = useState<Coords>({ lat: 46.603354, long: 1.8883335 });
 	const [isOptionModalOpen, setIsOptionModalOpen] = useState<boolean>(false);
 	const [isOptionDetailOpen, setIsOptionDetailOpen] = useState<boolean>(false);
-	const [option, setOption] = useState<{ tagName: string; tagValue: string; }>();
+	const [option, setOption] = useState<OptionType>(initialOption);
 
 	//TODO local store and coords states can be removed in further iterations
 	const [stores, setStores] = useState<any>([]);
@@ -97,7 +107,7 @@ const Homepage = () => {
 
 	useEffect(()=>{
 		// Not refilling stores if option is empty
-		if(storesByLocation && !isEmpty(option)){
+		if(storesByLocation && !isEmpty(option.tagValue)){
 			setStores(storesByLocation);
 		}
 
@@ -110,7 +120,7 @@ const Homepage = () => {
 	}, [query])
 
 	useEffect(() => {
-		if(!isEmpty(coords) && !isEmpty(option))
+		if(!isEmpty(coords) && !isEmpty(option.tagValue))
 	{
 fetchStoresByLocation(coords.lat, coords.long, option.tagValue, option.tagName);
 	}	
@@ -119,7 +129,7 @@ fetchStoresByLocation(coords.lat, coords.long, option.tagValue, option.tagName);
 
 	//resetting option state and stores when location changes
 	useEffect(()=>{
-		setOption({});
+		setOption(initialOption);
 		setStores([]);
 	},[coords])
 
