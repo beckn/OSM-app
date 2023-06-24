@@ -16,7 +16,7 @@ type Coords = {
 
 import MapSearch from '../components/Map/MapSearch';
 
-const homepage = () => {
+const Homepage = () => {
 
 	const MapWithNoSSR = dynamic(() => import("../components/Map"), {
 		ssr: false
@@ -177,4 +177,4 @@ const homepage = () => {
 	)
 }
 
-export default homepage;
+export default Homepage;
