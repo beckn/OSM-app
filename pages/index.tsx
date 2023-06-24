@@ -28,10 +28,7 @@ const Homepage = () => {
 	const [coords, setCoords] = useState<Coords>({ lat: 46.603354, long: 1.8883335 });
 	const [isOptionModalOpen, setIsOptionModalOpen] = useState<boolean>(false);
 	const [isOptionDetailOpen, setIsOptionDetailOpen] = useState<boolean>(false);
-	const [option, setOption] = useState<{ tagName: string; tagValue: string; }>({
-		tagName: "amenity",
-		tagValue: "restaurant"
-	});
+	const [option, setOption] = useState<{ tagName: string; tagValue: string; }>();
 
 	//TODO local store and coords states can be removed in further iterations
 	const [stores, setStores] = useState<any>([]);
@@ -99,11 +96,13 @@ const Homepage = () => {
 	}, [searchedLocationData])
 
 	useEffect(()=>{
-		if(storesByLocation && !isEmpty(storesByLocation)){
+		// Not refilling stores if option is empty
+		if(storesByLocation && !isEmpty(option)){
 			setStores(storesByLocation);
 		}
 
 	},[storesByLocation])
+
 
 	useEffect(() => {
 		if (query.length < 1) return;
@@ -111,9 +110,18 @@ const Homepage = () => {
 	}, [query])
 
 	useEffect(() => {
-		fetchStoresByLocation(coords.lat, coords.long, option.tagValue, option.tagName);
+		if(!isEmpty(coords) && !isEmpty(option))
+	{
+fetchStoresByLocation(coords.lat, coords.long, option.tagValue, option.tagName);
+	}	
 
 	}, [coords, option])
+
+	//resetting option state and stores when location changes
+	useEffect(()=>{
+		setOption({});
+		setStores([]);
+	},[coords])
 
 
 
@@ -130,7 +138,7 @@ const Homepage = () => {
 					{
 
 						optionData.map((currentOption, index) => {
-							const isSelected = option.tagValue === currentOption.tagValue;
+							const isSelected = option ? option.tagValue === currentOption.tagValue : false;
 							const optionMeta = { tagName: currentOption.tagName, tagValue: currentOption.tagValue }
 							const optionIcons = { iconUrl: currentOption.iconUrl, iconUrlLight: currentOption.iconUrl_light }
 							return <OptionCard key={index} isSelected={isSelected} setOption={setOption} optionMeta={optionMeta} optionIcons={optionIcons} />

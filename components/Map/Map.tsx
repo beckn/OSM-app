@@ -90,7 +90,7 @@ const Map:React.FC<MapProps> = ({stores,coords,handleModalOpen,handleOptionDetai
 			/>
 			 <Control prepend position='topright'>
 				<div className="flex flex-col basis-4">
-				<button onClick={(e)=>handleModalOpen()}><img src="/images/hamburger1.svg" alt="..." /></button>
+				<button onClick={(e)=>handleModalOpen()}><img src="/images/menuham.svg" alt="..." /></button>
 				<button onClick={()=>setFlyToUserLocation(true)}><img src="/images/Location.svg" alt="..." /></button>
 				</div>
   </Control>
