@@ -6,6 +6,7 @@ import {GiHamburgerMenu} from 'react-icons/gi'
 import {data} from "./StoreMarkerData";
 import Icon from "./store-marker.svg";
 import L from "leaflet";
+import { isEmpty } from "lodash";
 
 
 
@@ -15,10 +16,12 @@ interface MapProps {
 	handleModalOpen: ()=>void;
 	handleOptionDetailOpen: ()=>void;
 	setSelectedStore: React.Dispatch<React.SetStateAction<any>>;
+	// Using any for now since exact structure is not clear
+	stores:any[];
 }
 
 
-const Map:React.FC<MapProps> = ({coords,handleModalOpen,handleOptionDetailOpen,setSelectedStore})=> {
+const Map:React.FC<MapProps> = ({stores,coords,handleModalOpen,handleOptionDetailOpen,setSelectedStore})=> {
 
 	const { lat, long } = coords;
 	const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
@@ -74,9 +77,8 @@ const Map:React.FC<MapProps> = ({coords,handleModalOpen,handleOptionDetailOpen,s
 	return (
 <MapContainer
 				 style={{ height: '100vh' }}
-			// center={[lat, long]}
-			center={[ 46.603354,  1.8883335 ]}
-			zoom={15}
+			center={[lat, long]}
+			zoom={13}
 			zoomControl={false}
 			scrollWheelZoom={true}
 			zoomAnimation={true}
@@ -94,9 +96,8 @@ const Map:React.FC<MapProps> = ({coords,handleModalOpen,handleOptionDetailOpen,s
   </Control>
 			
 			{
-				data.elements.map((item:any) => {
-
-					return (
+				!isEmpty(stores) && stores.map((item:any) => {
+return (
 						<Marker icon={customIcon} key={item.lon}  position={[item.lat, item.lon]}
 							eventHandlers={{
 								click: () => {
