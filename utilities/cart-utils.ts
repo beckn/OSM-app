@@ -1,4 +1,4 @@
-import { CartItemForRequest, ItemPerBpp } from "../lib/types/cart";
+import { CartItemForRequest, DataPerBpp } from "../lib/types/cart";
 
 export const getCartItemsPerBpp = (cart: CartItemForRequest[]) => {
   const itemsPerBpp = {};
@@ -17,43 +17,44 @@ export const getCartItemsPerBpp = (cart: CartItemForRequest[]) => {
 };
 
 export const getPayloadForQuoteRequest = (
-  cartItemsPerBppPerProvider: ItemPerBpp,
+  cartItemsPerBppPerProvider: DataPerBpp,
   transactionId: { transactionId: string }
 ) => {
   const payload: any = {
     selectRequestDto: [],
   };
+
   Object.keys(cartItemsPerBppPerProvider).forEach((bppId) => {
-    Object.keys(cartItemsPerBppPerProvider[bppId]).forEach((providerId) => {
-      const cartItem = {
-        context: {
-          // eslint-disable-next-line camelcase
-          transaction_id: transactionId.transactionId,
-          bpp_id: bppId,
-          bpp_uri: cartItemsPerBppPerProvider[bppId][providerId].bpp_uri,
-          domain: "retail",
-        },
-        message: {
-          order: {
-            items: [
-              {
-                quantity: {
-                  count: cartItemsPerBppPerProvider[bppId][providerId].quantity,
-                },
-
-                id: cartItemsPerBppPerProvider[bppId][providerId].id,
-              },
-            ],
-            provider: {
-              id: cartItemsPerBppPerProvider[bppId][providerId].providerId,
-            },
-            locations: cartItemsPerBppPerProvider[bppId][providerId].locations,
+    const cartItem: any = {
+      context: {
+        transaction_id: transactionId.transactionId,
+        bpp_id: bppId,
+        bpp_uri: cartItemsPerBppPerProvider[bppId][0].bpp_uri,
+        domain: "retail",
+      },
+      message: {
+        order: {
+          items: [],
+          provider: {
+            id: cartItemsPerBppPerProvider[bppId][0].providerId,
           },
+          locations: cartItemsPerBppPerProvider[bppId][0].locations,
         },
-      };
-
-      payload.selectRequestDto.push(cartItem);
+      },
+    };
+    cartItemsPerBppPerProvider[bppId].forEach((item: any) => {
+      if (item.bpp_id === bppId) {
+        const itemObject = {
+          quantity: {
+            count: item.quantity,
+          },
+          id: item.id,
+        };
+        cartItem.message.order.items.push(itemObject);
+      }
     });
+
+    payload.selectRequestDto.push(cartItem);
   });
   return payload;
 };

@@ -1,12 +1,12 @@
 import React from "react";
 import { Text, Box, Image, Flex } from "@chakra-ui/react";
-import speakerImg from "../../public/images/speaker.svg";
 
 export interface ItemDetailProps {
   title: string;
   description: string;
-  quantity: string;
+  quantity: number;
   price: string | number;
+  itemImage: string;
 }
 
 const ItemDetails: React.FC<ItemDetailProps> = (props) => {
@@ -14,7 +14,7 @@ const ItemDetails: React.FC<ItemDetailProps> = (props) => {
     <>
       <Flex alignItems={"center"}>
         <Box pr={"10px"}>
-          <Image src={speakerImg} margin={"0 auto"} />
+          <Image src={props.itemImage} margin={"0 auto"} />
         </Box>
         <Box>
           <Text fontSize={"13px"} fontWeight={"700"} pb={"5px"}>
@@ -24,7 +24,7 @@ const ItemDetails: React.FC<ItemDetailProps> = (props) => {
             {props.description}
           </Text>
           <Text fontSize={"10px"} fontWeight={"700"} pb={"5px"}>
-            {props.quantity}
+            x{props.quantity}
           </Text>
           <Text color={"rgba(var(--color-primary))"}>{props.price}</Text>
         </Box>
