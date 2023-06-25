@@ -1,10 +1,14 @@
 import { Flex, Image, Text, useDisclosure } from "@chakra-ui/react";
 import React from "react";
+import { ShippingFormData } from "../../pages/checkoutPage";
 import addShippingBtn from "../../public/images/addShippingBtn.svg";
 import ShippingForm from "./ShippingForm";
 
 export interface AddShippingButtonProps {
   addShippingdetailsBtnText: string;
+  setFormData: Function;
+  formData: ShippingFormData;
+  formSubmitHandler: Function;
 }
 
 const AddShippingButton: React.FC<AddShippingButtonProps> = (props) => {
@@ -21,7 +25,14 @@ const AddShippingButton: React.FC<AddShippingButtonProps> = (props) => {
           {props.addShippingdetailsBtnText}
         </Text>
       </Flex>
-      <ShippingForm isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+      <ShippingForm
+        formData={props.formData}
+        setFormData={props.setFormData}
+        isOpen={isOpen}
+        onOpen={onOpen}
+        onClose={onClose}
+        formSubmitHandler={props.formSubmitHandler}
+      />
     </>
   );
 };

@@ -10,7 +10,7 @@ import megaMenuReducer from "./megaMenu-slice";
 import activeMenuItemReducer from "./activeMenuItem-slice";
 import settingBoxReducer from "./settingBox-slice";
 import favoriteReducer from "./favorite-slice";
-import transactionIdReducer from "./transactionId-slice";
+import responseDataReducer from "./responseData-slice";
 
 const store = configureStore({
   reducer: {
@@ -25,7 +25,10 @@ const store = configureStore({
     activeMenuItem: activeMenuItemReducer,
     settingBox: settingBoxReducer,
     favorite: favoriteReducer,
-    transactionId: transactionIdReducer,
+    transactionId: responseDataReducer,
+    quoteResponse: responseDataReducer,
+    customerDetails: responseDataReducer,
+    initResponse: responseDataReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

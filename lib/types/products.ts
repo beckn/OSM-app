@@ -66,7 +66,7 @@ export interface RetailItem {
   descriptor: {
     images: string[];
     name: string;
-    short_desc?: string;
+    short_desc: string;
     long_desc?: string;
   };
   location_id?: string;

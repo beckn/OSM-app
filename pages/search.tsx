@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import { GetStaticProps } from "next";
-import { Spinner } from "@chakra-ui/react";
 import SearchBar from "../components/header/SearchBar";
 import ProductList from "../components/productList/ProductList";
 import useRequest from "../hooks/useRequest";
-import { client } from "../lib/client";
-import { transactionIdActions } from "../store/transactionId-slice";
+import { responseDataActions } from "../store/responseData-slice";
 import { RetailItem } from "../lib/types/products";
+import Loader from "../components/loader/Loader";
 
 //Mock data for testing search API. Will remove after the resolution of CORS issue
 const searchPayload = {
@@ -45,7 +43,7 @@ const Search = () => {
   useEffect(() => {
     if (data) {
       dispatch(
-        transactionIdActions.addTransactionId(data.context.transaction_id)
+        responseDataActions.addTransactionId(data.context.transaction_id)
       );
       const allItems = data.message.catalogs.flatMap((catalog: any) => {
         if (
@@ -83,15 +81,7 @@ const Search = () => {
       />
 
       {loading ? (
-        <div className="flex justify-center items-center h-[60vh]">
-          <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="#A71B4A"
-            size="xl"
-          />
-        </div>
+        <Loader loadingText={`Searching for ${keyword}`} />
       ) : (
         <ProductList productList={items} />
       )}

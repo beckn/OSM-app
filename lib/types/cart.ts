@@ -47,9 +47,15 @@ export type ItemPerBpp = Record<string, CartRetailItem[]>;
 export interface ICartUiRootState {
   cartUi: ICartUI;
 }
+
 export interface ICartRootState {
   cart: ICart;
 }
+
 export interface TransactionIdRootState {
   transactionId: string;
+}
+
+export interface DataPerBpp {
+  [key: string]: CartItemForRequest[];
 }

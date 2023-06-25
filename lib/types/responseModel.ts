@@ -2,8 +2,8 @@ export interface RetailContext {
   action?: string;
   bap_id?: string;
   bap_uri?: string;
-  bpp_id?: string;
-  bpp_uri?: string;
+  bpp_id: string;
+  bpp_uri: string;
   city?: string;
   core_version?: string;
   country?: string;

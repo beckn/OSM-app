@@ -11,43 +11,42 @@ import {
   Box,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-
+import { useDispatch } from "react-redux";
 import style from "./ShippingForm.module.css";
-
 import crossIcon from "../../public/images/crossIcon.svg";
 import Button from "../button/Button";
+import { ShippingFormData } from "../../pages/checkoutPage";
+import { responseDataActions } from "../../store/responseData-slice";
 
 export interface ShippingFormProps {
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
+  setFormData: Function;
+  formData: ShippingFormData;
+  formSubmitHandler: Function;
 }
 
 const ShippingForm: React.FC<ShippingFormProps> = (props) => {
-  const [formData, setFormData] = useState({
-    name: "",
-    mobileNumber: "",
-    email: "",
-    address: "",
-    buildingName: "",
-    pincode: "",
-    landmark: "",
-  });
+  const dispatch = useDispatch();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+    props.setFormData((prevFormData: ShippingFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
   };
 
   const handleButtonClick = () => {
-    // Handle button click logic here
-    console.log("Form Data:", formData);
+    dispatch(responseDataActions.addCustomerDetails(props.formData));
+    props.setFormData(props.formData);
+    props.formSubmitHandler();
   };
 
-  const isFormValid = Object.values(formData).every(
+  const isFormValid = Object.values(props.formData).every(
     (value) => value.trim() !== ""
   );
-  console.log(isFormValid);
 
   return (
     <>
@@ -88,7 +87,7 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                   type="text"
                   placeholder=" "
                   name="name"
-                  value={formData.name}
+                  value={props.formData.name}
                   onChange={handleInputChange}
                 />
                 <label className={style.did_floating_label}>Name</label>
@@ -99,7 +98,7 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                   type="text"
                   placeholder=" "
                   name="mobileNumber"
-                  value={formData.mobileNumber}
+                  value={props.formData.mobileNumber}
                   onChange={handleInputChange}
                 />
                 <label className={style.did_floating_label}>
@@ -112,7 +111,7 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                   type="text"
                   placeholder=" "
                   name="email"
-                  value={formData.email}
+                  value={props.formData.email}
                   onChange={handleInputChange}
                 />
                 <label className={style.did_floating_label}>Email ID</label>
@@ -123,7 +122,7 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                   type="text"
                   placeholder=" "
                   name="address"
-                  value={formData.address}
+                  value={props.formData.address}
                   onChange={handleInputChange}
                 />
                 <label className={style.did_floating_label}>
@@ -136,7 +135,7 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                   type="text"
                   placeholder=" "
                   name="buildingName"
-                  value={formData.buildingName}
+                  value={props.formData.buildingName}
                   onChange={handleInputChange}
                 />
                 <label className={style.did_floating_label}>
@@ -149,7 +148,7 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                   type="text"
                   placeholder=" "
                   name="pincode"
-                  value={formData.pincode}
+                  value={props.formData.pincode}
                   onChange={handleInputChange}
                 />
                 <label className={style.did_floating_label}>Pincode</label>
@@ -160,7 +159,7 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                   type="text"
                   placeholder=" "
                   name="landmark"
-                  value={formData.landmark}
+                  value={props.formData.landmark}
                   onChange={handleInputChange}
                 />
                 <label className={style.did_floating_label}>

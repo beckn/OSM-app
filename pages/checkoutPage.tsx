@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Box, Button, Flex, Text, Image } from "@chakra-ui/react";
+import Link from "next/link";
 import { AppHeader } from "../components/appHeader/AppHeader";
 import DetailsCard from "../components/detailsCard/DetailsCard";
 import ItemDetails from "../components/detailsCard/ItemDetails";
@@ -11,11 +13,77 @@ import TextareaWithReadMore from "../components/detailsCard/TextareaWithReadMore
 import proceedToPay from "../public/images/proceedToPay.svg";
 import AddShippingButton from "../components/detailsCard/AddShippingButton";
 import rightArrow from "../public/images/rightArrow.svg";
+import {
+  CartItemForRequest,
+  DataPerBpp,
+  ICartRootState,
+  TransactionIdRootState,
+} from "../lib/types/cart";
+import { getCartItemsPerBpp } from "../utilities/cart-utils";
+import useRequest from "../hooks/useRequest";
+import { responseDataActions } from "../store/responseData-slice";
+import { getPayloadForInitRequest } from "../utilities/checkout-utils";
+import Loader from "../components/loader/Loader";
+
+export type ShippingFormData = {
+  name: string;
+  mobileNumber: string;
+  email: string;
+  address: string;
+  buildingName: string;
+  pincode: string;
+  landmark: string;
+};
 
 const CheckoutPage = () => {
-  const [formFlag, setFormFlag] = useState(true);
+  const [formData, setFormData] = useState<ShippingFormData>({
+    name: "",
+    mobileNumber: "",
+    email: "",
+    address: "",
+    buildingName: "",
+    pincode: "",
+    landmark: "",
+  });
+  const initRequest = useRequest();
+  const dispatch = useDispatch();
+  const { t, locale } = useLanguage();
 
-  const { t } = useLanguage();
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const cartItems = useSelector((state: ICartRootState) => state.cart.items);
+  const transactionId = useSelector(
+    (state: { transactionId: TransactionIdRootState }) => state.transactionId
+  );
+
+  useEffect(() => {
+    if (initRequest.data) {
+      dispatch(responseDataActions.addInitResponse(initRequest.data));
+    }
+  }, [initRequest.data]);
+
+  const formSubmitHandler = () => {
+    if (formData) {
+      const cartItemsPerBppPerProvider: DataPerBpp = getCartItemsPerBpp(
+        cartItems as CartItemForRequest[]
+      );
+
+      const payLoadForInitRequest = getPayloadForInitRequest(
+        cartItemsPerBppPerProvider,
+        transactionId,
+        formData
+      );
+      initRequest.fetchData(
+        `${apiUrl}/client/v2/initialize_order`,
+        "POST",
+        payLoadForInitRequest
+      );
+    }
+  };
+
+  if (initRequest.loading) {
+    return <Loader loadingText="Initializing order" />;
+  }
+
   return (
     <>
       <AppHeader appHeaderText={t.checkout} />
@@ -24,27 +92,32 @@ const CheckoutPage = () => {
         <Box pb={"20px"} mt={"-20px"}>
           <Text>{t.items}</Text>
         </Box>
-
-        <DetailsCard>
-          <ItemDetails
-            title="JBL Xtrem 2"
-            description="Waterproof bluetooth wireless speaker"
-            quantity={"x1"}
-            price={"€ 229.684"}
-          />
-        </DetailsCard>
+        {cartItems.map((item) => (
+          <DetailsCard key={item.id}>
+            <ItemDetails
+              title={item.descriptor.name}
+              description={item.descriptor.short_desc}
+              quantity={item.quantity}
+              price={`${locale === "en" ? "Rs." : "£"} ${item.totalPrice}`}
+              itemImage={item.descriptor.images[0]}
+            />
+          </DetailsCard>
+        ))}
       </Box>
       {/* end item details */}
 
       {/* start shipping detals */}
-      {formFlag ? (
+      {!initRequest.data ? (
         <Box>
           <Flex pb={"20px"} mt={"20px"} justifyContent={"space-between"}>
             <Text fontSize={"17px"}>{t.shipping}</Text>
           </Flex>
           <DetailsCard>
             <AddShippingButton
+              formData={formData}
+              setFormData={setFormData}
               addShippingdetailsBtnText={t.addShippingdetailsBtnText}
+              formSubmitHandler={formSubmitHandler}
             />
           </DetailsCard>
         </Box>
@@ -62,9 +135,9 @@ const CheckoutPage = () => {
           </Flex>
           <DetailsCard>
             <ShippingDetails
-              name={"Lisa"}
-              location={"Mercure Montmartre"}
-              number={"+91 9876543210"}
+              name={formData.name}
+              location={formData.address}
+              number={formData.mobileNumber}
             />
           </DetailsCard>
         </Box>
@@ -73,7 +146,7 @@ const CheckoutPage = () => {
       {/* start payment method */}
       <Box>
         <Flex pb={"20px"} mt={"20px"} justifyContent={"space-between"}>
-          <Text fontSize={"17px"}>{t.paymentText}</Text>
+          <Text fontSize={"17px"}>{t.billing}</Text>
           <Text
             fontSize={"15px"}
             color={"rgba(var(--color-primary))"}
@@ -97,11 +170,11 @@ const CheckoutPage = () => {
         <DetailsCard>
           <PaymentDetails
             subtotalText={t.subtotalText}
-            subtotalValue={t.subtotalvalue}
+            subtotalValue={`Rs.789`}
             deliveryChargesText={t.deliveryChargesText}
-            deliveryChargesValue={t.deliveryChargesValue}
+            deliveryChargesValue={`Rs.${0}`}
             totalText={t.totalText}
-            totalValue={t.totalValue}
+            totalValue={`Rs.${789}`}
           />
         </DetailsCard>
       </Box>
@@ -145,25 +218,29 @@ const CheckoutPage = () => {
             </Flex>
           </Box>
         </Button>
-        <Button
-          isDisabled={formFlag}
-          height={"48px"}
-          fontSize={"14px"}
-          backgroundColor={!formFlag ? "rgba(var(--color-primary))" : "#DFDFDF"}
-          color={"rgba(var(--text-color))"}
-          width={"50%"}
-          __css={{ "&:active": {} }}
-        >
-          <Flex
-            alignItems={"center"}
-            justifyContent={"space-between"}
-            p={"0 10px 0 15px"}
+        <Link href={"/paymentMode"}>
+          <Button
+            isDisabled={!initRequest.data}
+            height={"48px"}
+            fontSize={"14px"}
+            backgroundColor={
+              initRequest.data ? "rgba(var(--color-primary))" : "#DFDFDF"
+            }
+            color={"rgba(var(--text-color))"}
+            width={"50%"}
+            __css={{ "&:active": {} }}
           >
-            <Image src={proceedToPay} />
-            <Text> {t.proceedToPay}</Text>
-            <Image src={rightArrow} />
-          </Flex>
-        </Button>
+            <Flex
+              alignItems={"center"}
+              justifyContent={"space-between"}
+              p={"0 10px 0 15px"}
+            >
+              <Image src={proceedToPay} />
+              <Text> {t.proceedToPay}</Text>
+              <Image src={rightArrow} />
+            </Flex>
+          </Button>
+        </Link>
       </Flex>
     </>
   );
