@@ -73,7 +73,7 @@ const OrderDetails = () => {
     return <Loader loadingText="Confirming order" />;
   }
 
-  if (!confirmRequest.data) {
+  if (!confirmData.length) {
     return <></>;
   }
 
