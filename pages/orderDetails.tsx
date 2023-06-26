@@ -13,6 +13,7 @@ import { ResponseModel } from "../lib/types/responseModel";
 import {
   getConfirmMetaDataForBpp,
   getInitMetaDataPerBpp,
+  getOrderPlacementTimeline,
   getPayloadForConfirmRequest,
   getPayloadForStatusRequest,
 } from "../utilities/confirm-utils";
@@ -72,6 +73,10 @@ const OrderDetails = () => {
     return <Loader loadingText="Confirming order" />;
   }
 
+  if (!confirmRequest.data) {
+    return <></>;
+  }
+
   return (
     <>
       <AppHeader appHeaderText={t.selectPaymentMethod} />
@@ -83,7 +88,11 @@ const OrderDetails = () => {
             alignItems={"center"}
           >
             <Text>{"Placed at"}</Text>
-            <Text>21st Jun 2021, 12:21pm</Text>
+            <Text>
+              {getOrderPlacementTimeline(
+                confirmData[0].message.responses[0].message.order.created_at
+              )}
+            </Text>
           </Flex>
         </CardBody>
         <Divider />

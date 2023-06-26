@@ -22,7 +22,11 @@ import {
 import { getCartItemsPerBpp } from "../utilities/cart-utils";
 import useRequest from "../hooks/useRequest";
 import { responseDataActions } from "../store/responseData-slice";
-import { getPayloadForInitRequest } from "../utilities/checkout-utils";
+import {
+  getPayloadForInitRequest,
+  getSubTotalAndDeliveryCharges,
+  getTotalCartItems,
+} from "../utilities/checkout-utils";
 import Loader from "../components/loader/Loader";
 
 export type ShippingFormData = {
@@ -80,9 +84,13 @@ const CheckoutPage = () => {
     }
   };
 
+  const totalItems = getTotalCartItems(cartItems);
+
   if (initRequest.loading) {
     return <Loader loadingText="Initializing order" />;
   }
+
+  console.log("cartItems", cartItems);
 
   return (
     <>
@@ -98,7 +106,7 @@ const CheckoutPage = () => {
               title={item.descriptor.name}
               description={item.descriptor.short_desc}
               quantity={item.quantity}
-              price={`${locale === "en" ? "Rs." : "£"} ${item.totalPrice}`}
+              price={`${locale === "en" ? "Rs." : "£"}${item.totalPrice}`}
               itemImage={item.descriptor.images[0]}
             />
           </DetailsCard>
@@ -170,11 +178,18 @@ const CheckoutPage = () => {
         <DetailsCard>
           <PaymentDetails
             subtotalText={t.subtotalText}
-            subtotalValue={`Rs.789`}
+            subtotalValue={`Rs.${
+              getSubTotalAndDeliveryCharges(initRequest.data).subTotal
+            }`}
             deliveryChargesText={t.deliveryChargesText}
-            deliveryChargesValue={`Rs.${0}`}
+            deliveryChargesValue={`Rs.${
+              getSubTotalAndDeliveryCharges(initRequest.data)
+                .totalDeliveryCharge
+            }`}
             totalText={t.totalText}
-            totalValue={`Rs.${789}`}
+            totalValue={`Rs.${
+              getSubTotalAndDeliveryCharges(initRequest.data).subTotal
+            }`}
           />
         </DetailsCard>
       </Box>
@@ -211,9 +226,11 @@ const CheckoutPage = () => {
               Total
             </Text>
             <Flex alignItems={"center"}>
-              <Text color={"rgba(var(--color-primary))"}>{t.totalValue}</Text>
+              <Text color={"rgba(var(--color-primary))"}>{`Rs.${
+                getSubTotalAndDeliveryCharges(initRequest.data).subTotal
+              }`}</Text>
               <Text fontSize={"10px"} pl={"2px"}>
-                1 item
+                {totalItems} item(s)
               </Text>
             </Flex>
           </Box>
