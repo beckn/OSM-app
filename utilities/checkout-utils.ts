@@ -1,4 +1,5 @@
-import { DataPerBpp } from "../lib/types/cart";
+import { CartRetailItem, DataPerBpp } from "../lib/types/cart";
+import { ResponseModel } from "../lib/types/responseModel";
 import { ShippingFormData } from "../pages/checkoutPage";
 
 export const getPayloadForInitRequest = (
@@ -89,4 +90,40 @@ export const getPayloadForInitRequest = (
     payload.initRequestDto.push(cartItem);
   });
   return payload;
+};
+
+export const getSubTotalAndDeliveryCharges = (
+  initData: (ResponseModel & ResponseModel[]) | null
+) => {
+  let subTotal = 0;
+  let totalDeliveryCharge = 0;
+
+  if (initData) {
+    initData.forEach((data) => {
+      const deliveryAmount = parseFloat(
+        data.message.catalogs.responses[0].message.order.quote.breakup[1].price
+          .value
+      );
+      totalDeliveryCharge += deliveryAmount;
+
+      const subTotalAmount = parseFloat(
+        data.message.catalogs.responses[0].message.order.quote.breakup[0].price
+          .value
+      );
+
+      subTotal += subTotalAmount;
+    });
+  }
+
+  return { subTotal, totalDeliveryCharge };
+};
+
+export const getTotalCartItems = (cartItems: CartRetailItem[]) => {
+  let quantity = 0;
+
+  cartItems.forEach((item) => {
+    quantity += item.quantity;
+  });
+
+  return quantity;
 };
