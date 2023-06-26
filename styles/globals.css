@@ -227,3 +227,10 @@ select:-webkit-autofill:focus {
   background: #a71b4a !important;
   border-color: #a71b4a !important;
 }
+.object-contain {
+  object-fit: unset !important;
+}
+.product-img-span > span {
+  border-bottom-left-radius: 12px;
+  border-top-left-radius: 12px;
+}
