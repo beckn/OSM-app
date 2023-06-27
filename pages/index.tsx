@@ -5,6 +5,7 @@ import OptionCard from "../components/Map/OptionCard";
 import { optionData } from "../components/Map/StoreMarkerData";
 import { useRouter } from "next/router";
 import useRequest from "../hooks/useRequest";
+import MapHeader from "../components/Map/MapHeader";
 
 type Coords = {
   lat: number;
@@ -37,6 +38,7 @@ const Homepage = () => {
   });
   const [isOptionModalOpen, setIsOptionModalOpen] = useState<boolean>(false);
   const [isOptionDetailOpen, setIsOptionDetailOpen] = useState<boolean>(false);
+  const [isMenuModalOpen, setIsMenuModalOpen] = useState<boolean>(true);
   const [option, setOption] = useState<OptionType>(initialOption);
 
   //TODO local store and coords states can be removed in further iterations
@@ -81,6 +83,16 @@ const Homepage = () => {
   const handleOptionDetailClose = () => {
     setIsOptionDetailOpen(false);
   };
+
+	const handleMenuModalOpen = ()=>{
+		setIsMenuModalOpen(true);
+		
+	}
+
+	const handleMenuModalClose = ()=>{
+		setIsMenuModalOpen(false);
+		
+	}
 
   const fetchLocationByQuery = (query: string) => {
     let url = `${process.env.NEXT_PUBLIC_NOMINATIM_URL}/search?format=jsonv2&q=${query}`;
@@ -139,6 +151,7 @@ const Homepage = () => {
 
   return (
     <div>
+			<MapHeader handleMenuClick={handleMenuModalOpen} />
       <MapSearch loading={mapLoading} setQuery={setQuery} />
 
       <MapWithNoSSR
@@ -219,6 +232,13 @@ const Homepage = () => {
             Shop
           </button>
         </div>
+      </BottomModal>
+
+      <BottomModal noTitle={true} isOpen={isMenuModalOpen} onClose={handleMenuModalClose}>
+        <div onClick={()=>router.push('/orderHistory')} className="flex gap-2 py-5">
+					<img src="/images/orderHistory.svg" alt="Order history icon" />
+					Order History
+				</div>
       </BottomModal>
     </div>
   );

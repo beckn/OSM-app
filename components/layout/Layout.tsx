@@ -9,18 +9,21 @@ import Footer from "../footer";
 import { ToastContainer } from "react-toastify";
 import { useLanguage } from "../../hooks/useLanguage";
 import NextNProgress from "nextjs-progressbar";
+import cs from 'classnames'
 
 const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const { locale } = useLanguage();
   const router = useRouter();
   const isHomepage = router.pathname === "/";
+  const paddingStyles = 'px-5 xl:px-16'
+
   return (
     <Provider store={store}>
       <ThemeProvider enableSystem={true} attribute="class">
         <Head>
           <title>ZiShop</title>
         </Head>
-        <div className="flex flex-col min-h-[100vh]">
+        <div className={cs("flex flex-col min-h-[100vh]",{[paddingStyles]:!isHomepage})}>
           <NextNProgress height={7} />
           {!isHomepage && <Header /> }
           <main className="flex-grow  md:mt-40">{children}</main>
