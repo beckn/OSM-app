@@ -17,6 +17,7 @@ import crossIcon from "../../public/images/crossIcon.svg";
 import Button from "../button/Button";
 import { ShippingFormData } from "../../pages/checkoutPage";
 import { responseDataActions } from "../../store/responseData-slice";
+import { validateForm, FormErrors } from "../../utilities/detailsForm-utils";
 
 export interface ShippingFormProps {
   isOpen: boolean;
@@ -29,24 +30,45 @@ export interface ShippingFormProps {
 
 const ShippingForm: React.FC<ShippingFormProps> = (props) => {
   const dispatch = useDispatch();
+  const [formErrors, setFormErrors] = useState<FormErrors>({});
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    if (name === "mobileNumber" && !/^\d*$/.test(value)) {
+      return;
+    }
     props.setFormData((prevFormData: ShippingFormData) => ({
       ...prevFormData,
       [name]: value,
     }));
+
+    const updatedFormData = {
+      ...props.formData,
+      [name]: value,
+    };
+
+    const errors = validateForm(updatedFormData);
+    setFormErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: errors[name] || "",
+    }));
   };
 
   const handleButtonClick = () => {
-    dispatch(responseDataActions.addCustomerDetails(props.formData));
-    props.setFormData(props.formData);
-    props.formSubmitHandler();
+    const errors = validateForm(props.formData);
+    setFormErrors(errors);
+    if (Object.keys(errors).length === 0) {
+      dispatch(responseDataActions.addCustomerDetails(props.formData));
+      props.setFormData(props.formData);
+      props.formSubmitHandler();
+    } else {
+      setFormErrors(errors);
+    }
   };
 
-  const isFormValid = Object.values(props.formData).every(
-    (value) => value.trim() !== ""
-  );
+  const isFormValid = Object.entries(props.formData)
+    .filter(([key]) => key !== "landmark")
+    .every(([_, value]) => value.trim() !== "");
 
   return (
     <>
@@ -91,6 +113,9 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                   onChange={handleInputChange}
                 />
                 <label className={style.did_floating_label}>Name</label>
+                {formErrors.name && (
+                  <div className={style.error}>{formErrors.name}</div>
+                )}
               </div>
               <div className={style.did_floating_label_content}>
                 <input
@@ -104,6 +129,9 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                 <label className={style.did_floating_label}>
                   Mobile Number
                 </label>
+                {formErrors.mobileNumber && (
+                  <span className={style.error}>{formErrors.mobileNumber}</span>
+                )}
               </div>
               <div className={style.did_floating_label_content}>
                 <input
@@ -115,6 +143,9 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                   onChange={handleInputChange}
                 />
                 <label className={style.did_floating_label}>Email ID</label>
+                {formErrors.email && (
+                  <span className={style.error}>{formErrors.email}</span>
+                )}
               </div>
               <div className={style.did_floating_label_content}>
                 <input
@@ -128,6 +159,9 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                 <label className={style.did_floating_label}>
                   Complete Address
                 </label>
+                {formErrors.address && (
+                  <span className={style.error}>{formErrors.address}</span>
+                )}
               </div>
               <div className={style.did_floating_label_content}>
                 <input
@@ -139,8 +173,11 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                   onChange={handleInputChange}
                 />
                 <label className={style.did_floating_label}>
-                  Buinding Name/Floor
+                  Building Name/Floor
                 </label>
+                {formErrors.buildingName && (
+                  <span className={style.error}>{formErrors.buildingName}</span>
+                )}
               </div>
               <div className={style.did_floating_label_content}>
                 <input
@@ -152,6 +189,9 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                   onChange={handleInputChange}
                 />
                 <label className={style.did_floating_label}>Pincode</label>
+                {formErrors.pincode && (
+                  <span className={style.error}>{formErrors.pincode}</span>
+                )}
               </div>
               <div className={style.did_floating_label_content}>
                 <input
