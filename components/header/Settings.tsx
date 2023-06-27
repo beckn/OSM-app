@@ -2,7 +2,6 @@ import React from "react";
 import { AiOutlineSetting } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { settingBoxActions } from "../../store/settingBox-slice";
-import Theme from "./theme/Theme";
 import Language from "./language/Language";
 import { ISettingBoxRootState } from "../../lib/types/settingBox";
 
@@ -35,7 +34,6 @@ const Settings = () => {
           <div className="absolute top-8 ltr:right-0 rtl:left-0 bg-palette-card shadow-md rounded-lg px-6 py-3 ">
             <Language />
             <hr className="my-1" />
-            <Theme />
           </div>
         </>
       ) : null}

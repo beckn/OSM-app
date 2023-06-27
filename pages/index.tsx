@@ -38,7 +38,7 @@ const Homepage = () => {
   });
   const [isOptionModalOpen, setIsOptionModalOpen] = useState<boolean>(false);
   const [isOptionDetailOpen, setIsOptionDetailOpen] = useState<boolean>(false);
-  const [isMenuModalOpen, setIsMenuModalOpen] = useState<boolean>(true);
+  const [isMenuModalOpen, setIsMenuModalOpen] = useState<boolean>(false);
   const [option, setOption] = useState<OptionType>(initialOption);
 
   //TODO local store and coords states can be removed in further iterations
