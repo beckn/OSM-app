@@ -19,7 +19,7 @@ export default function Document() {
         />
         <link rel="shortcut icon" href="/images/zishop.ico" />
       </Head>
-      <body className="px-5 xl:px-16">
+      <body >
         <Main />
         <NextScript />
       </body>
