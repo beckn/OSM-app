@@ -90,8 +90,6 @@ const CheckoutPage = () => {
     return <Loader loadingText="Initializing order" />;
   }
 
-  console.log("cartItems", cartItems);
-
   return (
     <>
       <AppHeader appHeaderText={t.checkout} />

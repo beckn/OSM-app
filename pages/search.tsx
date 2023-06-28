@@ -17,7 +17,7 @@ const searchPayload = {
     criteria: {
       dropLocation: "12.9715987,77.5945627",
       searchString: "trek",
-      category_name: "TourismEnglish",
+      category_name: "RetailEnglish",
     },
   },
 };

@@ -4,28 +4,38 @@ import pendingIcon from "../../public/images/pending.svg";
 import completedIcon from "../../public/images/completed.svg";
 import canceledIcon from "../../public/images/cancelled.svg";
 
-const OrderHistoryDetails = () => {
+interface OrderHistoryDetailsPropsModel {
+  createdAt: string;
+  orderId: string;
+  totalAmount: number;
+  quantity: number;
+}
+
+const OrderHistoryDetails: React.FC<OrderHistoryDetailsPropsModel> = (
+  props
+) => {
   const [orderHistory, setOrderHistory] = useState("pending");
   return (
     <Box>
       <Text pb={"5px"} fontSize={"10px"}>
-        Placed at 21st Jun 2021, 3.30pm
+        Placed at {props.createdAt}
       </Text>
       <Text fontWeight="600" pb={"5px"} fontSize={"12px"}>
-        Order Details Id <span style={{ fontWeight: "700" }}>456788123</span>
+        Order Details Id{" "}
+        <span style={{ fontWeight: "700" }}>{props.orderId}</span>
       </Text>
       <Text fontWeight="600" pb={"5px"} fontSize={"10px"}>
         Order in progress
       </Text>
       <Text fontWeight="600" pb={"5px"} fontSize={"12px"}>
-        € 439.4
+        € {props.totalAmount}
       </Text>
       <Flex
         fontSize={"10px"}
         justifyContent={"space-between"}
         alignItems={"center"}
       >
-        <Text>2 items</Text>
+        <Text>{props.quantity} items</Text>
         <Flex>
           {orderHistory === "pending" ? (
             <Image src={pendingIcon} paddingRight={"6px"} />
