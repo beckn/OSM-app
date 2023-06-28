@@ -257,7 +257,7 @@ const OrderDetails = () => {
         buttonText={t.contactSupport}
         background={"rgba(var(--color-primary))"}
         color={"rgba(var(--text-color))"}
-        handleOnClick={() => router.push("/category")}
+        handleOnClick={() => {}}
         isDisabled={false}
       />
     </>

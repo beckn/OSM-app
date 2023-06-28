@@ -1,6 +1,5 @@
 import Image from "next/image";
 import React, { useState } from "react";
-import { urlFor } from "../../lib/client";
 import { RetailItem } from "../../lib/types/products";
 import ProductPageActions from "./ProductPageActions";
 
@@ -19,7 +18,7 @@ const ImageSection: React.FC<Props> = ({ imgArray, product }) => {
       <div className="flex flex-col items-center w-full md:w-auto">
         <div className="flex flex-grow md:ltr:mr-3 md:rtl:ml-3">
           <Image
-            src={urlFor(imgArray[selectedImg]).url()}
+            src={product.descriptor.images[0]}
             alt="product img"
             width={450}
             height={330}
@@ -40,7 +39,7 @@ const ImageSection: React.FC<Props> = ({ imgArray, product }) => {
                 onClick={() => onClickHandler(index)}
               >
                 <Image
-                  src={urlFor(imgItem).url()}
+                  src={product.descriptor.images[0]}
                   width={70}
                   height={70}
                   alt="product img"
