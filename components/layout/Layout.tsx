@@ -26,7 +26,7 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
         <div className={cs("flex flex-col min-h-[100vh]",{[paddingStyles]:!isHomepage})}>
           <NextNProgress height={7} />
           {!isHomepage && <Header /> }
-          <main className="flex-grow  md:mt-40">{children}</main>
+          <main className="flex-grow ">{children}</main>
           {/* <Footer /> */}
         </div>
         <ToastContainer

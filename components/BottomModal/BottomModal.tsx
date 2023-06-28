@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Transition } from "@headlessui/react";
 import {AiOutlineClose} from 'react-icons/ai'
+import { useLanguage } from "../../hooks/useLanguage";
 
 interface ModalProps {
   isOpen: boolean;
@@ -10,6 +11,7 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children,noTitle}) => {
+  const {t} = useLanguage()
   return (
     <Transition
       show={isOpen}
@@ -28,7 +30,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children,noTitle}) => {
           <div className="w-full   p-4 mx-auto bg-[#F3F4F5]  rounded-t-[1.5rem] shadow-lg sm:rounded-lg sm:overflow-hidden">
 						<div className="flex justify-between">
 
-							<h5>{noTitle ? "" : "Search"}</h5>
+							<h5>{noTitle ? "" :t['bottomModalTitle']}</h5>
 
             <button
               onClick={(e)=>{

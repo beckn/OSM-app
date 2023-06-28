@@ -1,12 +1,14 @@
 import React from 'react'
 import { IconType } from 'react-icons';
 import cs from 'classnames';
+import { useLanguage } from '../../hooks/useLanguage';
 
 
 type OptionMeta = {
 
 	tagValue: string;
 	tagName: string;
+	title?:string;
 }
 
 type OptionIcons = {
@@ -22,7 +24,8 @@ interface OptionCardProps {
 	setOption: React.Dispatch<React.SetStateAction<OptionMeta>>;
 }
 
-const OptionCard:React.FC<OptionCardProps> = ({optionMeta:{tagName,tagValue},optionIcons:{iconUrl,iconUrlLight},isSelected,setOption})=> {
+const OptionCard:React.FC<OptionCardProps> = ({optionMeta:{tagName,tagValue,title},optionIcons:{iconUrl,iconUrlLight},isSelected,setOption})=> {
+	const {t} = useLanguage()
 	return (
 
 		<div className='text-center' onClick={(e)=>{
@@ -34,7 +37,7 @@ const OptionCard:React.FC<OptionCardProps> = ({optionMeta:{tagName,tagValue},opt
 
 			<img src={isSelected ? iconUrlLight : iconUrl} alt="" />
 			</div>
-			<p>{tagValue}</p>
+			<p className={cs('text-sm',{['text-palette-primary']:isSelected})}>{t[`${title}`]}</p>
 		</div>
 	)
 }

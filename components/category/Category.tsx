@@ -3,18 +3,21 @@ import { categorySmContent } from "../../mock/category-sm";
 import CategorySmBox from "./CategorySmBox";
 import { categoryLgContent } from "../../mock/category-lg";
 import CategoryLgBox from "./CategoryLgBox";
+import { useLanguage } from "../../hooks/useLanguage";
 import SectionTitle from "../UI/SectionTitle";
 import {Spinner} from "@chakra-ui/react"
 
 const Loading = ()=>{
+
+  const {t} = useLanguage()
 
 
 return <div className="h-[40vh] flex justify-center items-center">
   <div className="flex flex-col items-center gap-2">
 
   <Spinner color="#A71B4A" size="xl"  />
-  <h4 className="font-bold text-[16px] leading-[25px]">Please wait!</h4>
-  <p>Fetching store catalog from the network</p>
+  <h4 className="font-bold text-[16px] leading-[25px]">{t['categoryLoadPrimary']}</h4>
+  <p>{t['categoryLoadSecondary']}</p>
   </div>
 </div>
 
@@ -23,6 +26,7 @@ return <div className="h-[40vh] flex justify-center items-center">
 
 const Category = () => {
   const [loading, setLoading] = React.useState(true);
+  const {t} = useLanguage()
   
   useEffect(()=>{
     setTimeout(()=>{
@@ -34,7 +38,7 @@ const Category = () => {
 
   return (
     <div className="flex flex-col items-center my-4 md:my-8">
-      <SectionTitle title={"BrowseByCategory"} />
+      <SectionTitle title="BrowseByCategory" />
 
       {/* 📱 sm and md break point */}
       <div className="flex flex-wrap justify-around items-center lg:hidden">
