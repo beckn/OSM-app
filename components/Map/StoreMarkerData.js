@@ -980,6 +980,7 @@ export const optionData = [
 	{
 		tagName: 'amenity',
 		tagValue: 'restaurant',
+		title: 'optionRestaurants',
 		iconUrl: '/images/store-options/Restaurants.svg',
 		iconUrl_light: '/images/store-options/Restaurants_light.svg'
 	},
@@ -987,6 +988,7 @@ export const optionData = [
 	{
 		tagName: 'amenity',
 		tagValue: 'Shopping',
+		title: 'optionStores',
 		iconUrl: '/images/store-options/Shopping.svg',
 		iconUrl_light: '/images/store-options/Shopping_light.svg'
 	},
@@ -994,6 +996,7 @@ export const optionData = [
 	{
 		tagName: 'amenity',
 		tagValue: 'Hotels',
+		title: 'optionHotels',
 		iconUrl: '/images/store-options/Hotels.svg',
 		iconUrl_light: '/images/store-options/Hotels_light.svg'
 	},
@@ -1001,6 +1004,7 @@ export const optionData = [
 	{
 		tagName: 'amenity',
 		tagValue: 'Books',
+		title: 'optionBooks',
 		iconUrl: '/images/store-options/Books.svg',
 		iconUrl_light: '/images/store-options/Books_light.svg'
 	},

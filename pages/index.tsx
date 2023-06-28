@@ -6,6 +6,7 @@ import { optionData } from "../components/Map/StoreMarkerData";
 import { useRouter } from "next/router";
 import useRequest from "../hooks/useRequest";
 import MapHeader from "../components/Map/MapHeader";
+import { useLanguage } from "../hooks/useLanguage";
 
 type Coords = {
   lat: number;
@@ -15,6 +16,7 @@ type Coords = {
 type OptionType = {
   tagName: string;
   tagValue: string;
+	title?:string;
 };
 
 const initialOption: OptionType = {
@@ -29,6 +31,8 @@ const Homepage = () => {
   const MapWithNoSSR = dynamic(() => import("../components/Map"), {
     ssr: false,
   });
+
+	const {t,locale}  = useLanguage()
 
   // create a state value called query in typescript
   const [query, setQuery] = useState<string>("");
@@ -171,6 +175,7 @@ const Homepage = () => {
             const optionMeta = {
               tagName: currentOption.tagName,
               tagValue: currentOption.tagValue,
+							title:currentOption.title
             };
             const optionIcons = {
               iconUrl: currentOption.iconUrl,
@@ -237,7 +242,10 @@ const Homepage = () => {
       <BottomModal noTitle={true} isOpen={isMenuModalOpen} onClose={handleMenuModalClose}>
         <div onClick={()=>router.push('/orderHistory')} className="flex gap-2 py-5">
 					<img src="/images/orderHistory.svg" alt="Order history icon" />
-					Order History
+					{
+
+					t["orderHistory"]
+					}
 				</div>
       </BottomModal>
     </div>

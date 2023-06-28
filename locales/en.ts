@@ -22,7 +22,7 @@ const en: { [key: string]: string } = {
   bestSells: "The Best-Sells",
   mainMenu: "Main Menu",
   language: "Language: ",
-  fa: "فارسی - Fa",
+  fa: "français - Fa",
   en: "English - En",
   theme: "Theme: ",
   dark: "Dark",
@@ -282,5 +282,13 @@ const en: { [key: string]: string } = {
   readMoreText: "Read more",
   readLessText: "Read Less",
   addShippingdetailsBtnText: "Add Shipping details",
+  orderHistory: "Order history",
+  bottomModalTitle: "Search",
+  optionRestaurants: "Restaurants",
+  optionStores: "Retail Stores",
+  optionHotels: "Hotels",
+  optionBooks: "Book Stores",
+  categoryLoadPrimary: "Please wait!",
+  categoryLoadSecondary: "Fetching store catalog from the network",
 };
 export default en;
