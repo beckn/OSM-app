@@ -1,4 +1,13 @@
-import { Box, CardBody, Divider, Flex, Text } from "@chakra-ui/react";
+import {
+  Box,
+  CardBody,
+  Divider,
+  Flex,
+  Stack,
+  Text,
+  Image,
+  StackDivider,
+} from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -6,6 +15,9 @@ import { useSelector } from "react-redux";
 import Accordion from "../components/accordion/Accordion";
 import { AppHeader } from "../components/appHeader/AppHeader";
 import Button from "../components/button/Button";
+import CallphoneIcon from "../public/images/CallphoneIcon.svg";
+import locationIcon from "../public/images/locationIcon.svg";
+import nameIcon from "../public/images/nameIcon.svg";
 import Loader from "../components/loader/Loader";
 import { useLanguage } from "../hooks/useLanguage";
 import useRequest from "../hooks/useRequest";
@@ -160,7 +172,87 @@ const OrderDetails = () => {
           </Box>
         ))}
       </Accordion>
-
+      <Accordion>
+        <CardBody pt={"unset"}>
+          <Box padding={"0px 15px"}>
+            <Stack divider={<StackDivider />} spacing="4">
+              <Flex alignItems={"center"}>
+                <Image src={nameIcon} pr={"12px"} />
+                <Text fontSize={"17px"}>Lisa</Text>
+              </Flex>
+              <Flex alignItems={"center"}>
+                <Image src={locationIcon} pr={"12px"} />
+                <Text fontSize={"15px"}>Mercure Montmartre</Text>
+              </Flex>
+              <Flex alignItems={"center"}>
+                <Image src={CallphoneIcon} pr={"12px"} />
+                <Text fontSize={"15px"}>+91 9876543210</Text>
+              </Flex>
+            </Stack>
+          </Box>
+        </CardBody>
+      </Accordion>
+      <Accordion>
+        <CardBody pt={"unset"} pb={"unset"}>
+          <Flex
+            pb={"15px"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+          >
+            <Text>Subtotal</Text>
+            <Text>229.684</Text>
+          </Flex>
+          <Flex
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            pb={"20px"}
+          >
+            <Text>Delivery Charges</Text>
+            <Text>0</Text>
+          </Flex>
+          <Divider />
+        </CardBody>
+        <CardBody pb={"unset"}>
+          <Flex
+            pb={"15px"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            fontSize={"17px"}
+            fontWeight={"700"}
+          >
+            <Text>Total</Text>
+            <Text>229.684</Text>
+          </Flex>
+          <Flex
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            pb={"15px"}
+          >
+            <Text>Status</Text>
+            <Text>Not paid</Text>
+          </Flex>
+          <Flex
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            pb={"15px"}
+          >
+            <Text>Method</Text>
+            <Text>Cash on Delivery</Text>
+          </Flex>
+        </CardBody>
+      </Accordion>
+      <Accordion>
+        <CardBody pt={"unset"} pb={"unset"}>
+          <Flex
+            pb={"15px"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+          >
+            <Text>ID</Text>
+            <Text>./retail.kira...</Text>
+          </Flex>
+        </CardBody>
+      </Accordion>
       <Button
         buttonText={t.contactSupport}
         background={"rgba(var(--color-primary))"}
