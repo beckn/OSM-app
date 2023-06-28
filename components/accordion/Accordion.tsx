@@ -19,12 +19,19 @@ const Accordion: React.FC<AccordionPropsModel> = (props) => {
     <>
       <Card marginBottom={"20px"}>
         <AccordionComp allowMultiple>
-          <AccordionItem background={"unset"} border={"unset"}>
+          <AccordionItem
+            background={"unset"}
+            border={"unset"}
+            boxShadow={
+              "0px 8px 10px -6px rgb(0 0 0 / 10%), 0px 20px 25px -5px rgb(0 0 0 / 10%)"
+            }
+          >
             <CardBody>
               <h2>
                 <AccordionButton
                   padding={"unset"}
                   background={"unset !important"}
+                  _expanded={{ color: "rgba(var(--color-primary))" }}
                 >
                   <Box
                     as="span"
@@ -39,9 +46,7 @@ const Accordion: React.FC<AccordionPropsModel> = (props) => {
                 </AccordionButton>
               </h2>
             </CardBody>
-            <AccordionPanel padding={"unset"} pt={2}>
-              {props.children}
-            </AccordionPanel>
+            <AccordionPanel padding={"unset"}>{props.children}</AccordionPanel>
           </AccordionItem>
         </AccordionComp>
       </Card>

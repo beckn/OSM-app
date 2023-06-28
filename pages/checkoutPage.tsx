@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AppHeader } from "../components/appHeader/AppHeader";
 import DetailsCard from "../components/detailsCard/DetailsCard";
 import ItemDetails from "../components/detailsCard/ItemDetails";
+import ButtonComp from "../components/button/Button";
 import { useLanguage } from "../hooks/useLanguage";
 import ShippingDetails from "../components/detailsCard/ShippingDetails";
 import OrderDetailsCheckbox from "../components/detailsCard/OrderDetailsCheckbox";
@@ -28,7 +29,6 @@ import {
   getTotalCartItems,
 } from "../utilities/checkout-utils";
 import Loader from "../components/loader/Loader";
-
 export type ShippingFormData = {
   name: string;
   mobileNumber: string;
@@ -38,7 +38,6 @@ export type ShippingFormData = {
   pincode: string;
   landmark: string;
 };
-
 const CheckoutPage = () => {
   const [formData, setFormData] = useState<ShippingFormData>({
     name: "",
@@ -52,25 +51,21 @@ const CheckoutPage = () => {
   const initRequest = useRequest();
   const dispatch = useDispatch();
   const { t, locale } = useLanguage();
-
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const cartItems = useSelector((state: ICartRootState) => state.cart.items);
   const transactionId = useSelector(
     (state: { transactionId: TransactionIdRootState }) => state.transactionId
   );
-
   useEffect(() => {
     if (initRequest.data) {
       dispatch(responseDataActions.addInitResponse(initRequest.data));
     }
   }, [initRequest.data]);
-
   const formSubmitHandler = () => {
     if (formData) {
       const cartItemsPerBppPerProvider: DataPerBpp = getCartItemsPerBpp(
         cartItems as CartItemForRequest[]
       );
-
       const payLoadForInitRequest = getPayloadForInitRequest(
         cartItemsPerBppPerProvider,
         transactionId,
@@ -83,13 +78,10 @@ const CheckoutPage = () => {
       );
     }
   };
-
   const totalItems = getTotalCartItems(cartItems);
-
   if (initRequest.loading) {
     return <Loader loadingText="Initializing order" />;
   }
-
   return (
     <>
       <AppHeader appHeaderText={t.checkout} />
@@ -111,7 +103,6 @@ const CheckoutPage = () => {
         ))}
       </Box>
       {/* end item details */}
-
       {/* start shipping detals */}
       {!initRequest.data ? (
         <Box>
@@ -169,28 +160,30 @@ const CheckoutPage = () => {
       </Box>
       {/* end payment method */}
       {/* start payment details */}
-      <Box>
-        <Flex pb={"20px"} mt={"20px"} justifyContent={"space-between"}>
-          <Text fontSize={"17px"}>{t.paymentText}</Text>
-        </Flex>
-        <DetailsCard>
-          <PaymentDetails
-            subtotalText={t.subtotalText}
-            subtotalValue={`Rs.${
-              getSubTotalAndDeliveryCharges(initRequest.data).subTotal
-            }`}
-            deliveryChargesText={t.deliveryChargesText}
-            deliveryChargesValue={`Rs.${
-              getSubTotalAndDeliveryCharges(initRequest.data)
-                .totalDeliveryCharge
-            }`}
-            totalText={t.totalText}
-            totalValue={`Rs.${
-              getSubTotalAndDeliveryCharges(initRequest.data).subTotal
-            }`}
-          />
-        </DetailsCard>
-      </Box>
+      {initRequest.data && (
+        <Box>
+          <Flex pb={"20px"} mt={"20px"} justifyContent={"space-between"}>
+            <Text fontSize={"17px"}>{t.paymentText}</Text>
+          </Flex>
+          <DetailsCard>
+            <PaymentDetails
+              subtotalText={t.subtotalText}
+              subtotalValue={`Rs.${
+                getSubTotalAndDeliveryCharges(initRequest.data).subTotal
+              }`}
+              deliveryChargesText={t.deliveryChargesText}
+              deliveryChargesValue={`Rs.${
+                getSubTotalAndDeliveryCharges(initRequest.data)
+                  .totalDeliveryCharge
+              }`}
+              totalText={t.totalText}
+              totalValue={`Rs.${
+                getSubTotalAndDeliveryCharges(initRequest.data).subTotal
+              }`}
+            />
+          </DetailsCard>
+        </Box>
+      )}
       {/* end payment details */}
       {/* start order policy */}
       <Box>
@@ -206,59 +199,68 @@ const CheckoutPage = () => {
         </DetailsCard>
       </Box>
       {/* end order policy */}
-      <Flex
-        mt={"20px"}
-        width={"99.8vw"}
-        marginLeft={"-19px"}
-        boxShadow={"0px -5px 40px rgba(0, 0, 0, 0.15)"}
-      >
-        <Button
-          width={"50%"}
-          height={"48px"}
-          backgroundColor={""}
-          color={""}
-          __css={{ "&:active": {} }}
+      {!initRequest.data ? (
+        <ButtonComp
+          buttonText={t.proceedToPay}
+          background={"rgba(var(--color-primary))"}
+          color={"rgba(var(--text-color))"}
+          handleOnClick={() => {}}
+          isDisabled={true}
+        />
+      ) : (
+        <Flex
+          mt={"20px"}
+          width={"99.8vw"}
+          marginLeft={"-19px"}
+          boxShadow={"0px -5px 40px rgba(0, 0, 0, 0.15)"}
         >
-          <Box w={["120px", "30%"]} margin={"0 auto"} textAlign={"left"}>
-            <Text fontSize={"12px"} fontWeight={"700"}>
-              Total
-            </Text>
-            <Flex alignItems={"center"}>
-              <Text color={"rgba(var(--color-primary))"}>{`Rs.${
-                getSubTotalAndDeliveryCharges(initRequest.data).subTotal
-              }`}</Text>
-              <Text fontSize={"10px"} pl={"2px"}>
-                {totalItems} item(s)
-              </Text>
-            </Flex>
-          </Box>
-        </Button>
-        <Link href={"/paymentMode"}>
           <Button
-            isDisabled={!initRequest.data}
-            height={"48px"}
-            fontSize={"14px"}
-            backgroundColor={
-              initRequest.data ? "rgba(var(--color-primary))" : "#DFDFDF"
-            }
-            color={"rgba(var(--text-color))"}
             width={"50%"}
+            height={"48px"}
+            backgroundColor={""}
+            color={""}
             __css={{ "&:active": {} }}
           >
-            <Flex
-              alignItems={"center"}
-              justifyContent={"space-between"}
-              p={"0 10px 0 15px"}
-            >
-              <Image src={proceedToPay} />
-              <Text> {t.proceedToPay}</Text>
-              <Image src={rightArrow} />
-            </Flex>
+            <Box w={["120px", "30%"]} margin={"0 auto"} textAlign={"left"}>
+              <Text fontSize={"12px"} fontWeight={"700"}>
+                Total
+              </Text>
+              <Flex alignItems={"center"}>
+                <Text color={"rgba(var(--color-primary))"}>{`Rs.${
+                  getSubTotalAndDeliveryCharges(initRequest.data).subTotal
+                }`}</Text>
+                <Text fontSize={"10px"} pl={"2px"}>
+                  {totalItems} item(s)
+                </Text>
+              </Flex>
+            </Box>
           </Button>
-        </Link>
-      </Flex>
+          <Link href={"/paymentMode"}>
+            <Button
+              isDisabled={!initRequest.data}
+              height={"48px"}
+              fontSize={"14px"}
+              backgroundColor={
+                initRequest.data ? "rgba(var(--color-primary))" : "#DFDFDF"
+              }
+              color={"rgba(var(--text-color))"}
+              width={"50%"}
+              __css={{ "&:active": {} }}
+            >
+              <Flex
+                alignItems={"center"}
+                justifyContent={"space-between"}
+                p={"0 10px 0 15px"}
+              >
+                <Image src={proceedToPay} />
+                <Text> {t.proceedToPay}</Text>
+                <Image src={rightArrow} />
+              </Flex>
+            </Button>
+          </Link>
+        </Flex>
+      )}
     </>
   );
 };
-
 export default CheckoutPage;
