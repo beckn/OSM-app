@@ -47,7 +47,7 @@ const Index = () => {
           </div>
           <div className="hidden md:flex md:items-center md:justify-between">
             <Language />
-            <Theme />
+            {/* <Theme /> */}
           </div>
         </div>
         <hr className="md:hidden" />
