@@ -10,13 +10,13 @@ const Theme = () => {
   const { systemTheme, theme } = useTheme();
   const currentTheme = theme === "system" ? systemTheme : theme;
 
-  const renderThemeChanger = () => {
-    if (currentTheme === "dark") {
-      return <ThemeItem theme="light" Icon={MdOutlineLightMode} />;
-    } else {
-      return <ThemeItem theme="dark" Icon={BiMoon} />;
-    }
-  };
+  // const renderThemeChanger = () => {
+  //   if (currentTheme === "dark") {
+  //     return <ThemeItem theme="light" Icon={MdOutlineLightMode} />;
+  //   } else {
+  //     return <ThemeItem theme="dark" Icon={BiMoon} />;
+  //   }
+  // };
 
   return (
     <div className="md:rtl:ml-1 md:ltr:ml-1 p-1">
@@ -31,7 +31,7 @@ const Theme = () => {
           <ThemeItem theme="dark" Icon={BiMoon} currentTheme={currentTheme} />
         </div>
       </div>
-      <div className="hidden md:block">{renderThemeChanger()}</div>
+      {/* <div className="hidden md:block">{renderThemeChanger()}</div> */}
     </div>
   );
 };

@@ -19,7 +19,7 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 
   return (
     <Provider store={store}>
-      <ThemeProvider enableSystem={true} attribute="class">
+      <ThemeProvider enableSystem={true}>
         <Head>
           <title>ZiShop</title>
         </Head>

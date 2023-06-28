@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Logo from "./Logo";
+import {Image} from "@chakra-ui/react"
 import Settings from "./Settings";
+import { useRouter } from "next/router";
 import CartIcon from "../cart/CartIcon";
+import Link from "next/link";
 import Language from "./language/Language";
 
 const UserBox = dynamic(() => import("./user"), {
@@ -12,16 +15,36 @@ const Theme = dynamic(() => import("./theme/Theme"), {
   ssr: false,
 });
 
-const index = () => {
+const Index = () => {
+
+  const [optionTags,setOptionTags] = useState<any>();
+
+  useEffect(()=>{
+    setOptionTags(JSON.parse(localStorage.getItem('optionTags') as string));
+  },[])
+
+  const router = useRouter();
+
+
+
   return (
     <header className="md:fixed left-0 right-0 top-0 md:bg-palette-fill shadow-sm pt-4 z-[1000]">
       <div className="flex flex-col md:px-4 mb-2">
         <div className="flex items-center justify-between md:order-2 md:mt-2  relative">
           {/* <Menu /> */}
-          <div className="md:hidden">
-            <Logo />
+          <div onClick={()=>router.back()}>
+          <Image  src="/images/Back.svg" />
           </div>
+          <div className="md:hidden text-lg text-palette-primary">
+            {optionTags?.name}
+
+          </div>
+          <div className="flex gap-1">
+             <Link href='/'>
+          <Image  src="/images/Home_icon.svg" />
+          </Link>
           <Settings /> {/* 👈settings: md:hidden */}
+          </div>
           <div className="hidden md:flex md:items-center md:justify-between">
             <Language />
             <Theme />
@@ -46,4 +69,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
