@@ -263,6 +263,7 @@ const fa: { [key: string]: string } = {
   optionHotels: "Hôtels",
   optionBooks: "Librairies",
   categoryLoadPrimary: "S'il vous plaît, attendez!",
-  categoryLoadSecondary: "Récupération du catalogue du magasin à partir du réseau"
+  categoryLoadSecondary: "Récupération du catalogue du magasin à partir du réseau",
+  shopButton:'magasiner'
 } ;
 export default fa;

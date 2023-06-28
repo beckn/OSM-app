@@ -290,5 +290,6 @@ const en: { [key: string]: string } = {
   optionBooks: "Book Stores",
   categoryLoadPrimary: "Please wait!",
   categoryLoadSecondary: "Fetching store catalog from the network",
+  shopButton:"Shop"
 };
 export default en;
