@@ -10,26 +10,6 @@ import MapHeader from "../components/Map/MapHeader";
 import { useLanguage } from "../hooks/useLanguage";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 
-const dummyOption = {
-	"type": "node",
-	"id": 11011986541,
-	"lat": 48.8503635,
-	"lon": 2.3432148,
-	"tags": {
-		"addr:city": "Paris",
-		"addr:full": "7 Rue des Fossés Saint-Jacques, 75005 Paris, France",
-		"becknified": "true",
-		"category": "bookstore",
-		"image 1": "https://osm-project-data.s3.ap-south-1.amazonaws.com/Platons/Images/Platons+Bookstore+1.jpg",
-		"image 2": "https://osm-project-data.s3.ap-south-1.amazonaws.com/Platons/Images/Platons_bookstore_2.jpg",
-		"image 3": "https://osm-project-data.s3.ap-south-1.amazonaws.com/Platons/Images/Platon+bookstore3.jpg",
-		"image 4": "https://osm-project-data.s3.ap-south-1.amazonaws.com/Platons/Images/Platon+bookstore+4.jpg",
-		"logo": "https://osm-project-data.s3.ap-south-1.amazonaws.com/Platons/logo/platon+logo.jpg",
-		"name": "Librairie de petits plats",
-		"providerId": "./retail.kirana/ind.blr/97@retail-osm-stage.becknprotocol.io.provider",
-		"shop": "books"
-	}
-}
 
 type Coords = {
 	lat: number;
@@ -71,7 +51,7 @@ const Homepage = () => {
 	//TODO local store and coords states can be removed in further iterations
 	const [stores, setStores] = useState<any>([]);
 	// const [selectedStore, setSelectedStore] = useState<any>(null);
-	const [selectedStore, setSelectedStore] = useState<any>(dummyOption);
+	const [selectedStore, setSelectedStore] = useState<any>(null);
 	const {
 		data: searchedLocationData,
 		loading,
