@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import Accordion from "../components/accordion/Accordion";
 import { AppHeader } from "../components/appHeader/AppHeader";
@@ -35,6 +35,7 @@ import {
   getDataPerBpp,
   storeOrderDetails,
 } from "../utilities/orderDetails-utils";
+import { getSubTotalAndDeliveryChargesForOrder } from "../utilities/orderHistory-utils";
 
 const OrderDetails = () => {
   const [confirmData, setConfirmData] = useState<ResponseModel[]>([]);
@@ -99,10 +100,31 @@ const OrderDetails = () => {
 
   const confirmDataPerBpp = getDataPerBpp(confirmData);
 
+  const orderFromConfirmData =
+    confirmData[0].message.responses[0].message.order;
+
+  const shippingDetails = {
+    name: orderFromConfirmData.billing.name.replace(/^.*[\\/]/, ""),
+    address: orderFromConfirmData.billing.address.state,
+    phone: orderFromConfirmData.billing.phone,
+  };
+
+  console.log(
+    "getSubTotalAndDeliveryChargesForOrder",
+    getSubTotalAndDeliveryChargesForOrder(confirmData)
+  );
+
+  const { subTotal, totalDeliveryCharge } =
+    getSubTotalAndDeliveryChargesForOrder(confirmData);
+
+  const orderState = orderFromConfirmData.payment.status;
+
+  const fulfillmentId = orderFromConfirmData.fulfillment.id;
+
   return (
     <>
-      <AppHeader appHeaderText={t.selectPaymentMethod} />
-      <Accordion>
+      <AppHeader appHeaderText={t.orderDetails} />
+      <Accordion accordionHeader={t.order}>
         <CardBody pt={"unset"}>
           <Flex
             pt={"unset"}
@@ -111,9 +133,7 @@ const OrderDetails = () => {
           >
             <Text>{"Placed at"}</Text>
             <Text>
-              {getOrderPlacementTimeline(
-                confirmData[0].message.responses[0].message.order.created_at
-              )}
+              {getOrderPlacementTimeline(orderFromConfirmData.created_at)}
             </Text>
           </Flex>
         </CardBody>
@@ -172,27 +192,29 @@ const OrderDetails = () => {
           </Box>
         ))}
       </Accordion>
-      <Accordion>
+
+      <Accordion accordionHeader={t.shipping}>
         <CardBody pt={"unset"}>
           <Box padding={"0px 15px"}>
             <Stack divider={<StackDivider />} spacing="4">
               <Flex alignItems={"center"}>
                 <Image src={nameIcon} pr={"12px"} />
-                <Text fontSize={"17px"}>Lisa</Text>
+                <Text fontSize={"17px"}>{shippingDetails.name}</Text>
               </Flex>
               <Flex alignItems={"center"}>
                 <Image src={locationIcon} pr={"12px"} />
-                <Text fontSize={"15px"}>Mercure Montmartre</Text>
+                <Text fontSize={"15px"}>{shippingDetails.address}</Text>
               </Flex>
               <Flex alignItems={"center"}>
                 <Image src={CallphoneIcon} pr={"12px"} />
-                <Text fontSize={"15px"}>+91 9876543210</Text>
+                <Text fontSize={"15px"}>{shippingDetails.phone}</Text>
               </Flex>
             </Stack>
           </Box>
         </CardBody>
       </Accordion>
-      <Accordion>
+
+      <Accordion accordionHeader={t.paymentText}>
         <CardBody pt={"unset"} pb={"unset"}>
           <Flex
             pb={"15px"}
@@ -200,7 +222,7 @@ const OrderDetails = () => {
             alignItems={"center"}
           >
             <Text>Subtotal</Text>
-            <Text>229.684</Text>
+            <Text>Rs.{subTotal}</Text>
           </Flex>
           <Flex
             justifyContent={"space-between"}
@@ -208,7 +230,7 @@ const OrderDetails = () => {
             pb={"20px"}
           >
             <Text>Delivery Charges</Text>
-            <Text>0</Text>
+            <Text>Rs.{totalDeliveryCharge}</Text>
           </Flex>
           <Divider />
         </CardBody>
@@ -221,7 +243,7 @@ const OrderDetails = () => {
             fontWeight={"700"}
           >
             <Text>Total</Text>
-            <Text>229.684</Text>
+            <Text>Rs.{subTotal + totalDeliveryCharge}</Text>
           </Flex>
           <Flex
             justifyContent={"space-between"}
@@ -229,7 +251,7 @@ const OrderDetails = () => {
             pb={"15px"}
           >
             <Text>Status</Text>
-            <Text>Not paid</Text>
+            <Text>{orderState}</Text>
           </Flex>
           <Flex
             justifyContent={"space-between"}
@@ -241,7 +263,7 @@ const OrderDetails = () => {
           </Flex>
         </CardBody>
       </Accordion>
-      <Accordion>
+      <Accordion accordionHeader={t.fulfillment}>
         <CardBody pt={"unset"} pb={"unset"}>
           <Flex
             pb={"15px"}
@@ -249,17 +271,10 @@ const OrderDetails = () => {
             alignItems={"center"}
           >
             <Text>ID</Text>
-            <Text>./retail.kira...</Text>
+            <Text>{fulfillmentId}</Text>
           </Flex>
         </CardBody>
       </Accordion>
-      <Button
-        buttonText={t.contactSupport}
-        background={"rgba(var(--color-primary))"}
-        color={"rgba(var(--text-color))"}
-        handleOnClick={() => {}}
-        isDisabled={false}
-      />
     </>
   );
 };
