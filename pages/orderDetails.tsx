@@ -9,28 +9,16 @@ import {
   StackDivider,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import React, { useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 import Accordion from "../components/accordion/Accordion";
 import { AppHeader } from "../components/appHeader/AppHeader";
-import Button from "../components/button/Button";
 import CallphoneIcon from "../public/images/CallphoneIcon.svg";
 import locationIcon from "../public/images/locationIcon.svg";
 import nameIcon from "../public/images/nameIcon.svg";
-import Loader from "../components/loader/Loader";
 import { useLanguage } from "../hooks/useLanguage";
-import useRequest from "../hooks/useRequest";
-import { TransactionIdRootState } from "../lib/types/cart";
 import { RetailItem } from "../lib/types/products";
 import { ResponseModel } from "../lib/types/responseModel";
-import {
-  getConfirmMetaDataForBpp,
-  getInitMetaDataPerBpp,
-  getOrderPlacementTimeline,
-  getPayloadForConfirmRequest,
-  getPayloadForStatusRequest,
-} from "../utilities/confirm-utils";
+import { getOrderPlacementTimeline } from "../utilities/confirm-utils";
 import {
   getDataPerBpp,
   storeOrderDetails,
@@ -40,59 +28,18 @@ import { getSubTotalAndDeliveryChargesForOrder } from "../utilities/orderHistory
 const OrderDetails = () => {
   const [confirmData, setConfirmData] = useState<ResponseModel[]>([]);
   const { t } = useLanguage();
-  const confirmRequest = useRequest();
-  const statusRequest = useRequest();
-  const router = useRouter();
-
-  const transactionId = useSelector(
-    (state: { transactionId: TransactionIdRootState }) => state.transactionId
-  );
-
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
-  const initResponse = useSelector(
-    (state: any) => state.initResponse.initResponse
-  );
 
   useEffect(() => {
-    if (initResponse) {
-      const initMetaDataPerBpp = getInitMetaDataPerBpp(initResponse);
+    if (localStorage) {
+      const stringifiedConfirmData = localStorage.getItem("confirmData");
 
-      const payLoadForConfirmRequest = getPayloadForConfirmRequest(
-        initMetaDataPerBpp,
-        transactionId
-      );
-      confirmRequest.fetchData(
-        `${apiUrl}/client/v2/confirm`,
-        "POST",
-        payLoadForConfirmRequest
-      );
+      if (stringifiedConfirmData) {
+        const parsedConfirmedData = JSON.parse(stringifiedConfirmData);
+        setConfirmData(parsedConfirmedData);
+        storeOrderDetails(parsedConfirmedData);
+      }
     }
   }, []);
-
-  useEffect(() => {
-    if (confirmRequest.data) {
-      setConfirmData(confirmRequest.data);
-      storeOrderDetails(confirmRequest.data);
-
-      const confirmOrderMetaDataPerBpp = getConfirmMetaDataForBpp(
-        confirmRequest.data
-      );
-      const payloadForStatusRequest = getPayloadForStatusRequest(
-        confirmOrderMetaDataPerBpp,
-        transactionId
-      );
-      statusRequest.fetchData(
-        `${apiUrl}/client/v2/status`,
-        "POST",
-        payloadForStatusRequest
-      );
-    }
-  }, [confirmRequest.data]);
-
-  if (confirmRequest.loading) {
-    return <Loader loadingText="Confirming order" />;
-  }
 
   if (!confirmData.length) {
     return <></>;
