@@ -1,4 +1,5 @@
 import { Box } from "@chakra-ui/react";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import DetailsCard from "../components/detailsCard/DetailsCard";
 import OrderHistoryDetails from "../components/orderHistory/OrderHistoryDetails";
@@ -37,16 +38,21 @@ const OrderHistory = () => {
     );
 
     return (
-      <Box key={index} pt={"20px"}>
-        <DetailsCard>
-          <OrderHistoryDetails
-            createdAt={createdAt}
-            orderId={keyOfOrder[0]}
-            quantity={totalQuantityOfSingleOrder}
-            totalAmount={totalPriceOfSingleOrder}
-          />
-        </DetailsCard>
-      </Box>
+      <Link
+        key={index}
+        href={{ pathname: "/orderDetails", query: { orderId: keyOfOrder[0] } }}
+      >
+        <Box pt={"20px"}>
+          <DetailsCard>
+            <OrderHistoryDetails
+              createdAt={createdAt}
+              orderId={keyOfOrder[0]}
+              quantity={totalQuantityOfSingleOrder}
+              totalAmount={totalPriceOfSingleOrder}
+            />
+          </DetailsCard>
+        </Box>
+      </Link>
     );
   });
 };

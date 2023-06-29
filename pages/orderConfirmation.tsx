@@ -75,7 +75,7 @@ const OrderConfirmation = () => {
         buttonText={t.backToHome}
         background={"rgba(var(--color-primary))"}
         color={"rgba(var(--text-color))"}
-        handleOnClick={() => {}}
+        handleOnClick={() => router.push("/")}
         isDisabled={false}
       />
       <Button

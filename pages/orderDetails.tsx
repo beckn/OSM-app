@@ -9,9 +9,9 @@ import {
   StackDivider,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Accordion from "../components/accordion/Accordion";
-import { AppHeader } from "../components/appHeader/AppHeader";
 import CallphoneIcon from "../public/images/CallphoneIcon.svg";
 import locationIcon from "../public/images/locationIcon.svg";
 import nameIcon from "../public/images/nameIcon.svg";
@@ -23,11 +23,32 @@ import {
   getDataPerBpp,
   storeOrderDetails,
 } from "../utilities/orderDetails-utils";
-import { getSubTotalAndDeliveryChargesForOrder } from "../utilities/orderHistory-utils";
+import {
+  getSubTotalAndDeliveryChargesForOrder,
+  retrieveArrayById,
+} from "../utilities/orderHistory-utils";
 
 const OrderDetails = () => {
   const [confirmData, setConfirmData] = useState<ResponseModel[]>([]);
   const { t } = useLanguage();
+  const router = useRouter();
+
+  const { orderId } = router.query;
+
+  useEffect(() => {
+    if (orderId && localStorage) {
+      const stringifiedStoredOrders = localStorage.getItem("orders");
+      if (stringifiedStoredOrders) {
+        const parsedStoredOrders = JSON.parse(stringifiedStoredOrders);
+        const orderById = retrieveArrayById(
+          orderId as string,
+          parsedStoredOrders
+        );
+
+        setConfirmData(orderById);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (localStorage) {
@@ -50,16 +71,17 @@ const OrderDetails = () => {
   const orderFromConfirmData =
     confirmData[0].message.responses[0].message.order;
 
-  const shippingDetails = {
-    name: orderFromConfirmData.billing.name.replace(/^.*[\\/]/, ""),
-    address: orderFromConfirmData.billing.address.state,
-    phone: orderFromConfirmData.billing.phone,
-  };
+  const shippingDetails = () => {
+    const name: string = orderFromConfirmData.billing.name;
+    const parts = name.split("/").filter((part) => part !== "");
+    const parsedName = parts[parts.length - 2];
 
-  console.log(
-    "getSubTotalAndDeliveryChargesForOrder",
-    getSubTotalAndDeliveryChargesForOrder(confirmData)
-  );
+    return {
+      name: parsedName,
+      address: orderFromConfirmData.billing.address.state,
+      phone: orderFromConfirmData.billing.phone,
+    };
+  };
 
   const { subTotal, totalDeliveryCharge } =
     getSubTotalAndDeliveryChargesForOrder(confirmData);
@@ -70,8 +92,7 @@ const OrderDetails = () => {
 
   return (
     <>
-      {/* <AppHeader appHeaderText={t.selectPaymentMethod} /> */}
-      <Accordion>
+      <Accordion accordionHeader={t.order}>
         <CardBody pt={"unset"}>
           <Flex
             pt={"unset"}
@@ -146,15 +167,15 @@ const OrderDetails = () => {
             <Stack divider={<StackDivider />} spacing="4">
               <Flex alignItems={"center"}>
                 <Image src={nameIcon} pr={"12px"} />
-                <Text fontSize={"17px"}>{shippingDetails.name}</Text>
+                <Text fontSize={"17px"}>{shippingDetails().name}</Text>
               </Flex>
               <Flex alignItems={"center"}>
                 <Image src={locationIcon} pr={"12px"} />
-                <Text fontSize={"15px"}>{shippingDetails.address}</Text>
+                <Text fontSize={"15px"}>{shippingDetails().address}</Text>
               </Flex>
               <Flex alignItems={"center"}>
                 <Image src={CallphoneIcon} pr={"12px"} />
-                <Text fontSize={"15px"}>{shippingDetails.phone}</Text>
+                <Text fontSize={"15px"}>{shippingDetails().phone}</Text>
               </Flex>
             </Stack>
           </Box>
