@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Logo from "./Logo";
-import { Image, Text } from "@chakra-ui/react"
+import { Image, Text } from "@chakra-ui/react";
 import Settings from "./Settings";
 import { useRouter } from "next/router";
 import CartIcon from "../cart/CartIcon";
@@ -15,63 +15,70 @@ const Theme = dynamic(() => import("./theme/Theme"), {
   ssr: false,
 });
 
-
-const storeHeaderBlackList = ['/checkoutPage', '/orderHistory', 'orderDetails', 'feedback']
+const storeHeaderBlackList = [
+  "/checkoutPage",
+  "/orderHistory",
+  "orderDetails",
+  "feedback",
+];
 const headerValues = {
-  '/checkoutPage': "Checkout",
-  '/orderHistory': 'Order History',
-  '/orderDetails': 'Order Details',
-  'feedback': 'Feedback'
+  "/checkoutPage": "Checkout",
+  "/orderHistory": "Order History",
+  "/orderDetails": "Order Details",
+  feedback: "Feedback",
+};
 
-}
-
-const getHeaderTitleForPage = (name: string, logo: string, pathName: string) => {
+const getHeaderTitleForPage = (
+  name: string,
+  logo: string,
+  pathName: string
+) => {
   switch (true) {
     case storeHeaderBlackList.includes(pathName):
-      return <Text className="text-xl  truncate">
-        {headerValues[pathName]}
-      </Text>
+      return (
+        <Text className="text-xl  truncate">{headerValues[pathName]}</Text>
+      );
     default:
-      return <div className="md:hidden ml-2  max-w-[12rem]  flex gap-1 my-2">
-        <Image className="max-h-[34px] max-w-[160px] rounded-lg" src={logo} alt="Logo" />
-        <Text className="text-xl text-palette-primary truncate">
-
-          {name}
-        </Text>
-
-      </div>
-
+      return (
+        <div className="md:hidden ml-2  max-w-[12rem]  flex gap-1 my-2">
+          <Image
+            className="max-h-[34px] max-w-[160px] rounded-lg"
+            src={logo}
+            alt="Logo"
+          />
+          <Text className="text-xl text-palette-primary truncate">{name}</Text>
+        </div>
+      );
   }
-}
+};
 
 const Index = () => {
-
   const [optionTags, setOptionTags] = useState<any>();
 
-
   useEffect(() => {
-    setOptionTags(JSON.parse(localStorage.getItem('optionTags') as string));
-  }, [])
+    setOptionTags(JSON.parse(localStorage.getItem("optionTags") as string));
+  }, []);
 
   const router = useRouter();
 
-
-
-
   return (
-    <header className="md:fixed left-0 right-0 mb-2 top-0 md:bg-palette-fill shadow-sm pt-4 z-[1000]">
+    <header className="md:fixed left-0 right-0 mb-4 top-0 md:bg-palette-fill shadow-sm pt-4 z-[1000] app_header_b ">
       <div className="flex flex-col md:px-4 mb-2">
         <div className="flex items-center justify-between md:order-2 md:mt-2 py-4  relative">
           <div className="flex gap-4 items-center">
             <div onClick={() => router.back()}>
               <Image src="/images/Back.svg" />
             </div>
-            <Link href='/'>
+            <Link href="/">
               <Image src="/images/Home_icon.svg" />
             </Link>
           </div>
 
-          {getHeaderTitleForPage(optionTags?.name, optionTags?.logo, router.pathname)}
+          {getHeaderTitleForPage(
+            optionTags?.name,
+            optionTags?.logo,
+            router.pathname
+          )}
           <div className="flex gap-4">
             <CartIcon />
             <Settings /> {/* 👈settings: md:hidden */}

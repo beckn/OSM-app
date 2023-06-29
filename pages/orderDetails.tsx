@@ -218,7 +218,14 @@ const OrderDetails = () => {
             alignItems={"center"}
           >
             <Text>ID</Text>
-            <Text>{fulfillmentId}</Text>
+            <Text
+              overflow={"hidden"}
+              textOverflow={"ellipsis"}
+              width={"150px"}
+              whiteSpace={"nowrap"}
+            >
+              {fulfillmentId}
+            </Text>
           </Flex>
         </CardBody>
       </Accordion>
