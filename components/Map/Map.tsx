@@ -96,7 +96,7 @@ const Map:React.FC<MapProps> = ({stores,coords,handleModalOpen,handleOptionDetai
   </Control>
 			
 			{
-				!isEmpty(stores) && stores.map((item:any) => {
+				!isEmpty(stores) && stores.map((item:any,index:number) => {
 return (
 						<Marker icon={customIcon} key={item.lon}  position={[item.lat, item.lon]}
 							eventHandlers={{

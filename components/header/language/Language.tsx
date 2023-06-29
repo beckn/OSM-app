@@ -10,9 +10,9 @@ const Language = () => {
   const dispatch = useDispatch();
   const [openLang, setOpenLang] = useState(false);
 
-  useEffect(() => {
-    document.documentElement.dir = locale === "en" ? "ltr" : "rtl";
-  }, [locale]);
+  // useEffect(() => {
+  //   document.documentElement.dir = locale === "en" ? "ltr" : "rtl";
+  // }, [locale]);
 
   function onCloseLangBox(isOpen: boolean) {
     setOpenLang(isOpen);

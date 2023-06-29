@@ -71,7 +71,7 @@ const TrackOrder = () => {
 
   return (
     <>
-      <AppHeader appHeaderText={t.trackOrder} />
+      {/* <AppHeader appHeaderText={t.trackOrder} /> */}
       <Stack marginBottom={"50px"}>
         <Image src={trackOrderMap} margin={"0 auto"} />
       </Stack>

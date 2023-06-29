@@ -5,9 +5,31 @@ import OptionCard from "../components/Map/OptionCard";
 import { optionData } from "../components/Map/StoreMarkerData";
 import { useRouter } from "next/router";
 import useRequest from "../hooks/useRequest";
+import {Image} from "@chakra-ui/react"
 import MapHeader from "../components/Map/MapHeader";
 import { useLanguage } from "../hooks/useLanguage";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+
+const dummyOption = {
+	"type": "node",
+	"id": 11011986541,
+	"lat": 48.8503635,
+	"lon": 2.3432148,
+	"tags": {
+		"addr:city": "Paris",
+		"addr:full": "7 Rue des Fossés Saint-Jacques, 75005 Paris, France",
+		"becknified": "true",
+		"category": "bookstore",
+		"image 1": "https://osm-project-data.s3.ap-south-1.amazonaws.com/Platons/Images/Platons+Bookstore+1.jpg",
+		"image 2": "https://osm-project-data.s3.ap-south-1.amazonaws.com/Platons/Images/Platons_bookstore_2.jpg",
+		"image 3": "https://osm-project-data.s3.ap-south-1.amazonaws.com/Platons/Images/Platon+bookstore3.jpg",
+		"image 4": "https://osm-project-data.s3.ap-south-1.amazonaws.com/Platons/Images/Platon+bookstore+4.jpg",
+		"logo": "https://osm-project-data.s3.ap-south-1.amazonaws.com/Platons/logo/platon+logo.jpg",
+		"name": "Librairie de petits plats",
+		"providerId": "./retail.kirana/ind.blr/97@retail-osm-stage.becknprotocol.io.provider",
+		"shop": "books"
+	}
+}
 
 type Coords = {
 	lat: number;
@@ -48,7 +70,8 @@ const Homepage = () => {
 
 	//TODO local store and coords states can be removed in further iterations
 	const [stores, setStores] = useState<any>([]);
-	const [selectedStore, setSelectedStore] = useState<any>(null);
+	// const [selectedStore, setSelectedStore] = useState<any>(null);
+	const [selectedStore, setSelectedStore] = useState<any>(dummyOption);
 	const {
 		data: searchedLocationData,
 		loading,
@@ -111,7 +134,9 @@ const Homepage = () => {
 		tagValue: string,
 		tagName: string
 	) => {
-		let url = `${process.env.NEXT_PUBLIC_BECKN_API_URL}/stores?tagName=${tagName}&tagValue=${tagValue}&latitude=${lat}&longitude=${long}`;
+		// let url = `${process.env.NEXT_PUBLIC_BECKN_API_URL}/stores?tagName=${tagName}&tagValue=${tagValue}&latitude=${lat}&longitude=${long}`;
+		// static tagName and tagValue for now
+		let url = `${process.env.NEXT_PUBLIC_BECKN_API_URL}/stores?tagName=becknified&tagValue=true&latitude=${lat}&longitude=${long}`;
 
 		fetchStores(url, "GET");
 	};
@@ -154,6 +179,7 @@ const Homepage = () => {
 		setOption(initialOption);
 		setStores([]);
 	}, [coords]);
+
 
 	return (
 		<div>
@@ -211,16 +237,15 @@ const Homepage = () => {
 						</p>
 					</div>
 					<div className="flex justify-between gap-2">
-						<img src="/images/store-images/1.png" alt="store" />
-						<img src="/images/store-images/2.png" alt="store" />
-						<img src="/images/store-images/3.png" alt="store" />
-						<img src="/images/store-images/4.png" alt="store" />
+						{[...Array(4)].map((_, i) => (
+							<Image src={selectedStore?.tags[`image ${i + 1}`]} className="w-[75px] h-[75px] rounded-xl" alt="store" key={i} />
+						))}
 					</div>
-					<p className="font-semibold text-[12px] leading-[18px]">
-						{selectedStore?.tags.amenity}
+					<p className="font-semibold text-[12px] capitalize leading-[18px]">
+						{selectedStore?.tags.category}
 					</p>
 					<p className="text-[10px] leading-[15px]">
-						24 Bd des Batignolles, 75017 Paris, France{" "}
+						{selectedStore?.tags["addr:full"]}
 					</p>
 					<div className="flex justify-between w-[80%] ">
 						<div className="flex items-center">
@@ -233,10 +258,10 @@ const Homepage = () => {
 						</div>
 					</div>
 					<button
-						onClick={() =>{
-					router.push("/category")
-					localStorage.setItem('optionTags',JSON.stringify(selectedStore?.tags))
-						} }
+						onClick={() => {
+							router.push("/category")
+							localStorage.setItem('optionTags', JSON.stringify(selectedStore?.tags))
+						}}
 						className="px-[47px] py-[12px] w-[50%] sm:w-[40%] bg-palette-primary rounded-md text-white"
 					>
 						{t['shopButton']}

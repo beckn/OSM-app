@@ -88,6 +88,7 @@ const CheckoutPage = () => {
       );
     }
   };
+  
   const totalItems = getTotalCartItems(cartItems);
   if (initRequest.loading) {
     return <Loader loadingText="Initializing order" />;
@@ -95,10 +96,10 @@ const CheckoutPage = () => {
 
   return (
     <>
-      <AppHeader appHeaderText={t.checkout} />
+      {/* <AppHeader appHeaderText={t.checkout} /> */}
       {/* start Item Details */}
       <Box>
-        <Box pb={"20px"} mt={"-20px"}>
+        <Box pb={"20px"} >
           <Text>{t.items}</Text>
         </Box>
         {cartItems.map((item) => (

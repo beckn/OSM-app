@@ -21,7 +21,7 @@ const Settings = () => {
   }
 
   return (
-    <div className="relative md:hidden flex justify-between items-center z-[150]">
+    <div className="relative md:hidden flex justify-between items-center z-[10000]">
       <div onClick={toggleShowSettingBox}>
         <AiOutlineSetting style={{ fontSize: "1.5rem" }} />
       </div>
@@ -31,9 +31,8 @@ const Settings = () => {
             className="fixed inset-0 -z-1 bg-black/20"
             onClick={onCloseSettingBox}
           ></div>
-          <div className="absolute top-8 ltr:right-0 rtl:left-0 bg-palette-card shadow-md rounded-lg px-6 py-3 ">
+          <div className="absolute right-0 top-8 ltr:right-0 rtl:left-0 bg-palette-card shadow-md rounded-lg px-6 py-3 ">
             <Language />
-            <hr className="my-1" />
           </div>
         </>
       ) : null}

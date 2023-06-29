@@ -123,8 +123,8 @@ const OrderDetails = () => {
 
   return (
     <>
-      <AppHeader appHeaderText={t.orderDetails} />
-      <Accordion accordionHeader={t.order}>
+      {/* <AppHeader appHeaderText={t.selectPaymentMethod} /> */}
+      <Accordion>
         <CardBody pt={"unset"}>
           <Flex
             pt={"unset"}
