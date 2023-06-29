@@ -9,6 +9,7 @@ export interface AddShippingButtonProps {
   setFormData: Function;
   formData: ShippingFormData;
   formSubmitHandler: Function;
+  imgFlag: boolean;
 }
 
 const AddShippingButton: React.FC<AddShippingButtonProps> = (props) => {
@@ -16,7 +17,7 @@ const AddShippingButton: React.FC<AddShippingButtonProps> = (props) => {
   return (
     <>
       <Flex alignItems={"center"} onClick={onOpen}>
-        <Image src={addShippingBtn} />
+        {props.imgFlag ? <Image src={addShippingBtn} /> : null}
         <Text
           fontSize={"15px"}
           color={"rgba(var(--color-primary))"}

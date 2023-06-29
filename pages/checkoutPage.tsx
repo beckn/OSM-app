@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Button, Flex, Text, Image } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Text,
+  Image,
+  useDisclosure,
+} from "@chakra-ui/react";
 import Link from "next/link";
 import { AppHeader } from "../components/appHeader/AppHeader";
 import DetailsCard from "../components/detailsCard/DetailsCard";
@@ -29,6 +36,7 @@ import {
   getTotalCartItems,
 } from "../utilities/checkout-utils";
 import Loader from "../components/loader/Loader";
+import ShippingForm from "../components/detailsCard/ShippingForm";
 export type ShippingFormData = {
   name: string;
   mobileNumber: string;
@@ -39,6 +47,7 @@ export type ShippingFormData = {
   landmark: string;
 };
 const CheckoutPage = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [formData, setFormData] = useState<ShippingFormData>({
     name: "",
     mobileNumber: "",
@@ -56,6 +65,7 @@ const CheckoutPage = () => {
   const transactionId = useSelector(
     (state: { transactionId: TransactionIdRootState }) => state.transactionId
   );
+  console.log(!initRequest.data);
   useEffect(() => {
     if (initRequest.data) {
       dispatch(responseDataActions.addInitResponse(initRequest.data));
@@ -82,6 +92,7 @@ const CheckoutPage = () => {
   if (initRequest.loading) {
     return <Loader loadingText="Initializing order" />;
   }
+
   return (
     <>
       <AppHeader appHeaderText={t.checkout} />
@@ -111,6 +122,7 @@ const CheckoutPage = () => {
           </Flex>
           <DetailsCard>
             <AddShippingButton
+              imgFlag={!initRequest.data}
               formData={formData}
               setFormData={setFormData}
               addShippingdetailsBtnText={t.addShippingdetailsBtnText}
@@ -122,13 +134,13 @@ const CheckoutPage = () => {
         <Box>
           <Flex pb={"20px"} mt={"20px"} justifyContent={"space-between"}>
             <Text fontSize={"17px"}>{t.shipping}</Text>
-            <Text
-              fontSize={"15px"}
-              color={"rgba(var(--color-primary))"}
-              cursor={"pointer"}
-            >
-              {t.changeText}
-            </Text>
+            <AddShippingButton
+              imgFlag={!initRequest.data}
+              formData={formData}
+              setFormData={setFormData}
+              addShippingdetailsBtnText={t.changeText}
+              formSubmitHandler={formSubmitHandler}
+            />
           </Flex>
           <DetailsCard>
             <ShippingDetails
