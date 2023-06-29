@@ -9,24 +9,12 @@ import { RetailItem } from "../lib/types/products";
 import Loader from "../components/loader/Loader";
 
 //Mock data for testing search API. Will remove after the resolution of CORS issue
-const searchPayload = {
-  context: {
-    domain: "retail",
-  },
-  message: {
-    criteria: {
-      dropLocation: "12.9715987,77.5945627",
-      categoryName: "eBook",
-      providerId:
-        "./retail.kirana/ind.blr/97@retail-osm-stage.becknprotocol.io.provider",
-    },
-  },
-};
 
 const Search = () => {
   const [items, setItems] = useState([]);
   const router = useRouter();
   const dispatch = useDispatch();
+  const [providerId, setProviderId] = useState("");
 
   const { keyword } = router.query;
 
@@ -34,12 +22,37 @@ const Search = () => {
 
   const { data, loading, error, fetchData } = useRequest();
 
+  useEffect(() => {
+    if (localStorage) {
+      const stringifiedOptiontags = localStorage.getItem("optionTags");
+      if (stringifiedOptiontags) {
+        const providerId = JSON.parse(stringifiedOptiontags).providerId;
+        setProviderId(providerId);
+      }
+    }
+  }, []);
+
+  const searchPayload = {
+    context: {
+      domain: "retail",
+    },
+    message: {
+      criteria: {
+        dropLocation: "12.9715987,77.5945627",
+        categoryName: "eBook",
+        providerId: providerId,
+      },
+    },
+  };
+
   const fetchDataForSearch = () =>
     fetchData(`${apiUrl}/client/v2/search`, "POST", searchPayload);
 
   useEffect(() => {
-    fetchData(`${apiUrl}/client/v2/search`, "POST", searchPayload);
-  }, []);
+    if (providerId) {
+      fetchData(`${apiUrl}/client/v2/search`, "POST", searchPayload);
+    }
+  }, [providerId]);
 
   useEffect(() => {
     if (data) {

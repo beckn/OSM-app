@@ -44,3 +44,13 @@ export const getSubTotalAndDeliveryChargesForOrder = (
 
   return { subTotal, totalDeliveryCharge };
 };
+
+export const retrieveArrayById = (id: string, data: any) => {
+  for (const item of data) {
+    const itemId = Object.keys(item)[0];
+    if (itemId === id.toString()) {
+      return item[itemId];
+    }
+  }
+  return [];
+};
