@@ -13,7 +13,6 @@ const fa: { [key: string]: string } = {
   totalQuantity: "Quantité totale",
   payableAmount: "Montant payable",
   loginAndOrder: "Se connecter et commander",
-  order: "Commande",
   orderSummary: "Récapitulatif de la commande",
   cartIsEmpty: "Le panier est vide",
   categories: "Catégories",
@@ -80,17 +79,22 @@ const fa: { [key: string]: string } = {
   stationery: "Livres, Papeterie et Art",
   noProduct: "Il n'y a pas encore de produits dans cette catégorie ! ",
   digitalBT: "Vivez les meilleures expériences",
-  digitalBD: "Nous fournissons la meilleure expérience avec les marques les plus populaires. ",
+  digitalBD:
+    "Nous fournissons la meilleure expérience avec les marques les plus populaires. ",
   stationeryBT: "Variété de choix",
   stationeryBD: "Quand il s'agit de Beauté et d'Efficacité. ",
   toyBT: "Divertissement et croissance de la créativité",
-  toyBD: "Des produits de la meilleure qualité et anti-allergiques pour créer des moments heureux",
+  toyBD:
+    "Des produits de la meilleure qualité et anti-allergiques pour créer des moments heureux",
   houseBT: "Maison moderne",
-  houseBD: "profitez de beaux moments de satisfaction et de paix avec vos proches à la maison avec des produits conçus selon les styles les plus récents et les plus en vue.",
+  houseBD:
+    "profitez de beaux moments de satisfaction et de paix avec vos proches à la maison avec des produits conçus selon les styles les plus récents et les plus en vue.",
   fashionBT: "Beauté et confort",
-  fashionBD: "Vous trouverez les meilleurs tissus, les designs les plus en vogue et les marques les plus populaires à des prix raisonnables. ",
+  fashionBD:
+    "Vous trouverez les meilleurs tissus, les designs les plus en vogue et les marques les plus populaires à des prix raisonnables. ",
   beautyBT: "Accentue votre Beauté",
-  beautyBD: "sans allergènes, les personnes de tous types de peau peuvent trouver les produits dont elles ont besoin. ",
+  beautyBD:
+    "sans allergènes, les personnes de tous types de peau peuvent trouver les produits dont elles ont besoin. ",
   deliver: "livraison express",
   cash: "paiement sur place",
   support: "Assistance 24h/24 et 7j/7",
@@ -101,9 +105,12 @@ const fa: { [key: string]: string } = {
   seeAll: "Voir tout",
   specialSale: "Vente spéciale",
   seeAllNewProducts: "Voir tous les nouveaux produits",
-  digitalCategoryDescription: "Nous offrons les produits les plus récents aux prix les plus compétitifs",
-  fashionCategoryDescription: "Les marques les plus populaires avec les prix les plus raisonnables",
-  beautyCategoryDescription: "Produits anti-allergiques adaptés à tous les types de peau de marques réputées",
+  digitalCategoryDescription:
+    "Nous offrons les produits les plus récents aux prix les plus compétitifs",
+  fashionCategoryDescription:
+    "Les marques les plus populaires avec les prix les plus raisonnables",
+  beautyCategoryDescription:
+    "Produits anti-allergiques adaptés à tous les types de peau de marques réputées",
   sportCategoryDescription: "Des produits de qualité et durables",
   houseCategoryDescription: "Conforme aux dessins du jour",
   toyCategoryDescription: "Une combinaison de divertissement et de créativité",
@@ -116,11 +123,13 @@ const fa: { [key: string]: string } = {
   mins: "Minutes",
   seconds: "Secondes",
   larisaTitle: "Meubles Larissa",
-  larisaDescription: "Le beau canapé Larissa avec son design privé peut donner une beauté unique à votre décoration de réception.",
+  larisaDescription:
+    "Le beau canapé Larissa avec son design privé peut donner une beauté unique à votre décoration de réception.",
   byNow: "Ajouter au panier",
   see: "Voir le produit",
   romanoTitle: "Meubles romans",
-  romanoDescription: "Le canapé Romano a une beauté impressionnante et peut multiplier le charme de la décoration de votre maison.",
+  romanoDescription:
+    "Le canapé Romano a une beauté impressionnante et peut multiplier le charme de la décoration de votre maison.",
   popularBrands: "Marques populaires",
   zishopMap: "Carte de Zishop",
   aboutUs: "À propos de nous",
@@ -136,7 +145,8 @@ const fa: { [key: string]: string } = {
   orderSubmissionProcedure: "Procédure de soumission de commande",
   paymentMethods: "méthodes de payement",
   beWithUs: "Soyez avec nous!",
-  emailRegister: "Restez au courant des dernières réductions en nous envoyant un e-mail",
+  emailRegister:
+    "Restez au courant des dernières réductions en nous envoyant un e-mail",
   yourEmail: "Veuillez saisir votre e-mail",
   register: "Enregistrer",
   copyRight: "© 2022 ZiShop.  ",
@@ -193,7 +203,8 @@ const fa: { [key: string]: string } = {
   similarProducts: "Vous etes peut etre intéressé",
   cart: "Panier",
   hi: "Salut!",
-  loginExplanation: "En plus de vous inscrire, vous pouvez également tester le modèle avec les informations du compte de test (e-mail : test@info.com - Mot de passe : 123456)",
+  loginExplanation:
+    "En plus de vous inscrire, vous pouvez également tester le modèle avec les informations du compte de test (e-mail : test@info.com - Mot de passe : 123456)",
   testAccount: "compte d'essai",
   userName: "Nom d'utilisateur",
   password: "Mot de passe",
@@ -206,8 +217,10 @@ const fa: { [key: string]: string } = {
   signUp: "S'inscrire",
   Invalid_email_or_password: "email ou mot de passe invalide",
   Email_already_exists: "l'email existe déjà",
-  aboutLongText: "Le modèle de magasin ZShop a été écrit pour consolider mes connaissances frontales, en utilisant des technologies telles que Nextjs, Typescript, React, Tailwindcss, etc. en tant que portefeuille. ",
-  aboutEnjoy: "J'espère que vous apprécierez regarder et travailler avec ce modèle.",
+  aboutLongText:
+    "Le modèle de magasin ZShop a été écrit pour consolider mes connaissances frontales, en utilisant des technologies telles que Nextjs, Typescript, React, Tailwindcss, etc. en tant que portefeuille. ",
+  aboutEnjoy:
+    "J'espère que vous apprécierez regarder et travailler avec ce modèle.",
   myName: "Kehyshow",
   cafeDX: "Le travail a pour but d'améliorer la vie, et non l'inverse.",
   productAddedToCartMsg: "Produit ajouté au panier avec succès",
@@ -233,7 +246,8 @@ const fa: { [key: string]: string } = {
   orderConfirmedMssg: "ABC Mart a confirmé votre commande",
   orderConfirmedTime: "10h13",
   agentAssigned: "Agent de livraison affecté",
-  agentAssignedMssg: "Steve notre partenaire livreur est au magasin pour récupérer votre commande",
+  agentAssignedMssg:
+    "Steve notre partenaire livreur est au magasin pour récupérer votre commande",
   agentAssignedTime: "10h35",
   OFD: "En cours de livraison",
   OFDMssg: "La commande a été récupérée ! ",
@@ -252,7 +266,8 @@ const fa: { [key: string]: string } = {
   deliveryChargesText: "Frais de livraison",
   totalText: "Total",
   orderpolicyText: "Politique de commande",
-  orderPolicyText: "Dans l'édition et la conception graphique, Lorem ipsum est un texte d'espace réservé couramment utilisé pour démontrer la forme visuelle d'un document ou d'une police de caractères sans s'appuyer sur Dans l'édition et la conception graphique, Lorem ipsum est un texte d'espace réservé couramment utilisé pour démontrer la forme visuelle d'un document ",
+  orderPolicyText:
+    "Dans l'édition et la conception graphique, Lorem ipsum est un texte d'espace réservé couramment utilisé pour démontrer la forme visuelle d'un document ou d'une police de caractères sans s'appuyer sur Dans l'édition et la conception graphique, Lorem ipsum est un texte d'espace réservé couramment utilisé pour démontrer la forme visuelle d'un document ",
   readMoreText: "En savoir plus",
   readLessText: "Lire moins",
   addShippingdetailsBtnText: "Ajouter les détails de livraison",
@@ -263,7 +278,11 @@ const fa: { [key: string]: string } = {
   optionHotels: "Hôtels",
   optionBooks: "Librairies",
   categoryLoadPrimary: "S'il vous plaît, attendez!",
-  categoryLoadSecondary: "Récupération du catalogue du magasin à partir du réseau",
-  shopButton:'magasiner'
-} ;
+  categoryLoadSecondary:
+    "Récupération du catalogue du magasin à partir du réseau",
+  shopButton: "magasiner",
+  summary: "Summary",
+  fulfillment: "Fulfillment ",
+  order: "Commande",
+};
 export default fa;

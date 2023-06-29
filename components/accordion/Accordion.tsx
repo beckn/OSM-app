@@ -12,6 +12,7 @@ import {
 
 interface AccordionPropsModel {
   children?: React.ReactNode;
+  accordionHeader?: string;
 }
 
 const Accordion: React.FC<AccordionPropsModel> = (props) => {
@@ -40,7 +41,7 @@ const Accordion: React.FC<AccordionPropsModel> = (props) => {
                     fontSize={"17px"}
                     fontWeight={"600"}
                   >
-                    {"Summary"}
+                    {props.accordionHeader}
                   </Box>
                   <AccordionIcon />
                 </AccordionButton>

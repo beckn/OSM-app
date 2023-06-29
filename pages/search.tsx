@@ -16,8 +16,9 @@ const searchPayload = {
   message: {
     criteria: {
       dropLocation: "12.9715987,77.5945627",
-      searchString: "trek",
-      category_name: "RetailEnglish",
+      categoryName: "eBook",
+      providerId:
+        "./retail.kirana/ind.blr/97@retail-osm-stage.becknprotocol.io.provider",
     },
   },
 };

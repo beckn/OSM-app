@@ -13,7 +13,6 @@ const en: { [key: string]: string } = {
   totalQuantity: "Total Quantity",
   payableAmount: "Payable Amount",
   loginAndOrder: "Login and Order",
-  order: "Order",
   orderSummary: "Order Summary",
   cartIsEmpty: "Cart is empty",
   categories: "Categories",
@@ -290,6 +289,9 @@ const en: { [key: string]: string } = {
   optionBooks: "Book Stores",
   categoryLoadPrimary: "Please wait!",
   categoryLoadSecondary: "Fetching store catalog from the network",
-  shopButton:"Shop"
+  shopButton: "Shop",
+  summary: "Summary",
+  fulfillment: "Fulfillment ",
+  order: "Order",
 };
 export default en;
