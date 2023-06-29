@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Box,
-  Button,
-  Flex,
-  Text,
-  Image,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Text, Image } from "@chakra-ui/react";
 import Link from "next/link";
 import { AppHeader } from "../components/appHeader/AppHeader";
 import DetailsCard from "../components/detailsCard/DetailsCard";
@@ -36,7 +29,7 @@ import {
   getTotalCartItems,
 } from "../utilities/checkout-utils";
 import Loader from "../components/loader/Loader";
-import ShippingForm from "../components/detailsCard/ShippingForm";
+
 export type ShippingFormData = {
   name: string;
   mobileNumber: string;
@@ -47,7 +40,6 @@ export type ShippingFormData = {
   landmark: string;
 };
 const CheckoutPage = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [formData, setFormData] = useState<ShippingFormData>({
     name: "",
     mobileNumber: "",
@@ -57,6 +49,7 @@ const CheckoutPage = () => {
     pincode: "",
     landmark: "",
   });
+
   const initRequest = useRequest();
   const dispatch = useDispatch();
   const { t, locale } = useLanguage();
@@ -65,7 +58,7 @@ const CheckoutPage = () => {
   const transactionId = useSelector(
     (state: { transactionId: TransactionIdRootState }) => state.transactionId
   );
-  console.log(!initRequest.data);
+
   useEffect(() => {
     if (initRequest.data) {
       dispatch(responseDataActions.addInitResponse(initRequest.data));
@@ -157,13 +150,14 @@ const CheckoutPage = () => {
       <Box>
         <Flex pb={"20px"} mt={"20px"} justifyContent={"space-between"}>
           <Text fontSize={"17px"}>{t.billing}</Text>
-          <Text
+          {/* TODO :- Will enable this button after demo */}
+          {/* <Text
             fontSize={"15px"}
             color={"rgba(var(--color-primary))"}
             cursor={"pointer"}
           >
             {t.changeText}
-          </Text>
+          </Text> */}
         </Flex>
         <DetailsCard>
           <OrderDetailsCheckbox
