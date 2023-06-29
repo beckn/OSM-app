@@ -21,7 +21,7 @@ const fa: { [key: string]: string } = {
   bestSells: "Les meilleures ventes",
   mainMenu: "Menu principal",
   language: "Langue: ",
-  fa: "english - Fa",
+  fa: "français - Fa",
   en: "Anglais - En",
   theme: "Thème: ",
   dark: "Sombre",

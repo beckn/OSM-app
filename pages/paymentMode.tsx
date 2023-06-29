@@ -13,7 +13,7 @@ function PaymentMode() {
   return (
     <>
       <Box height={"72vh"} position={"relative"}>
-        <AppHeader appHeaderText={t.selectPaymentMethod} />
+        {/* <AppHeader appHeaderText={t.selectPaymentMethod} /> */}
         <Text marginBottom={"10px"}>Other</Text>
         <CardWithCheckBox paymentMethod={t.cashOnDelivery} />
       </Box>
