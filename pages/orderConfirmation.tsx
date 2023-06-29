@@ -50,14 +50,14 @@ const OrderConfirmation = () => {
   }, [confirmRequest.data]);
 
   if (confirmRequest.loading) {
-    return <Loader loadingText="Confirming order" />;
+    return <Loader loadingText={t.confirmingOrderLoader}/>;
   }
 
   return (
     <Box position={"relative"}>
       <Image src={orderConfirmmark} margin={"60px auto"} />
       <Text fontSize={"24px"} textAlign={"center"}>
-        Order confirm!
+        {t.orderConfirm}
       </Text>
       <Stack>
         <Text
@@ -67,7 +67,8 @@ const OrderConfirmation = () => {
           fontSize={"12px"}
           lineHeight={"21px"}
         >
-          Thank you! Our delivery agent will deliver your order
+          {t.confirmOrderMessage}
+          
           <span color="rgba(var(--color-primary))"> #456789120</span> shortly!
         </Text>
       </Stack>

@@ -84,7 +84,7 @@ const CheckoutPage = () => {
   
   const totalItems = getTotalCartItems(cartItems);
   if (initRequest.loading) {
-    return <Loader loadingText="Initializing order" />;
+    return <Loader loadingText={t['initializingOrderLoader']}/>;
   }
 
   return (
@@ -101,7 +101,7 @@ const CheckoutPage = () => {
               title={item.descriptor.name}
               description={item.descriptor.short_desc}
               quantity={item.quantity}
-              price={`${locale === "en" ? "Rs." : "£"}${item.totalPrice}`}
+              price={`${t.currencySymbol}${item.totalPrice}`}
               itemImage={item.descriptor.images[0]}
             />
           </DetailsCard>
@@ -175,16 +175,16 @@ const CheckoutPage = () => {
           <DetailsCard>
             <PaymentDetails
               subtotalText={t.subtotalText}
-              subtotalValue={`Rs.${
+              subtotalValue={`${t.currencySymbol} ${
                 getSubTotalAndDeliveryCharges(initRequest.data).subTotal
               }`}
               deliveryChargesText={t.deliveryChargesText}
-              deliveryChargesValue={`Rs.${
+              deliveryChargesValue={`${t.currencySymbol} ${
                 getSubTotalAndDeliveryCharges(initRequest.data)
                   .totalDeliveryCharge
               }`}
               totalText={t.totalText}
-              totalValue={`Rs.${
+              totalValue={`${
                 getSubTotalAndDeliveryCharges(initRequest.data).subTotal
               }`}
             />
@@ -233,7 +233,7 @@ const CheckoutPage = () => {
                 Total
               </Text>
               <Flex alignItems={"center"}>
-                <Text color={"rgba(var(--color-primary))"}>{`Rs.${
+                <Text color={"rgba(var(--color-primary))"}>{`${t.currencySymbol} ${
                   getSubTotalAndDeliveryCharges(initRequest.data).subTotal
                 }`}</Text>
                 <Text fontSize={"10px"} pl={"2px"}>

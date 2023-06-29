@@ -103,15 +103,15 @@ export const getSubTotalAndDeliveryCharges = (
       const deliveryAmount = parseFloat(
         data.message.catalogs.responses[0].message.order.quote.breakup[1].price
           .value
-      );
-      totalDeliveryCharge += deliveryAmount;
+      ).toFixed(2);
+      totalDeliveryCharge += parseFloat(deliveryAmount);
 
       const subTotalAmount = parseFloat(
         data.message.catalogs.responses[0].message.order.quote.breakup[0].price
           .value
-      );
+      ).toFixed(2);
 
-      subTotal += subTotalAmount;
+      subTotal += parseFloat(subTotalAmount);
     });
   }
 

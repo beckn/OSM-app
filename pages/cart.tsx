@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CartList from "../components/cart/CartList";
 import OrderSummaryBox from "../components/cart/OrderSummaryBox";
+import { useLanguage } from "../hooks/useLanguage";
 import Loader from "../components/loader/Loader";
 import useRequest from "../hooks/useRequest";
 import {
@@ -22,6 +23,7 @@ const Cart = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const {t,locale} = useLanguage();
 
   const cartItems = useSelector((state: ICartRootState) => state.cart.items);
   const transactionId = useSelector(
@@ -51,7 +53,7 @@ const Cart = () => {
   }, [quoteRequest.data]);
 
   if (quoteRequest.loading) {
-    return <Loader loadingText="Getting Quotes" />;
+    return <Loader loadingText={t["cartLoader"]}/>;
   }
 
   return (

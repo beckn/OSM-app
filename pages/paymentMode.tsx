@@ -32,12 +32,15 @@ function PaymentMode() {
       </Box>
 
       <Button
-        buttonText={`${t.proceedToPay} Rs.${totalPrice}`}
+        buttonText={`${t.proceedToPay} ${t.currencySymbol}${totalPrice}`}
         background={"rgba(var(--color-primary))"}
         color={"rgba(var(--text-color))"}
         isDisabled={false}
         handleOnClick={() => router.push("/orderConfirmation")}
-      />
+        /
+      >
+
+
     </>
   );
 }
