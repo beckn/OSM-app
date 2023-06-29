@@ -1,7 +1,7 @@
 import React from "react";
 import Router from "next/router";
 import { Box, Card, CardBody, Image, Text } from "@chakra-ui/react";
-import backArrow from "../../public/images/backArrow.svg";
+import backArrow from "/public/images/Back.svg";
 
 export interface AppHeaderPropsModel {
   appHeaderText: string;

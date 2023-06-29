@@ -19,14 +19,14 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 
   return (
     <Provider store={store}>
-      <ThemeProvider enableSystem={true} attribute="class">
+      <ThemeProvider enableSystem={true}>
         <Head>
           <title>ZiShop</title>
         </Head>
         <div className={cs("flex flex-col min-h-[100vh]",{[paddingStyles]:!isHomepage})}>
           <NextNProgress height={7} />
           {!isHomepage && <Header /> }
-          <main className="flex-grow  md:mt-40">{children}</main>
+          <main className="flex-grow ">{children}</main>
           {/* <Footer /> */}
         </div>
         <ToastContainer
