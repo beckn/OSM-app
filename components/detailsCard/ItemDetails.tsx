@@ -13,8 +13,13 @@ const ItemDetails: React.FC<ItemDetailProps> = (props) => {
   return (
     <>
       <Flex alignItems={"center"}>
-        <Box pr={"10px"}>
-          <Image src={props.itemImage} margin={"0 auto"} />
+        <Box pr={"10px"} width={"160px"}>
+          <Image
+            src={props.itemImage}
+            margin={"0 auto"}
+            maxW={"120px"}
+            height={"120px"}
+          />
         </Box>
         <Box>
           <Text fontSize={"13px"} fontWeight={"700"} pb={"5px"}>
