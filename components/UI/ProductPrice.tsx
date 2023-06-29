@@ -36,9 +36,9 @@ const ProductPrice: React.FC<Props> = ({
             className={`flex items-center ${textMainPriceSize} font-bold no-underline`}
             style={{ flexDirection }}
           >
-            <sup className="mr-1 rtl:block">
+            <span className="mr-1 rtl:block">
               {locale === "en" ? "Rs." : "£"}
-            </sup>
+            </span>
             <span>{price}</span>
           </div>
         </div>
