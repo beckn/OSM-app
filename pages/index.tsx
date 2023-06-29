@@ -209,7 +209,7 @@ const Homepage = () => {
 			>
 				<div className="flex flex-col gap-2">
 					<p className="text-[16px] leading-[20px]">
-						Local shops in <span className="font-bold">{selectedStore?.tags.name}</span>{" "}
+						{t['localStores']} <span className="font-bold">{selectedStore?.tags.name}</span>{" "}
 					</p>
 					<div className="flex">
 						<p className="block font-bold text-[12px] leading-[18px]">

@@ -190,7 +190,7 @@ const OrderDetails = () => {
             alignItems={"center"}
           >
             <Text>Subtotal</Text>
-            <Text>Rs.{subTotal}</Text>
+            <Text>{t.currencySymbol}{subTotal}</Text>
           </Flex>
           <Flex
             justifyContent={"space-between"}
@@ -198,7 +198,7 @@ const OrderDetails = () => {
             pb={"20px"}
           >
             <Text>Delivery Charges</Text>
-            <Text>Rs.{totalDeliveryCharge}</Text>
+            <Text>{t.currencySymbol}{totalDeliveryCharge}</Text>
           </Flex>
           <Divider />
         </CardBody>
@@ -211,7 +211,7 @@ const OrderDetails = () => {
             fontWeight={"700"}
           >
             <Text>Total</Text>
-            <Text>Rs.{subTotal + totalDeliveryCharge}</Text>
+            <Text>{t.currencySymbol}{subTotal + totalDeliveryCharge}</Text>
           </Flex>
           <Flex
             justifyContent={"space-between"}

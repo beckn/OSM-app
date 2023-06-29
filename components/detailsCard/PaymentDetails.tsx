@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Divider, Flex, Text } from "@chakra-ui/react";
+import { useLanguage } from "../../hooks/useLanguage";
 
 export interface PaymentDetailsProps {
   subtotalText: string;
@@ -11,6 +12,7 @@ export interface PaymentDetailsProps {
 }
 
 const PaymentDetails: React.FC<PaymentDetailsProps> = (props) => {
+  const {t,locale} = useLanguage();
   return (
     <Box padding={"0px 15px"}>
       <Flex
@@ -39,7 +41,9 @@ const PaymentDetails: React.FC<PaymentDetailsProps> = (props) => {
         fontWeight={"700"}
       >
         <Text>{props.totalText}</Text>
-        <Text>{props.totalValue}</Text>
+        <div className="flex">
+        <Text>{`${t.currencySymbol} ${props.totalValue}`}</Text>
+        </div>
       </Flex>
     </Box>
   );

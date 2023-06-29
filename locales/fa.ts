@@ -284,5 +284,12 @@ const fa: { [key: string]: string } = {
   summary: "Summary",
   fulfillment: "Fulfillment ",
   order: "Commande",
+  localStores:'Commerces de proximité',
+  cartLoader:'Obtention des devis',
+  initializingOrderLoader:'Initialisation de la commande',
+  confirmingOrderLoader:'Confirmation de la command',
+  orderConfirm:'Commande confirmée!',
+  confirmOrderMessage:'Merci ! Notre agent de livraison vous livrera votre commande.',
+  currencySymbol:'€'
 };
 export default fa;

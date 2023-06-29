@@ -293,5 +293,12 @@ const en: { [key: string]: string } = {
   summary: "Summary",
   fulfillment: "Fulfillment ",
   order: "Order",
+  localStores:'Local stores in',
+  cartLoader:'Getting Quotes',
+  initializingOrderLoader:'Initializing order',
+  confirmingOrderLoader:'Confirming order',
+  orderConfirm:'Order Confirmed!',
+  confirmOrderMessage:'Thank you! Our delivery agent will deliver your order',
+  currencySymbol:'Rs.'
 };
 export default en;

@@ -1,6 +1,7 @@
 import React from "react";
 import { useLanguage } from "../../hooks/useLanguage";
 
+
 interface Props {
   price: number;
   discount?: number;
@@ -37,9 +38,9 @@ const ProductPrice: React.FC<Props> = ({
             style={{ flexDirection }}
           >
             <span className="mr-1 rtl:block">
-              {locale === "en" ? "Rs." : "£"}
+              {t.currencySymbol}
             </span>
-            <span>{price}</span>
+            <span>{price.toFixed(2)}</span>
           </div>
         </div>
       </div>
