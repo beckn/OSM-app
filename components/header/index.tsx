@@ -23,6 +23,10 @@ const cardIconBlackList = [
   "/orderHistory",
 ];
 
+const homeIconBlackList = [
+  '/orderHistory'
+]
+
 const storeHeaderBlackList = [
   "/checkoutPage",
   "/orderHistory",
@@ -77,9 +81,12 @@ const Index = () => {
             <div onClick={() => router.back()}>
               <Image src="/images/Back.svg" />
             </div>
-            <Link href="/">
-              <Image src="/images/Home_icon.svg" />
-            </Link>
+            {!homeIconBlackList.includes(router.pathname) &&
+              <Link href="/">
+                <Image src="/images/Home_icon.svg" />
+              </Link>
+            }
+
           </div>
 
           {getHeaderTitleForPage(
