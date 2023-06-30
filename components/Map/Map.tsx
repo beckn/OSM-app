@@ -5,6 +5,7 @@ import "leaflet/dist/leaflet.css";
 import {GiHamburgerMenu} from 'react-icons/gi'
 import {data} from "./StoreMarkerData";
 import Icon from "./store-marker.svg";
+import SelectedIcon from './selectedMarker.svg'
 import L from "leaflet";
 import { isEmpty } from "lodash";
 
@@ -16,12 +17,13 @@ interface MapProps {
 	handleModalOpen: ()=>void;
 	handleOptionDetailOpen: ()=>void;
 	setSelectedStore: React.Dispatch<React.SetStateAction<any>>;
+	selectedStore:any;
 	// Using any for now since exact structure is not clear
 	stores:any[];
 }
 
 
-const Map:React.FC<MapProps> = ({stores,coords,handleModalOpen,handleOptionDetailOpen,setSelectedStore})=> {
+const Map:React.FC<MapProps> = ({stores,selectedStore,coords,handleModalOpen,handleOptionDetailOpen,setSelectedStore})=> {
 
 	const { lat, long } = coords;
 	const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
@@ -61,6 +63,13 @@ const Map:React.FC<MapProps> = ({stores,coords,handleModalOpen,handleOptionDetai
 		iconAnchor: [5, 30]
 	});
 
+
+	const customSelectedIcon = new L.Icon({
+		iconUrl: SelectedIcon,
+		iconSize: [30, 40],
+		iconAnchor: [5, 30]
+	});
+
 	function MapView() {
 		let map = useMap();
 		map.setView([lat, long], map.getZoom());
@@ -97,8 +106,10 @@ const Map:React.FC<MapProps> = ({stores,coords,handleModalOpen,handleOptionDetai
 			
 			{
 				!isEmpty(stores) && stores.map((item:any,index:number) => {
+					const isSelected = item.lat === selectedStore?.lat && item.lon === selectedStore?.lon;
+					const IconToUse = isSelected ? customSelectedIcon : customIcon
 return (
-						<Marker icon={customIcon} key={item.lon}  position={[item.lat, item.lon]}
+						<Marker icon={IconToUse} key={item.lon}  position={[item.lat, item.lon]}
 							eventHandlers={{
 								click: () => {
 									setSelectedStore(item);

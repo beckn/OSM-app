@@ -52,6 +52,7 @@ const Homepage = () => {
 	const [stores, setStores] = useState<any>([]);
 	// const [selectedStore, setSelectedStore] = useState<any>(null);
 	const [selectedStore, setSelectedStore] = useState<any>(null);
+	
 	const {
 		data: searchedLocationData,
 		loading,
@@ -90,6 +91,7 @@ const Homepage = () => {
 
 	const handleOptionDetailClose = () => {
 		setIsOptionDetailOpen(false);
+		setSelectedStore(null);
 	};
 
 	const handleMenuModalOpen = () => {
@@ -169,6 +171,7 @@ const Homepage = () => {
 			<MapWithNoSSR
 				stores={stores}
 				coords={coords}
+				selectedStore={selectedStore}
 				handleModalOpen={handleModalOpen}
 				handleOptionDetailOpen={handleOptionDetailOpen}
 				setSelectedStore={setSelectedStore}
