@@ -5,7 +5,7 @@ export default function Document() {
       <Head>
         <meta
           name="description"
-          content="Zishop store developed with Next.js/TypeScript/TailwindCSS and ... as Kehyshow's portfolio"
+          content="A retail app powered by beckn protocol"
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link

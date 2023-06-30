@@ -299,6 +299,6 @@ const en: { [key: string]: string } = {
   confirmingOrderLoader:'Confirming order',
   orderConfirm:'Order Confirmed!',
   confirmOrderMessage:'Thank you! Our delivery agent will deliver your order',
-  currencySymbol:'Rs.'
+  currencySymbol:'€'
 };
 export default en;
