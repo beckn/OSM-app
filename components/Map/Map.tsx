@@ -5,7 +5,7 @@ import "leaflet/dist/leaflet.css";
 import {GiHamburgerMenu} from 'react-icons/gi'
 import {data} from "./StoreMarkerData";
 import Icon from "./store-marker.svg";
-import SelectedIcon from './selectedMarker.svg'
+import SelectedIcon from './SelectedMarker.svg'
 import L from "leaflet";
 import { isEmpty } from "lodash";
 
