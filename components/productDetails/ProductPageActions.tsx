@@ -33,9 +33,9 @@ const ProductPageActions: React.FC<Props> = ({ product }) => {
           }}
         />
       </div>
-      <div className="hover:text-rose-600 transition-colors px-2 md:px-6 py-3">
+      {/* <div className="hover:text-rose-600 transition-colors px-2 md:px-6 py-3">
         <RiShareLine style={{ fontSize: "1.5rem" }} />
-      </div>
+      </div> */}
     </div>
   );
 };

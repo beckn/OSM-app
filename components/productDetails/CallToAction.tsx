@@ -68,7 +68,7 @@ const CallToAction: React.FC<Props> = ({ product }) => {
           <HiOutlinePlusSm style={{ fontSize: "1.5rem" }} />
         </div>
         <input
-          className="inline-block w-[70px] rtl:pr-8 ltr:pl-7 py-2 mx-1 sm:mx-4 border-[1px] border-gray-400"
+          className="inline-block w-[70px] rtl:pr-8 ltr:pl-7 py-2 mx-1 sm:mx-4 border-[1px] border-gray-400 text-center"
           type="number"
           min={1}
           max={10}

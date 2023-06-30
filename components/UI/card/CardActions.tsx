@@ -55,9 +55,9 @@ const CardActions: React.FC<Props> = ({ product }) => {
           }}
         />
       </div>
-      <div className="hover:text-rose-600 transition-colors sm:px-3 md:px-0">
+      {/* <div className="hover:text-rose-600 transition-colors sm:px-3 md:px-0">
         <RiShareLine style={{ fontSize: "1.2rem" }} />
-      </div>
+      </div> */}
       <div
         className="hover:text-rose-600 active:scale-125 transition-all sm:px-3 md:px-0"
         onClick={addToCartHandler}
