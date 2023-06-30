@@ -15,6 +15,14 @@ const Theme = dynamic(() => import("./theme/Theme"), {
   ssr: false,
 });
 
+const cardIconBlackList = [
+  "/orderConfirmation",
+  "/orderDetails",
+  "/trackOrder",
+  "/feedback",
+  "/orderHistory",
+];
+
 const storeHeaderBlackList = [
   "/checkoutPage",
   "/orderHistory",
@@ -80,7 +88,7 @@ const Index = () => {
             router.pathname
           )}
           <div className="flex gap-4">
-            <CartIcon />
+            {!cardIconBlackList.includes(router.pathname) && <CartIcon />}
             <Settings /> {/* 👈settings: md:hidden */}
           </div>
           <div className="hidden md:flex md:items-center md:justify-between">

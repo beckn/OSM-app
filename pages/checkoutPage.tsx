@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Button, Flex, Text, Image } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Text,
+  Image,
+  Stack,
+  Checkbox,
+} from "@chakra-ui/react";
 import Link from "next/link";
-import { AppHeader } from "../components/appHeader/AppHeader";
 import DetailsCard from "../components/detailsCard/DetailsCard";
 import ItemDetails from "../components/detailsCard/ItemDetails";
 import ButtonComp from "../components/button/Button";
 import { useLanguage } from "../hooks/useLanguage";
 import ShippingDetails from "../components/detailsCard/ShippingDetails";
-import OrderDetailsCheckbox from "../components/detailsCard/OrderDetailsCheckbox";
 import PaymentDetails from "../components/detailsCard/PaymentDetails";
 import TextareaWithReadMore from "../components/detailsCard/TextareaWithReadMore";
 import proceedToPay from "../public/images/proceedToPay.svg";
@@ -39,6 +45,7 @@ export type ShippingFormData = {
   pincode: string;
   landmark: string;
 };
+
 const CheckoutPage = () => {
   const [formData, setFormData] = useState<ShippingFormData>({
     name: "",
@@ -81,10 +88,10 @@ const CheckoutPage = () => {
       );
     }
   };
-  
+
   const totalItems = getTotalCartItems(cartItems);
   if (initRequest.loading) {
-    return <Loader loadingText={t['initializingOrderLoader']}/>;
+    return <Loader loadingText={t["initializingOrderLoader"]} />;
   }
 
   return (
@@ -92,7 +99,7 @@ const CheckoutPage = () => {
       {/* <AppHeader appHeaderText={t.checkout} /> */}
       {/* start Item Details */}
       <Box>
-        <Box pb={"20px"} >
+        <Box pb={"20px"}>
           <Text>{t.items}</Text>
         </Box>
         {cartItems.map((item) => (
@@ -160,9 +167,14 @@ const CheckoutPage = () => {
           </Text> */}
         </Flex>
         <DetailsCard>
-          <OrderDetailsCheckbox
+          {/* <OrderDetailsCheckbox
             orderDetailsCheckboxText={t.orderDetailsCheckboxText}
-          />
+          /> */}
+          <Stack spacing={5} direction="row">
+            <Checkbox colorScheme={"red"} pr={"12px"} fontSize={"17px"}>
+              {t.orderDetailsCheckboxText}
+            </Checkbox>
+          </Stack>
         </DetailsCard>
       </Box>
       {/* end payment method */}
@@ -233,7 +245,9 @@ const CheckoutPage = () => {
                 Total
               </Text>
               <Flex alignItems={"center"}>
-                <Text color={"rgba(var(--color-primary))"}>{`${t.currencySymbol} ${
+                <Text color={"rgba(var(--color-primary))"}>{`${
+                  t.currencySymbol
+                } ${
                   getSubTotalAndDeliveryCharges(initRequest.data).subTotal
                 }`}</Text>
                 <Text fontSize={"10px"} pl={"2px"}>
