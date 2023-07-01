@@ -94,11 +94,7 @@ const Search = () => {
         handleChange={(text: string) => fetchDataForSearch()}
       />
 
-      {loading ? (
-        <Loader loadingText={`Searching for ${keyword}`} />
-      ) : (
-        <ProductList productList={items} />
-      )}
+      {loading ? <Loader /> : <ProductList productList={items} />}
     </div>
   );
 };
