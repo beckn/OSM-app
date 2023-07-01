@@ -23,10 +23,10 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
         <Head>
           <title>GeoShopr</title>
         </Head>
-        <div className={cs("flex flex-col min-h-[100vh]",{[paddingStyles]:!isHomepage})}>
+        <div className="flex flex-col min-h-[100vh]">
           <NextNProgress height={7} />
-          {!isHomepage && <Header /> }
-          <main className="flex-grow ">{children}</main>
+          <Header />
+          <main className={cs('flex-grow',{[paddingStyles]:!isHomepage})}>{children}</main>
           {/* <Footer /> */}
         </div>
         <ToastContainer

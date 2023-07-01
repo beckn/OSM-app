@@ -1,12 +1,17 @@
 import React from "react";
-import { AiOutlineSetting } from "react-icons/ai";
+import { AiOutlineSetting,AiOutlineDown } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { settingBoxActions } from "../../store/settingBox-slice";
 import Language from "./language/Language";
+import { useLanguage } from "../../hooks/useLanguage";
 import { ISettingBoxRootState } from "../../lib/types/settingBox";
 
+
+
+// Settings is just Language selector for now
 const Settings = () => {
   const dispatch = useDispatch();
+  const {t,locale} = useLanguage()
 
   const isSettingBoxOpen = useSelector(
     (state: ISettingBoxRootState) => state.settingBox.isOpen
@@ -22,8 +27,9 @@ const Settings = () => {
 
   return (
     <div className="relative md:hidden flex justify-between items-center z-[10000]">
-      <div onClick={toggleShowSettingBox}>
-        <AiOutlineSetting style={{ fontSize: "1.5rem" }} />
+      <div className="flex items-center" onClick={toggleShowSettingBox}>
+        <span className="capitalize text-sm">{locale}</span>
+        <AiOutlineDown style={{ fontSize: "0.8rem",marginTop:"0.2rem" }} />
       </div>
       {isSettingBoxOpen ? (
         <>
