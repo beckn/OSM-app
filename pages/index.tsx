@@ -6,7 +6,6 @@ import { optionData } from "../components/Map/StoreMarkerData";
 import { useRouter } from "next/router";
 import useRequest from "../hooks/useRequest";
 import { Image } from "@chakra-ui/react";
-import MapHeader from "../components/Map/MapHeader";
 import { useLanguage } from "../hooks/useLanguage";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 
@@ -39,8 +38,8 @@ const Homepage = () => {
   // create a state value called query in typescript
   const [query, setQuery] = useState<string>("");
   const [coords, setCoords] = useState<Coords>({
-    lat: 46.603354,
-    long: 1.8883335,
+    lat: 48.84619085,
+    long: 2.346078521905153,
   });
   const [isOptionModalOpen, setIsOptionModalOpen] = useState<boolean>(false);
   const [isOptionDetailOpen, setIsOptionDetailOpen] = useState<boolean>(false);
@@ -93,9 +92,6 @@ const Homepage = () => {
     setSelectedStore(null);
   };
 
-  const handleMenuModalOpen = () => {
-    setIsMenuModalOpen(true);
-  };
 
   const handleMenuModalClose = () => {
     setIsMenuModalOpen(false);
@@ -160,7 +156,6 @@ const Homepage = () => {
 
   return (
     <div>
-      <MapHeader handleMenuClick={handleMenuModalOpen} />
       <MapSearch loading={mapLoading} setQuery={setQuery} />
 
       <MapWithNoSSR
@@ -173,7 +168,9 @@ const Homepage = () => {
       />
 
       <BottomModal isOpen={isOptionModalOpen} onClose={handleModalClose}>
-        <div className="flex justify-between py-5">
+				<div>
+					<h3 className="text-base/[20px]">{t.explorePlaces}</h3>
+<div className="flex justify-between py-5">
           {optionData.map((currentOption, index) => {
             const isSelected = option
               ? option.tagValue === currentOption.tagValue
@@ -198,10 +195,11 @@ const Homepage = () => {
             );
           })}
         </div>
+				</div>
+        
       </BottomModal>
 
       <BottomModal
-        noTitle={true}
         isOpen={isOptionDetailOpen}
         onClose={handleOptionDetailClose}
       >
@@ -256,21 +254,7 @@ const Homepage = () => {
         </div>
       </BottomModal>
 
-      <BottomModal
-        noTitle={true}
-        isOpen={isMenuModalOpen}
-        onClose={handleMenuModalClose}
-      >
-        <div
-          onClick={() => {
-            router.push("/orderHistory");
-          }}
-          className="flex gap-2 py-5"
-        >
-          <img src="/images/orderHistory.svg" alt="Order history icon" />
-          {t["orderHistory"]}
-        </div>
-      </BottomModal>
+
     </div>
   );
 };

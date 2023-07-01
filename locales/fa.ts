@@ -290,6 +290,7 @@ const fa: { [key: string]: string } = {
   confirmingOrderLoader:'Confirmation de la command',
   orderConfirm:'Commande confirmée!',
   confirmOrderMessage:'Merci ! Notre agent de livraison vous livrera votre commande.',
-  currencySymbol:'€'
+  currencySymbol:'€',
+  explorePlaces:"Explorer de nouveaux endroits"
 };
 export default fa;

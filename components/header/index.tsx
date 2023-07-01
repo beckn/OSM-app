@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import BottomModal from "../BottomModal";
 import Logo from "./Logo";
 import { Image, Text } from "@chakra-ui/react";
 import Settings from "./Settings";
-import { useRouter } from "next/router";
 import CartIcon from "../cart/CartIcon";
+import { useRouter } from "next/router";
 import Link from "next/link";
+import { useLanguage } from "../../hooks/useLanguage";
 import Language from "./language/Language";
 
 const UserBox = dynamic(() => import("./user"), {
@@ -23,8 +25,9 @@ const cardIconBlackList = [
   "/orderHistory",
 ];
 
-const homeIconBlackList = [
-  '/orderHistory'
+const homeIconWhiteList = [
+  '/orderHistory',
+  '/'
 ]
 
 const storeHeaderBlackList = [
@@ -40,6 +43,24 @@ const headerValues = {
   feedback: "Feedback",
 };
 
+const topHeaderBlackList:string[] = [
+
+]
+
+const bottomHeaderBlackList = [
+  '/'
+
+]
+
+const menuIconWhiteList = [
+  "/"
+]
+
+const languageIconWhiteList = [
+  "/"
+
+]
+
 const getHeaderTitleForPage = (
   name: string,
   logo: string,
@@ -53,18 +74,91 @@ const getHeaderTitleForPage = (
     default:
       return (
         <div className="md:hidden ml-2  max-w-[12rem]  flex gap-1 my-2">
-          <Image
-            className="max-h-[34px] max-w-[160px] rounded-lg"
-            src={logo}
-            alt="Logo"
-          />
-          <Text className="text-xl text-palette-primary truncate">{name}</Text>
+        
+          <Text className="text-xl  truncate">{name}</Text>
         </div>
       );
   }
 };
 
-const Index = () => {
+
+export interface TopHeaderProps {
+  handleMenuClick?: () => void;
+}
+
+
+
+const TopHeader: React.FC<TopHeaderProps> = ({ handleMenuClick }) => {
+
+
+  const [isMenuModalOpen, setMenuModalOpen] = useState(false)
+  const { t, locale } = useLanguage();
+  const router = useRouter();
+
+
+  const handleMenuModalClose = () => {
+    setMenuModalOpen(false);
+  }
+
+
+  return <>
+    <div className="h-7 w-full bg-[#D9D9D9]">
+      <div className="px-5 h-full flex items-center">
+        <div>
+          <Image src="/images/CommerceLogo.svg" alt="App logo" />
+        </div>
+        <div className="ml-auto flex gap-4">
+          {
+            languageIconWhiteList.includes(router.pathname) && <Settings />
+          }
+
+          {
+            menuIconWhiteList.includes(router.pathname) && (
+
+              <Image
+                onClick={() => setMenuModalOpen(true)}
+                className="block"
+                src="/images/3-dots.svg"
+                alt="menu icon"
+              />
+            )
+          }
+
+{!homeIconWhiteList.includes(router.pathname) &&
+              <Link href="/">
+                <Image src="/images/Home_icon.svg" alt='home Icon' />
+              </Link>
+            }
+
+
+
+        </div>
+      </div>
+    </div>
+
+    {/* Menu Modal */}
+    <BottomModal
+      isOpen={isMenuModalOpen}
+      onClose={handleMenuModalClose}
+    >
+      <div
+        onClick={() => {
+          router.push("/orderHistory");
+        }}
+        className="flex gap-2 py-5"
+      >
+
+        <Image src="/images/orderHistory.svg" alt="Order history icon" />
+        {t["orderHistory"]}
+      </div>
+    </BottomModal>
+  </>
+
+
+}
+
+
+const BottomHeader = () => {
   const [optionTags, setOptionTags] = useState<any>();
 
   useEffect(() => {
@@ -79,13 +173,9 @@ const Index = () => {
         <div className="flex items-center justify-between md:order-2 md:mt-2 py-4  relative">
           <div className="flex gap-4 items-center">
             <div onClick={() => router.back()}>
-              <Image src="/images/Back.svg" />
+              <Image src="/images/Back.svg" alt="Back icon" />
             </div>
-            {!homeIconBlackList.includes(router.pathname) &&
-              <Link href="/">
-                <Image src="/images/Home_icon.svg" />
-              </Link>
-            }
+
 
           </div>
 
@@ -96,29 +186,32 @@ const Index = () => {
           )}
           <div className="flex gap-4">
             {!cardIconBlackList.includes(router.pathname) && <CartIcon />}
-            <Settings /> {/* 👈settings: md:hidden */}
-          </div>
-          <div className="hidden md:flex md:items-center md:justify-between">
-            <Language />
           </div>
         </div>
-        {/* Might need this code so commenting it out for now */}
-        {/* <hr className="md:hidden" /> */}
-        {/* <div className="mb-2 mt-4 md:mt-0 flex  items-center md:order-1"> */}
-        {/* <div className="hidden md:block">
-            <Logo />
-          </div> */}
-        {/* <div className="flex-grow">
-            <SearchBar />
-          </div> */}
-        {/* <div className="ltr:ml-2 rtl:mr-2 sm:ltr:ml-4 sm:rtl:mr-4 flex items-center justify-between ">
-            <UserBox />
-            <CartIcon />
-          </div> */}
-        {/* </div> */}
       </div>
     </header>
   );
 };
 
-export default Index;
+
+const Header = () => {
+
+  const router = useRouter();
+
+  const renderTopHeader = !topHeaderBlackList.includes(router.pathname);
+  const renderBottomHeader = !bottomHeaderBlackList.includes(router.pathname);
+
+
+  return <div >
+    {
+      renderTopHeader && <TopHeader />
+    }
+    {
+      renderBottomHeader && <BottomHeader />
+    }
+
+
+  </div>
+}
+
+export default Header;
