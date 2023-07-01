@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CartList from "../components/cart/CartList";
 import OrderSummaryBox from "../components/cart/OrderSummaryBox";
@@ -11,19 +11,24 @@ import {
   CartItemForRequest,
   ICartRootState,
   TransactionIdRootState,
+  CartRetailItem,
 } from "../lib/types/cart";
 import { responseDataActions } from "../store/responseData-slice";
 import {
   getCartItemsPerBpp,
+  getItemsForCart,
   getPayloadForQuoteRequest,
 } from "../utilities/cart-utils";
 
 const Cart = () => {
+  const [itemsForCart, setItemsForCart] = useState<CartRetailItem[]>([]);
+  const [isLoadingForCartCountChange, setIsLoadingForCartCountChange] =
+    useState<boolean>(false);
+
   const quoteRequest = useRequest();
   const dispatch = useDispatch();
   const router = useRouter();
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  const {t,locale} = useLanguage();
 
   const cartItems = useSelector((state: ICartRootState) => state.cart.items);
   const transactionId = useSelector(
@@ -37,30 +42,43 @@ const Cart = () => {
     transactionId
   );
 
-  const onOrderClick = () => {
+  useEffect(() => {
     quoteRequest.fetchData(
       `${apiUrl}/client/v2/get_quote`,
       "POST",
       payLoadForQuoteRequest
     );
-  };
+  }, []);
 
   useEffect(() => {
     if (quoteRequest.data) {
       dispatch(responseDataActions.addQuoteResponse(quoteRequest.data));
-      router.push("/checkoutPage");
+      localStorage.setItem("quoteResponse", JSON.stringify(quoteRequest.data));
+
+      const items = getItemsForCart(quoteRequest.data);
+      setItemsForCart(items);
     }
   }, [quoteRequest.data]);
 
-  if (quoteRequest.loading) {
-    return <Loader loadingText={t["cartLoader"]}/>;
+  const onOrderClick = () => {
+    router.push("/checkoutPage");
+  };
+
+  if (quoteRequest.loading || isLoadingForCartCountChange) {
+    return <Loader />;
+  }
+
+  if (!itemsForCart.length) {
+    return <></>;
   }
 
   return (
     <div>
       {/* <Breadcrumb /> */}
       <div className="flex justify-center flex-col md:flex-row items-start relative max-w-[2100px] mx-auto">
-        <CartList />
+        <CartList
+          setIsLoadingForCartCountChange={setIsLoadingForCartCountChange}
+        />
         <OrderSummaryBox onOrderClick={onOrderClick} />
       </div>
     </div>
