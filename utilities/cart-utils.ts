@@ -1,4 +1,9 @@
-import { CartItemForRequest, DataPerBpp } from "../lib/types/cart";
+import {
+  CartItemForRequest,
+  CartRetailItem,
+  DataPerBpp,
+} from "../lib/types/cart";
+import { ResponseModel } from "../lib/types/responseModel";
 
 export const getCartItemsPerBpp = (cart: CartItemForRequest[]) => {
   const itemsPerBpp = {};
@@ -57,4 +62,18 @@ export const getPayloadForQuoteRequest = (
     payload.selectRequestDto.push(cartItem);
   });
   return payload;
+};
+
+export const getItemsForCart = (quoteData: ResponseModel[]) => {
+  const items: CartRetailItem[] = [];
+
+  quoteData.forEach((data) => {
+    const { catalogs } = data.message;
+    const { order } = catalogs;
+    const { items: orderItems } = order;
+
+    items.push(...orderItems);
+  });
+
+  return items;
 };

@@ -1,20 +1,46 @@
 import Image from "next/image";
-import Link from "next/link";
 import React, { useState } from "react";
 import { HiMinusSm, HiOutlinePlusSm, HiOutlineTrash } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useLanguage } from "../../hooks/useLanguage";
-import { urlFor } from "../../lib/client";
-import { ICartRootState } from "../../lib/types/cart";
-import { IProduct, RetailItem } from "../../lib/types/products";
+import useRequest from "../../hooks/useRequest";
+import {
+  CartItemForRequest,
+  DataPerBpp,
+  ICartRootState,
+  TransactionIdRootState,
+} from "../../lib/types/cart";
+import { RetailItem } from "../../lib/types/products";
 import { cartActions } from "../../store/cart-slice";
+import {
+  getCartItemsPerBpp,
+  getPayloadForQuoteRequest,
+} from "../../utilities/cart-utils";
 import ProductPrice from "../UI/ProductPrice";
 
 interface Props {
   product: RetailItem;
+  setIsLoadingForCartCountChange: Function;
 }
-const CartItem: React.FC<Props> = ({ product }) => {
+const CartItem: React.FC<Props> = ({
+  product,
+  setIsLoadingForCartCountChange,
+}) => {
+  const quoteRequest = useRequest();
+  const cartItems = useSelector((state: ICartRootState) => state.cart.items);
+  const transactionId = useSelector(
+    (state: { transactionId: TransactionIdRootState }) => state.transactionId
+  );
+  const cartItemsPerBppPerProvider: DataPerBpp = getCartItemsPerBpp(
+    cartItems as CartItemForRequest[]
+  );
+  const payLoadForQuoteRequest = getPayloadForQuoteRequest(
+    cartItemsPerBppPerProvider,
+    transactionId
+  );
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
   const productQuantity = useSelector(
     (state: ICartRootState) =>
       state.cart.items.find((item) => item.id === product.id)?.quantity
@@ -23,14 +49,28 @@ const CartItem: React.FC<Props> = ({ product }) => {
   const dispatch = useDispatch();
   const { t } = useLanguage();
 
+  const fetchQuotes = () => {
+    setIsLoadingForCartCountChange(true);
+    quoteRequest
+      .fetchData(
+        `${apiUrl}/client/v2/get_quote`,
+        "POST",
+        payLoadForQuoteRequest
+      )
+      .then((data) => setIsLoadingForCartCountChange(false))
+      .catch((e) => console.error(e));
+  };
+
   function increment(product: RetailItem) {
     setCounter((prev) => ++prev!);
     dispatch(cartActions.addItemToCart({ product: product, quantity: 1 }));
+    fetchQuotes();
   }
 
   function decrement(slug: string) {
     setCounter((prev) => --prev!);
     dispatch(cartActions.removeItemFromCart(slug));
+    fetchQuotes();
   }
 
   function onInputNumberChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
@@ -38,6 +78,7 @@ const CartItem: React.FC<Props> = ({ product }) => {
       setCounter(+e.currentTarget.value);
     }
   }
+
   return (
     <div className="flex items-center flex-wrap sm:my-4 sm:py-4 px-2 border-b-2">
       <div className="lg:w-1/2 sm:min-w-[290px]">
