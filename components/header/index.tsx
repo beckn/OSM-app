@@ -138,7 +138,6 @@ const TopHeader: React.FC<TopHeaderProps> = ({ handleMenuClick }) => {
 
     {/* Menu Modal */}
     <BottomModal
-      noTitle={true}
       isOpen={isMenuModalOpen}
       onClose={handleMenuModalClose}
     >

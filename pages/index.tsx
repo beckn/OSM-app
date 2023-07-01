@@ -6,7 +6,6 @@ import { optionData } from "../components/Map/StoreMarkerData";
 import { useRouter } from "next/router";
 import useRequest from "../hooks/useRequest";
 import { Image } from "@chakra-ui/react";
-import MapHeader from "../components/Map/MapHeader";
 import { useLanguage } from "../hooks/useLanguage";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 
