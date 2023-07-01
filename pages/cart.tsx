@@ -43,11 +43,13 @@ const Cart = () => {
   );
 
   useEffect(() => {
-    quoteRequest.fetchData(
-      `${apiUrl}/client/v2/get_quote`,
-      "POST",
-      payLoadForQuoteRequest
-    );
+    if (localStorage && !localStorage.getItem("quoteResponse")) {
+      quoteRequest.fetchData(
+        `${apiUrl}/client/v2/get_quote`,
+        "POST",
+        payLoadForQuoteRequest
+      );
+    }
   }, []);
 
   useEffect(() => {
@@ -59,6 +61,16 @@ const Cart = () => {
       setItemsForCart(items);
     }
   }, [quoteRequest.data]);
+
+  useEffect(() => {
+    if (localStorage) {
+      const cachedQuoteResults = localStorage.getItem("quoteResponse");
+      if (cachedQuoteResults) {
+        const parsedCachedResults = JSON.parse(cachedQuoteResults);
+        setItemsForCart(parsedCachedResults);
+      }
+    }
+  }, []);
 
   const onOrderClick = () => {
     router.push("/checkoutPage");
