@@ -49,10 +49,22 @@ const Search = () => {
     fetchData(`${apiUrl}/client/v2/search`, "POST", searchPayload);
 
   useEffect(() => {
-    if (providerId) {
-      fetchData(`${apiUrl}/client/v2/search`, "POST", searchPayload);
+    if (localStorage && !localStorage.getItem("searchItems")) {
+      if (providerId) {
+        fetchData(`${apiUrl}/client/v2/search`, "POST", searchPayload);
+      }
     }
   }, [providerId]);
+
+  useEffect(() => {
+    if (localStorage) {
+      const cachedSearchResults = localStorage.getItem("searchItems");
+      if (cachedSearchResults) {
+        const parsedCachedResults = JSON.parse(cachedSearchResults);
+        setItems(parsedCachedResults);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -83,6 +95,7 @@ const Search = () => {
         }
         return [];
       });
+      localStorage.setItem("searchItems", JSON.stringify(allItems));
       setItems(allItems);
     }
   }, [data]);
@@ -91,7 +104,10 @@ const Search = () => {
     <div>
       <SearchBar
         searchString={keyword}
-        handleChange={(text: string) => fetchDataForSearch()}
+        handleChange={(text: string) => {
+          localStorage.removeItem("searchItems");
+          fetchDataForSearch();
+        }}
       />
 
       {loading ? <Loader /> : <ProductList productList={items} />}
