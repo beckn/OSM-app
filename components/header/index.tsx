@@ -1,21 +1,10 @@
 import React, { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
 import BottomModal from "../BottomModal";
-import Logo from "./Logo";
 import { Box, Image, Text } from "@chakra-ui/react";
 import Settings from "./Settings";
 import CartIcon from "../cart/CartIcon";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import { useLanguage } from "../../hooks/useLanguage";
-import Language from "./language/Language";
-
-const UserBox = dynamic(() => import("./user"), {
-  ssr: false,
-});
-const Theme = dynamic(() => import("./theme/Theme"), {
-  ssr: false,
-});
 
 const cartIconBlackList = [
   "/orderConfirmation",
@@ -32,7 +21,7 @@ const cartIconBlackList = [
 
 const backIconList = ["/", "/orderDetails"];
 
-const homeIconBlackList = ["/orderHistory", "/","/homePage"];
+const homeIconBlackList = ["/orderHistory", "/", "/homePage"];
 
 const storeHeaderBlackList = [
   "/checkoutPage",
@@ -124,9 +113,14 @@ const TopHeader: React.FC<TopHeaderProps> = ({ handleMenuClick }) => {
             )}
 
             {!homeIconBlackList.includes(router.pathname) && (
-              <Link href="/">
-                <Image src="/images/Home_icon.svg" alt="home Icon" />
-              </Link>
+              <Image
+                onClick={() => {
+                  localStorage.clear();
+                  router.push("/");
+                }}
+                src="/images/Home_icon.svg"
+                alt="home Icon"
+              />
             )}
           </div>
         </div>
