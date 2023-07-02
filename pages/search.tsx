@@ -38,9 +38,9 @@ const Search = () => {
     },
     message: {
       criteria: {
-        dropLocation: "48.85041854,2.343660801",
-        categoryName: "eBook",
-        providerId: providerId,
+        dropLocation: "12.9715987,77.5945627",
+        searchString: "trek",
+        category_name: "RetailEnglish",
       },
     },
   };
@@ -50,11 +50,11 @@ const Search = () => {
 
   useEffect(() => {
     if (localStorage && !localStorage.getItem("searchItems")) {
-      if (providerId) {
-        fetchData(`${apiUrl}/client/v2/search`, "POST", searchPayload);
-      }
+      // if (providerId) {
+      fetchData(`${apiUrl}/client/v2/search`, "POST", searchPayload);
+      // }
     }
-  }, [providerId]);
+  }, []);
 
   useEffect(() => {
     if (localStorage) {

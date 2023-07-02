@@ -1,6 +1,6 @@
+import { Box } from "@chakra-ui/react";
 import React from "react";
 import { useLanguage } from "../../hooks/useLanguage";
-
 
 interface Props {
   price: number;
@@ -16,32 +16,27 @@ const ProductPrice: React.FC<Props> = ({
   const { t, locale } = useLanguage();
 
   //style base on component position
-  const textMainPriceSize = isLargeSize
-    ? "text-xl md:text-3xl"
-    : "text-md md:text-lg";
-  const textDiscountPriceSize = isLargeSize
-    ? "text-md md:text-xl"
-    : "text-[12px] md:text-md";
+  const textMainPriceSize = isLargeSize ? " md:text-3xl" : " md:text-lg";
+  const textDiscountPriceSize = isLargeSize ? " md:text-xl" : " md:text-md";
   const justifyContent = isInSlider && locale === "fa" ? "flex-start" : "";
   const flexDirection = "row";
 
   return (
     <div>
       <div
-        className={`flex rtl:justify-end rtl:self-end ltr:self-start text-left mt-2`}
+        className={`flex rtl:justify-end rtl:self-end ltr:self-start text-left `}
         style={{ justifyContent }}
       >
         <div>
           {/* ☝slider cards (.slick-slide=>Slider component) are float and because of that, they don't accept height so, for making cards the same height, I have to do this hack*/}
-          <div
-            className={`flex items-center ${textMainPriceSize} font-bold no-underline`}
+          <Box
+            color={"rgba(var(--color-primary))"}
+            className={`flex items-center ${textMainPriceSize} font-semibold no-underline`}
             style={{ flexDirection }}
           >
-            <span className="mr-1 rtl:block">
-              {t.currencySymbol}
-            </span>
+            <span className="mr-1 rtl:block">{t.currencySymbol}</span>
             <span>{price.toFixed(2)}</span>
-          </div>
+          </Box>
         </div>
       </div>
     </div>
