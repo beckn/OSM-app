@@ -78,7 +78,7 @@ const getHeaderTitleForPage = (
       return <Text>{values[pathName]}</Text>;
     default:
       return (
-        <Box width={"260px"} className="md:hidden ml-2    flex gap-1 my-2">
+        <Box width={"260px"} className="md:hidden ml-2  flex gap-1 my-2">
           <Text
             margin={"0 auto"}
             textAlign={"center"}
@@ -168,7 +168,7 @@ const BottomHeader = () => {
 
   return (
     <header className="md:fixed left-0 right-0 mb-4 top-0 md:bg-palette-fill shadow-sm pt-4 z-[1000] app_header_b fixed mt-7 z-[99] bg-[#fff]">
-      <div className="flex flex-col md:px-4 mb-2">
+      <div className="flex flex-col md:px-4">
         <div className="flex items-center justify-between md:order-2 md:mt-2 py-4  relative">
           <div className="flex gap-4 items-center">
             {!backIconList.includes(router.pathname) && (
