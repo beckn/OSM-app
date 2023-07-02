@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { Button as ButtonComp } from "@chakra-ui/react";
 
 export interface ButtonPropsModel {
-  buttonText: string;
+  buttonText: string | ReactElement;
   background: string;
   color: string;
   handleOnClick?: () => void;
@@ -15,14 +15,15 @@ const Button: React.FC<ButtonPropsModel> = (props) => {
   return (
     <>
       <ButtonComp
+        className="border_radius_all"
         isDisabled={isDisabled}
+        fontSize={"15px"}
         height={"48px"}
         backgroundColor={
           !isDisabled ? props.background : "rgba(var(--disabled-btn-color))"
         }
         color={props.color}
         width={"100%"}
-        borderRadius={"12px"}
         border={
           !isDisabled
             ? "1px solid rgba(var(--color-primary))"
