@@ -330,7 +330,7 @@ const Homepage = () => {
                 JSON.stringify(selectedStore?.tags)
               );
             }}
-            className="px-[47px] mt-1 py-[12px]  bg-palette-primary rounded-md text-white"
+            className="px-[47px] mt-1 py-[12px]  bg-palette-primary text-white border_radius_all"
           >
             {t["shopButton"]}
           </button>

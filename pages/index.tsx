@@ -1,6 +1,6 @@
 import { Box, Image, Input } from "@chakra-ui/react";
 import React, { useState } from "react";
-import CommerceLogo from "../public/images/CommerceLogo.svg";
+import LoginIcon from "../public/images/LoginIcon.svg";
 import style from "../components/detailsCard/ShippingForm.module.css";
 import Button from "../components/button/Button";
 import Router from "next/router";
@@ -36,14 +36,9 @@ const MobileLogin = () => {
   };
 
   return (
-    <Box padding={"0 31px"}>
-      <Box mt={"80px"}>
-        <Image
-          src={CommerceLogo}
-          w={"305px"}
-          height={"26px"}
-          margin={"0 auto"}
-        />
+    <Box padding={"0 21px"}>
+      <Box mt={"30px"}>
+        <Image src={LoginIcon} />
       </Box>
       <Box mt={"60px"} mb={"37px"}>
         <div className={style.container}>
