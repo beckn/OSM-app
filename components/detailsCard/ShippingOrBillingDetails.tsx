@@ -4,13 +4,15 @@ import CallphoneIcon from "../../public/images/CallphoneIcon.svg";
 import locationIcon from "../../public/images/locationIcon.svg";
 import nameIcon from "../../public/images/nameIcon.svg";
 
-export interface ShippingDetailsProps {
+export interface ShippingOrBillingDetailsProps {
   name: string;
   location: string;
   number: number | string;
 }
 
-const ShippingDetails: React.FC<ShippingDetailsProps> = (props) => {
+const ShippingOrBillingDetails: React.FC<ShippingOrBillingDetailsProps> = (
+  props
+) => {
   return (
     <Box padding={"0px 15px"}>
       <Stack divider={<StackDivider />} spacing="4">
@@ -31,4 +33,4 @@ const ShippingDetails: React.FC<ShippingDetailsProps> = (props) => {
   );
 };
 
-export default ShippingDetails;
+export default ShippingOrBillingDetails;
