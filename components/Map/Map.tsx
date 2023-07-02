@@ -101,7 +101,7 @@ const Map: React.FC<MapProps> = ({ stores, selectedStore, coords, handleModalOpe
 		<MapContainer
 			style={{ maxHeight: '100vh', height: '90vh' }}
 			center={[lat, long]}
-			zoom={18}
+			zoom={16}
 			zoomControl={false}
 			scrollWheelZoom={true}
 			zoomAnimation={true}

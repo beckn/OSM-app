@@ -20,7 +20,7 @@ const SearchBar: React.FC<SearchBarProp> = ({setQuery,loading}) => {
 <div className="max-w-[50rem] w-[90%] md:w-[90%] px-4 mx-auto mt-4 mb-3 border border-[#C9C9C9] border-solid  md:ltr:ml-4 md:rtl:mr-4 rounded-[12px]  dark:bg-slate-800 flex items-center justify-center flex-grow">
       <GoSearch style={{ color: "rgb(156 163 175)" }} />
       <input
-        className="px-4 py-2 md:py-3 bg-transparent outline-none w-full "
+        className="px-4 py-2 md:py-3 bg-transparent outline-none w-full text-[15px]"
         type="search"
         placeholder={`${t.search}`}
 				onChange={(e)=>setValue(e.target.value)}

@@ -32,7 +32,7 @@ const cartIconBlackList = [
 
 const backIconList = ["/", "/orderDetails"];
 
-const homeIconWhiteList = ["/orderHistory", "/"];
+const homeIconBlackList = ["/orderHistory", "/","/homePage"];
 
 const storeHeaderBlackList = [
   "/checkoutPage",
@@ -123,7 +123,7 @@ const TopHeader: React.FC<TopHeaderProps> = ({ handleMenuClick }) => {
               />
             )}
 
-            {!homeIconWhiteList.includes(router.pathname) && (
+            {!homeIconBlackList.includes(router.pathname) && (
               <Link href="/">
                 <Image src="/images/Home_icon.svg" alt="home Icon" />
               </Link>
