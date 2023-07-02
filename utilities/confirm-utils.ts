@@ -122,6 +122,34 @@ export const getPayloadForStatusRequest = (
   return payload;
 };
 
+export const getPayloadForTrackRequest = (
+  confirmOrderMetaDataPerBpp: any,
+  transactionId: { transactionId: string }
+) => {
+  const payload: any = {
+    trackRequestDto: [],
+  };
+
+  Object.keys(confirmOrderMetaDataPerBpp).forEach((bppId) => {
+    const statusItem: any = {
+      context: {
+        transaction_id: transactionId.transactionId,
+        bpp_id: bppId,
+        bpp_uri: confirmOrderMetaDataPerBpp[bppId].bpp_uri,
+        domain: "retail",
+      },
+
+      message: {
+        order_id: confirmOrderMetaDataPerBpp[bppId].id,
+      },
+    };
+
+    payload.trackRequestDto.push(statusItem);
+  });
+
+  return payload;
+};
+
 export const getOrderPlacementTimeline = (timeStamp: string) => {
   const localDateAndTime = new Date(timeStamp);
   const localTime = localDateAndTime.toLocaleTimeString();

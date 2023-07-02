@@ -21,6 +21,7 @@ import {
   getConfirmMetaDataForBpp,
   getOrderPlacementTimeline,
   getPayloadForStatusRequest,
+  getPayloadForTrackRequest,
 } from "../utilities/confirm-utils";
 import {
   getDataPerBpp,
@@ -33,6 +34,7 @@ import ViewMoreOrderModal from "../components/orderDetails/ViewMoreOrderModal";
 import { useSelector } from "react-redux";
 import { TransactionIdRootState } from "../lib/types/cart";
 import useRequest from "../hooks/useRequest";
+import { renderOrderStatusList } from "../components/orderDetails/RenderOrderStatusTree";
 
 const OrderDetails = () => {
   const [allOrderDelivered, setAllOrderDelivered] = useState(false);
@@ -45,6 +47,7 @@ const OrderDetails = () => {
   );
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const statusRequest = useRequest();
+  const trackRequest = useRequest();
 
   const { t } = useLanguage();
 
@@ -61,6 +64,16 @@ const OrderDetails = () => {
         const payloadForStatusRequest = getPayloadForStatusRequest(
           confirmOrderMetaDataPerBpp,
           transactionId
+        );
+        const payloadForTrackRequest = getPayloadForTrackRequest(
+          confirmOrderMetaDataPerBpp,
+          transactionId
+        );
+
+        trackRequest.fetchData(
+          `${apiUrl}/client/v2/track`,
+          "POST",
+          payloadForTrackRequest
         );
 
         const intervalId = setInterval(() => {
@@ -93,18 +106,10 @@ const OrderDetails = () => {
   const orderFromConfirmData =
     confirmData[0].message.responses[0].message.order;
 
-  const shippingDetails = {
-    name: orderFromConfirmData.billing.name.replace(/^\.+/, "").trim(),
-    address: orderFromConfirmData.billing.address.state,
-    phone: orderFromConfirmData.billing.phone,
-  };
-
   const { subTotal, totalDeliveryCharge } =
     getSubTotalAndDeliveryChargesForOrder(confirmData);
 
   const orderState = orderFromConfirmData.payment.status;
-
-  const fulfillmentId = orderFromConfirmData.fulfillment.id;
 
   const totalQuantityOfOrder = (res: any) => {
     let count = 0;
@@ -112,6 +117,12 @@ const OrderDetails = () => {
       count += item.quantity.count;
     });
     return count;
+  };
+
+  const shippingDetails = {
+    name: orderFromConfirmData.billing.name.replace(/^\.+/, "").trim(),
+    address: orderFromConfirmData.billing.address.state,
+    phone: orderFromConfirmData.billing.phone,
   };
 
   return (
@@ -169,7 +180,7 @@ const OrderDetails = () => {
                   <Text as={"span"} pr={"2px"}>
                     {
                       statusResponse.filter(
-                        (res: any) => res.message.order.state !== '"DELIVERED"'
+                        (res: any) => res.message.order.state === "DELIVERED"
                       ).length
                     }
                   </Text>
@@ -184,8 +195,9 @@ const OrderDetails = () => {
         </CardBody>
       </Accordion>
 
-      {statusResponse.map((res: any) => (
+      {statusResponse.map((res: any, index: number) => (
         <Accordion
+          key={index}
           accordionHeader={
             <Box>
               <Text mb={"15px"}>Order ID #123456789102 </Text>
@@ -223,72 +235,10 @@ const OrderDetails = () => {
             isOpen={isOpen}
             onOpen={onOpen}
             onClose={onClose}
+            items={res.message.order.items}
           />
           <Divider mb={"20px"} />
-          <CardBody pt={"unset"}>
-            <Box>
-              <Flex alignItems={"center"} justifyContent={"space-between"}>
-                <Flex alignItems={"center"}>
-                  <Image width={"12px"} height={"13px"} src={TrackIcon} />
-                  <Text
-                    paddingLeft={"10px"}
-                    fontSize={"15px"}
-                    fontWeight={"600"}
-                  >
-                    {t.orderConfirmed}
-                  </Text>
-                </Flex>
-              </Flex>
-              <Flex>
-                <Image src={lineBlack} width={"12px"} height={"40px"} />
-                <Text paddingLeft={"10px"} fontSize={"10px"} pt={"10px"}>
-                  21st Jun 2021, 12:11pm
-                </Text>
-              </Flex>
-            </Box>
-            <Box>
-              <Flex alignItems={"center"} justifyContent={"space-between"}>
-                <Flex alignItems={"center"}>
-                  <Image width={"12px"} height={"13px"} src={TrackIcon} />
-                  <Text
-                    paddingLeft={"10px"}
-                    fontSize={"15px"}
-                    fontWeight={"600"}
-                  >
-                    Order Packed
-                  </Text>
-                </Flex>
-              </Flex>
-              <Flex>
-                <Image src={lineBlack} width={"12px"} height={"40px"} />
-                <Text paddingLeft={"10px"} fontSize={"10px"} pt={"10px"}>
-                  21st Jun 2021, 12:21pm
-                </Text>
-              </Flex>
-            </Box>
-            <Box>
-              <Flex alignItems={"center"} justifyContent={"space-between"}>
-                <Flex alignItems={"center"}>
-                  <Image width={"12px"} height={"13px"} src={TrackIcon} />
-                  <Text
-                    paddingLeft={"10px"}
-                    fontSize={"15px"}
-                    fontWeight={"600"}
-                  >
-                    Order Out for Delivery
-                  </Text>
-                </Flex>
-                <Text fontSize={"15px"} color={"rgba(var(--color-primary))"}>
-                  Track
-                </Text>
-              </Flex>
-              <Flex>
-                <Text paddingLeft={"22px"} fontSize={"10px"} pt={"10px"}>
-                  21st Jun 2021, 12:31pm
-                </Text>
-              </Flex>
-            </Box>
-          </CardBody>
+          <CardBody pt={"unset"}>{renderOrderStatusList(res)}</CardBody>
         </Accordion>
       ))}
 
@@ -320,7 +270,10 @@ const OrderDetails = () => {
             alignItems={"center"}
           >
             <Text>Subtotal</Text>
-            <Text>Rs.{subTotal}</Text>
+            <Text>
+              {t.currencySymbol}
+              {subTotal}
+            </Text>
           </Flex>
           <Flex
             justifyContent={"space-between"}
@@ -328,7 +281,10 @@ const OrderDetails = () => {
             pb={"20px"}
           >
             <Text>Delivery Charges</Text>
-            <Text>Rs.{totalDeliveryCharge}</Text>
+            <Text>
+              {t.currencySymbol}
+              {totalDeliveryCharge}
+            </Text>
           </Flex>
           <Divider />
         </CardBody>
@@ -341,7 +297,10 @@ const OrderDetails = () => {
             fontWeight={"600"}
           >
             <Text>Total</Text>
-            <Text>Rs.{subTotal + totalDeliveryCharge}</Text>
+            <Text>
+              {t.currencySymbol}
+              {subTotal + totalDeliveryCharge}
+            </Text>
           </Flex>
           <Flex
             fontSize={"15px"}

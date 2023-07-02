@@ -6,23 +6,24 @@ import {
   ModalCloseButton,
   Divider,
   ModalBody,
-  Button,
   Box,
   Text,
   Image,
 } from "@chakra-ui/react";
 import React from "react";
 import ButtonComp from "../button/Button";
-
 import crossIcon from "../../public/images/crossIcon.svg";
+import { useLanguage } from "../../hooks/useLanguage";
 
 export interface ViewMoreOrderModalProps {
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
+  items: any;
 }
 
 const ViewMoreOrderModal: React.FC<ViewMoreOrderModalProps> = (props) => {
+  const { t } = useLanguage();
   return (
     <>
       <Modal
@@ -46,7 +47,7 @@ const ViewMoreOrderModal: React.FC<ViewMoreOrderModalProps> = (props) => {
             padding={"15px 20px"}
             fontSize={"17px"}
           >
-            <Text>Search</Text>
+            <Text>Order ID #123456789102</Text>
             <ModalCloseButton position={"unset"}>
               <Image src={crossIcon} />
             </ModalCloseButton>
@@ -56,36 +57,30 @@ const ViewMoreOrderModal: React.FC<ViewMoreOrderModalProps> = (props) => {
           </Box>
 
           <ModalBody padding={"15px 20px"}>
-            <Flex mb={"20px"} justifyContent={"space-between"}>
-              <Box>
-                <Text>Rosie Carpe by Marie N Diaye</Text>
-                <Text fontSize={"12px"} fontWeight={"600"} pt={"5px"}>
-                  x 2
-                </Text>
-              </Box>
-              <Text
-                fontSize={"15px"}
-                fontWeight={"600"}
-                color={"rgba(var(--color-primary))"}
-              >
-                € 6.48
-              </Text>
-            </Flex>
-            <Flex mb={"20px"} justifyContent={"space-between"}>
-              <Box>
-                <Text>Rosie Carpe by Marie N Diaye</Text>
-                <Text fontSize={"12px"} fontWeight={"600"} pt={"5px"}>
-                  x 2
-                </Text>
-              </Box>
-              <Text
-                fontSize={"15px"}
-                fontWeight={"600"}
-                color={"rgba(var(--color-primary))"}
-              >
-                € 6.48
-              </Text>
-            </Flex>
+            {props.items.map((item: any) => {
+              return (
+                <Flex
+                  key={item.id}
+                  mb={"20px"}
+                  justifyContent={"space-between"}
+                >
+                  <Box>
+                    <Text>{item.descriptor.name}</Text>
+                    <Text fontSize={"12px"} fontWeight={"600"} pt={"5px"}>
+                      x {item.quantity.count}
+                    </Text>
+                  </Box>
+                  <Text
+                    fontSize={"15px"}
+                    fontWeight={"600"}
+                    color={"rgba(var(--color-primary))"}
+                  >
+                    {t.currencySymbol}
+                    {item.price.offered_value}
+                  </Text>
+                </Flex>
+              );
+            })}
 
             <ButtonComp
               buttonText={"Close"}
