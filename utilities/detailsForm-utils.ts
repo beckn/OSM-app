@@ -34,7 +34,7 @@ export const validateForm = (formData: ShippingFormData): FormErrors => {
   if (formData.zipCode.trim() === "") {
     errors.zipCode = "Pincode is required";
   } else if (!/^\d{5}$/.test(formData.zipCode)) {
-    errors.zipCode = "Invalid Pincode";
+    errors.zipCode = "Invalid Zip code";
   }
 
   return errors;

@@ -44,6 +44,25 @@ const OrderConfirmation = () => {
   }, []);
 
   useEffect(() => {
+    if (!initResponse && localStorage && localStorage.getItem("initResult")) {
+      const parsedInitResult = JSON.parse(
+        localStorage.getItem("initResult") as string
+      );
+      const initMetaDataPerBpp = getInitMetaDataPerBpp(parsedInitResult);
+
+      const payLoadForConfirmRequest = getPayloadForConfirmRequest(
+        initMetaDataPerBpp,
+        transactionId
+      );
+      confirmRequest.fetchData(
+        `${apiUrl}/client/v2/confirm`,
+        "POST",
+        payLoadForConfirmRequest
+      );
+    }
+  }, []);
+
+  useEffect(() => {
     if (confirmRequest.data) {
       localStorage.setItem("confirmData", JSON.stringify(confirmRequest.data));
       const timeout = setTimeout(() => {
