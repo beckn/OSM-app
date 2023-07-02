@@ -40,47 +40,49 @@ const MobileOtp = () => {
 
   return (
     <>
-      <Box padding={"40px 20px 37px 20px"}>
-        <Text fontSize={"30px"} fontWeight={"600"}>
-          Verify your mobile number
-        </Text>
+      <Box padding={"0 21px"}>
+        <Box mt={"20px"}>
+          <Text fontSize={"30px"} fontWeight={"600"}>
+            Verify your mobile number
+          </Text>
 
-        <Text pt={"10px"} fontSize={"15px"}>
-          Have sent an OTP to your mobile <br />
-          number ending with 4321
-        </Text>
-      </Box>
+          <Text pt={"10px"} fontSize={"15px"}>
+            Have sent an OTP to your mobile <br />
+            number ending with 4321
+          </Text>
+        </Box>
 
-      <Box padding={"32px 20px 0 20px"}>
-        <div className={style.container}>
-          <div className={style.did_floating_label_content}>
-            <input
-              className={`${style["did_floating_input"]} {$style["otp_number_input"]}`}
-              type="text"
-              placeholder=" "
-              name="OTP"
-              value={OTP}
-              onChange={handleOTP}
-            />
+        <Box mt={"40px"}>
+          <div className={style.container}>
+            <div className={style.did_floating_label_content}>
+              <input
+                className={`${style["did_floating_input"]} {$style["otp_number_input"]}`}
+                type="text"
+                placeholder=" "
+                name="OTP"
+                value={OTP}
+                onChange={handleOTP}
+              />
 
-            {OTPError && <span className={style.error}>{OTPError}</span>}
+              {OTPError && <span className={style.error}>{OTPError}</span>}
 
-            <label
-              className={`${style["did_floating_label"]} ${style["otp_number"]}`}
-            >
-              Enter OTP here
-            </label>
+              <label
+                className={`${style["did_floating_label"]} ${style["otp_number"]}`}
+              >
+                Enter OTP here
+              </label>
+            </div>
           </div>
-        </div>
-      </Box>
+        </Box>
 
-      <Button
-        buttonText={"Login"}
-        background={"rgba(var(--color-primary))"}
-        color={"rgba(var(--text-color))"}
-        isDisabled={false}
-        handleOnClick={handleFormSubmit}
-      />
+        <Button
+          buttonText={"Login"}
+          background={"rgba(var(--color-primary))"}
+          color={"rgba(var(--text-color))"}
+          isDisabled={false}
+          handleOnClick={handleFormSubmit}
+        />
+      </Box>
     </>
   );
 };

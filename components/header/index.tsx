@@ -23,33 +23,47 @@ const cartIconBlackList = [
   "/trackOrder",
   "/feedback",
   "/orderHistory",
+  "/",
+  "/mobileOtp",
+  "/cart",
+  "/checkoutPage",
+  "/paymentMode",
 ];
+
+const backIconList = ["/", "/orderDetails"];
 
 const homeIconWhiteList = ["/orderHistory", "/"];
 
 const storeHeaderBlackList = [
   "/checkoutPage",
   "/orderHistory",
-  "orderDetails",
+  "/orderDetails",
   "/cart",
   "/homePage",
   "/orderConfirmation",
   "feedback",
+  "/",
+  "/mobileOtp",
+  "/paymentMode",
 ];
 const headerValues = {
   "/checkoutPage": "Billing & Shipping",
   "/orderHistory": "Order History",
   "/orderDetails": "Order Details",
+  "/": "Sign In",
+  "/mobileOtp": "Sign In",
+  "/cart": "Cart",
+  "/paymentMode": "Select Payment Method",
   feedback: "Feedback",
 };
 
 const topHeaderBlackList: string[] = [];
 
-const bottomHeaderBlackList = ["/"];
+const bottomHeaderBlackList = ["/homePage", "/orderConfirmation"];
 
-const menuIconWhiteList = ["/"];
+const menuIconWhiteList = ["/homePage"];
 
-const languageIconWhiteList = ["/"];
+const languageIconWhiteList = ["/homePage"];
 
 const getHeaderTitleForPage = (
   name: string,
@@ -148,9 +162,11 @@ const BottomHeader = () => {
       <div className="flex flex-col md:px-4 mb-2">
         <div className="flex items-center justify-between md:order-2 md:mt-2 py-4  relative">
           <div className="flex gap-4 items-center">
-            <div onClick={() => router.back()}>
-              <Image src="/images/Back.svg" alt="Back icon" />
-            </div>
+            {!backIconList.includes(router.pathname) && (
+              <div onClick={() => router.back()}>
+                <Image src="/images/Back.svg" alt="Back icon" />
+              </div>
+            )}
           </div>
 
           {getHeaderTitleForPage(
