@@ -307,5 +307,14 @@ const en: { [key: string]: string } = {
   explorePlaces: "Explore Nearby Places",
   comingSoon: "Coming Soon !",
   confirmOrder: "Confirm Order",
+  orderPlacedAt:'Placed At',
+  ordersFulfilled:'Orders Fulfilled',
+  subTotal:'Sub Total',
+  deliveryCharge:'Delivery Charges',
+  total:'Total',
+  status:'Status',
+  paymentMethod:'Payment Method',
+cards: "Cartes de Crédit et de Débit",
+addCard: "Ajouter une Carte",
 };
 export default en;

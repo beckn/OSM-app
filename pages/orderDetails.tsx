@@ -153,7 +153,7 @@ const OrderDetails = () => {
       <Accordion
         accordionHeader={
           <Box>
-            <Text>Order Summary</Text>
+            <Text>{t.orderSummary}</Text>
           </Box>
         }
       >
@@ -163,7 +163,7 @@ const OrderDetails = () => {
             justifyContent={"space-between"}
             alignItems={"center"}
           >
-            <Text>{"Placed at"}</Text>
+            <Text>{t.orderPlacedAt}</Text>
             <Text>
               {getOrderPlacementTimeline(orderFromConfirmData.created_at)}
             </Text>
@@ -175,7 +175,7 @@ const OrderDetails = () => {
                 justifyContent={"space-between"}
                 alignItems={"center"}
               >
-                <Text>Orders Fulfilled</Text>
+                <Text>{t.ordersFulfilled}</Text>
                 <Box>
                   <Text as={"span"} pr={"2px"}>
                     {
@@ -269,7 +269,7 @@ const OrderDetails = () => {
             justifyContent={"space-between"}
             alignItems={"center"}
           >
-            <Text>Subtotal</Text>
+            <Text>{t.subTotal}</Text>
             <Text>
               {t.currencySymbol}
               {subTotal}
@@ -280,7 +280,7 @@ const OrderDetails = () => {
             alignItems={"center"}
             pb={"20px"}
           >
-            <Text>Delivery Charges</Text>
+            <Text>{t.deliveryCharge}</Text>
             <Text>
               {t.currencySymbol}
               {totalDeliveryCharge}
@@ -296,7 +296,7 @@ const OrderDetails = () => {
             fontSize={"17px"}
             fontWeight={"600"}
           >
-            <Text>Total</Text>
+            <Text>{t.total}</Text>
             <Text>
               {t.currencySymbol}
               {subTotal + totalDeliveryCharge}
@@ -308,7 +308,7 @@ const OrderDetails = () => {
             alignItems={"center"}
             pb={"15px"}
           >
-            <Text>Status</Text>
+            <Text>{t.status}</Text>
             <Text>{orderState}</Text>
           </Flex>
           <Flex
@@ -317,7 +317,7 @@ const OrderDetails = () => {
             alignItems={"center"}
             pb={"15px"}
           >
-            <Text>Payment Method</Text>
+            <Text>{t.paymentMethod}</Text>
             <Text>Cash on Delivery</Text>
           </Flex>
         </CardBody>

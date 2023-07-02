@@ -64,9 +64,7 @@ const OrderConfirmation = () => {
   return (
     <Box position={"relative"}>
       <Image src={orderConfirmmark} margin={"41px auto"} />
-      <Text fontSize={"17px"} fontWeight={"600"} textAlign={"center"}>
-        Order Placed!
-      </Text>
+      <Text fontSize={"17px"} fontWeight={"600"} textAlign={"center"}>{t.orderPlaced}</Text>
       <Stack>
         <Text
           textAlign={"center"}
