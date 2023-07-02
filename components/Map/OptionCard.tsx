@@ -2,6 +2,7 @@ import React from 'react'
 import { IconType } from 'react-icons';
 import cs from 'classnames';
 import { useLanguage } from '../../hooks/useLanguage';
+import {toast} from 'react-toastify';
 
 
 type OptionMeta = {
@@ -29,15 +30,24 @@ const OptionCard:React.FC<OptionCardProps> = ({optionMeta:{tagName,tagValue,titl
 	return (
 
 		<div className='text-center' onClick={(e)=>{
+			if(tagValue !== 'Books') {
+				toast.info(`${t.comingSoon}`, {
+					theme:  "light",
+					position:"top-center" ,
+					className:'bg-[#fff] text-[#000]'
+				});
+
+			}
+
 			setOption({tagName,tagValue})
 
 		}} >
 			{/* <OptionIcon /> */}
-			<div className={cs('mb-2 min-w-[40px] min-h-[40px]  rounded-xl p-4 shadow-custom',{['bg-palette-primary']:isSelected},{['bg-white']:!isSelected})}>
+			<div className={cs('mb-2 min-w-[40px] min-h-[40px]  rounded-xl p-3 shadow-custom',{['bg-palette-primary']:isSelected},{['bg-white']:!isSelected})}>
 
 			<img src={isSelected ? iconUrlLight : iconUrl} alt="" />
 			</div>
-			<p className={cs('text-sm',{['text-palette-primary']:isSelected})}>{t[`${title}`]}</p>
+			<p className={cs('text-xs',{['text-palette-primary']:isSelected})}>{t[`${title}`]}</p>
 		</div>
 	)
 }

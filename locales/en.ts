@@ -304,5 +304,6 @@ const en: { [key: string]: string } = {
   saveBillingDetails: "Save Billing Details",
   addBillingDetails: "Add Billing Details",
   explorePlaces: "Explore Nearby Places",
+  comingSoon:'Coming Soon !'
 };
 export default en;
