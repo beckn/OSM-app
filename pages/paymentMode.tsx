@@ -10,19 +10,8 @@ import { getSubTotalAndDeliveryCharges } from "../utilities/checkout-utils";
 import creditCardImg from "../public/images/creditCardImg.svg";
 
 function PaymentMode() {
-  const [totalPrice, setTotalPrice] = useState(0);
   const { t } = useLanguage();
   const router = useRouter();
-
-  const initData = useSelector((state: any) => state.initResponse.initResponse);
-
-  useEffect(() => {
-    if (initData) {
-      const { subTotal, totalDeliveryCharge } =
-        getSubTotalAndDeliveryCharges(initData);
-      setTotalPrice(subTotal + totalDeliveryCharge);
-    }
-  }, []);
 
   return (
     <>
