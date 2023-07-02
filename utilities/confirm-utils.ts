@@ -32,10 +32,12 @@ export const getConfirmMetaDataForBpp = (initRes: ResponseModel[]) => {
 
 export const getPayloadForConfirmRequest = (
   initMetaDataPerBpp: any,
-  transactionId: { transactionId: string }
+  transactionId: { transactionId: string },
+  userId: string
 ) => {
   const payload: any = {
     confirmRequestDto: [],
+    userId: userId,
   };
 
   Object.keys(initMetaDataPerBpp).forEach((bppId) => {

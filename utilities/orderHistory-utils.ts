@@ -3,8 +3,7 @@ import { ResponseModel } from "../lib/types/responseModel";
 export const getTotalQuantityOfSingleOrder = (orderArray: any) => {
   let totalQuantity = 0;
   orderArray.map((res: any) => {
-    const itemsLength: number =
-      res.message.responses[0].message.order.items.length;
+    const itemsLength: number = res.message.order.items.length;
     totalQuantity += itemsLength;
   });
   return totalQuantity;
@@ -13,9 +12,7 @@ export const getTotalQuantityOfSingleOrder = (orderArray: any) => {
 export const getTotalPriceOfSingleOrder = (orderArray: any) => {
   let totalPrice = 0;
   orderArray.map((res: any) => {
-    const price: number = parseFloat(
-      res.message.responses[0].message.order.payment.params.amount
-    );
+    const price: number = parseFloat(res.message.order.payment.params.amount);
     totalPrice += price;
   });
   return totalPrice;

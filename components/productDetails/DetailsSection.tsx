@@ -16,8 +16,6 @@ const DetailsSection: React.FC<Props> = ({ product }) => {
     setShowComponent(true);
   }, []);
 
-  const starCount = Math.floor(Math.random() * 5) + 1;
-
   if (!showComponent) {
     return <></>;
   }
@@ -40,10 +38,10 @@ const DetailsSection: React.FC<Props> = ({ product }) => {
             <StarRatingComponent
               name="product_rate"
               starCount={5}
-              value={starCount}
+              value={parseFloat(product.tags.rating)}
             />
             <p className="text-sm text-palette-mute rtl:mr-2 ltr:ml-2 pl-1">
-              {starCount} {t.stars}
+              {parseFloat(product.tags.rating)} {t.stars}
             </p>
           </div>
 
