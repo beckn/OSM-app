@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import BottomModal from "../BottomModal";
 import Logo from "./Logo";
-import { Image, Text } from "@chakra-ui/react";
+import { Box, Image, Text } from "@chakra-ui/react";
 import Settings from "./Settings";
 import CartIcon from "../cart/CartIcon";
 import { useRouter } from "next/router";
@@ -17,7 +17,7 @@ const Theme = dynamic(() => import("./theme/Theme"), {
   ssr: false,
 });
 
-const cardIconBlackList = [
+const cartIconBlackList = [
   "/orderConfirmation",
   "/orderDetails",
   "/trackOrder",
@@ -25,41 +25,31 @@ const cardIconBlackList = [
   "/orderHistory",
 ];
 
-const homeIconWhiteList = [
-  '/orderHistory',
-  '/'
-]
+const homeIconWhiteList = ["/orderHistory", "/"];
 
 const storeHeaderBlackList = [
   "/checkoutPage",
   "/orderHistory",
   "orderDetails",
+  "/cart",
+  "/",
+  "/orderConfirmation",
   "feedback",
 ];
 const headerValues = {
-  "/checkoutPage": "Checkout",
+  "/checkoutPage": "Billing & Shipping",
   "/orderHistory": "Order History",
   "/orderDetails": "Order Details",
   feedback: "Feedback",
 };
 
-const topHeaderBlackList:string[] = [
+const topHeaderBlackList: string[] = [];
 
-]
+const bottomHeaderBlackList = ["/"];
 
-const bottomHeaderBlackList = [
-  '/'
+const menuIconWhiteList = ["/"];
 
-]
-
-const menuIconWhiteList = [
-  "/"
-]
-
-const languageIconWhiteList = [
-  "/"
-
-]
+const languageIconWhiteList = ["/"];
 
 const getHeaderTitleForPage = (
   name: string,
@@ -68,95 +58,81 @@ const getHeaderTitleForPage = (
 ) => {
   switch (true) {
     case storeHeaderBlackList.includes(pathName):
-      return (
-        <Text className="text-xl  truncate">{headerValues[pathName]}</Text>
-      );
+      return <Text>{headerValues[pathName]}</Text>;
     default:
       return (
-        <div className="md:hidden ml-2  max-w-[12rem]  flex gap-1 my-2">
-        
-          <Text className="text-xl  truncate">{name}</Text>
-        </div>
+        <Box width={"260px"} className="md:hidden ml-2    flex gap-1 my-2">
+          <Text
+            margin={"0 auto"}
+            textAlign={"center"}
+            fontSize={"17px"}
+            textOverflow={"ellipsis"}
+            whiteSpace={"nowrap"}
+            overflow={"hidden"}
+          >
+            {name}
+          </Text>
+        </Box>
       );
   }
 };
-
 
 export interface TopHeaderProps {
   handleMenuClick?: () => void;
 }
 
-
-
 const TopHeader: React.FC<TopHeaderProps> = ({ handleMenuClick }) => {
-
-
-  const [isMenuModalOpen, setMenuModalOpen] = useState(false)
+  const [isMenuModalOpen, setMenuModalOpen] = useState(false);
   const { t, locale } = useLanguage();
   const router = useRouter();
 
-
   const handleMenuModalClose = () => {
     setMenuModalOpen(false);
-  }
+  };
 
+  return (
+    <>
+      <div className="h-7 w-full bg-[#efefef]">
+        <div className="px-5 h-full flex items-center">
+          <div>
+            <Image src="/images/CommerceLogo.svg" alt="App logo" />
+          </div>
+          <div className="ml-auto flex gap-4">
+            {languageIconWhiteList.includes(router.pathname) && <Settings />}
 
-  return <>
-    <div className="h-7 w-full bg-[#D9D9D9]">
-      <div className="px-5 h-full flex items-center">
-        <div>
-          <Image src="/images/CommerceLogo.svg" alt="App logo" />
-        </div>
-        <div className="ml-auto flex gap-4">
-          {
-            languageIconWhiteList.includes(router.pathname) && <Settings />
-          }
-
-          {
-            menuIconWhiteList.includes(router.pathname) && (
-
+            {menuIconWhiteList.includes(router.pathname) && (
               <Image
                 onClick={() => setMenuModalOpen(true)}
                 className="block"
                 src="/images/3-dots.svg"
                 alt="menu icon"
               />
-            )
-          }
+            )}
 
-{!homeIconWhiteList.includes(router.pathname) &&
+            {!homeIconWhiteList.includes(router.pathname) && (
               <Link href="/">
-                <Image src="/images/Home_icon.svg" alt='home Icon' />
+                <Image src="/images/Home_icon.svg" alt="home Icon" />
               </Link>
-            }
-
-
-
+            )}
+          </div>
         </div>
       </div>
-    </div>
 
-    {/* Menu Modal */}
-    <BottomModal
-      isOpen={isMenuModalOpen}
-      onClose={handleMenuModalClose}
-    >
-      <div
-        onClick={() => {
-          router.push("/orderHistory");
-        }}
-        className="flex gap-2 py-5"
-      >
-
-        <Image src="/images/orderHistory.svg" alt="Order history icon" />
-        {t["orderHistory"]}
-      </div>
-    </BottomModal>
-  </>
-
-
-}
-
+      {/* Menu Modal */}
+      <BottomModal isOpen={isMenuModalOpen} onClose={handleMenuModalClose}>
+        <div
+          onClick={() => {
+            router.push("/orderHistory");
+          }}
+          className="flex gap-2 py-5"
+        >
+          <Image src="/images/orderHistory.svg" alt="Order history icon" />
+          {t["orderHistory"]}
+        </div>
+      </BottomModal>
+    </>
+  );
+};
 
 const BottomHeader = () => {
   const [optionTags, setOptionTags] = useState<any>();
@@ -175,8 +151,6 @@ const BottomHeader = () => {
             <div onClick={() => router.back()}>
               <Image src="/images/Back.svg" alt="Back icon" />
             </div>
-
-
           </div>
 
           {getHeaderTitleForPage(
@@ -185,7 +159,7 @@ const BottomHeader = () => {
             router.pathname
           )}
           <div className="flex gap-4">
-            {!cardIconBlackList.includes(router.pathname) && <CartIcon />}
+            {!cartIconBlackList.includes(router.pathname) && <CartIcon />}
           </div>
         </div>
       </div>
@@ -193,25 +167,18 @@ const BottomHeader = () => {
   );
 };
 
-
 const Header = () => {
-
   const router = useRouter();
 
   const renderTopHeader = !topHeaderBlackList.includes(router.pathname);
   const renderBottomHeader = !bottomHeaderBlackList.includes(router.pathname);
 
-
-  return <div >
-    {
-      renderTopHeader && <TopHeader />
-    }
-    {
-      renderBottomHeader && <BottomHeader />
-    }
-
-
-  </div>
-}
+  return (
+    <div>
+      {renderTopHeader && <TopHeader />}
+      {renderBottomHeader && <BottomHeader />}
+    </div>
+  );
+};
 
 export default Header;

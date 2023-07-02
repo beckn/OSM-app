@@ -25,18 +25,39 @@
   border-bottom: 1px solid #43464e;
   box-sizing: border-box;
 }
+.otp_number {
+  left: 0;
+}
 .did_floating_input:focus {
   outline: none;
   border-color: #a71b4a;
+}
+.did_floating_input.otp_number_input:focus {
+  outline: none;
+  border-color: #000;
 }
 .did_floating_input:focus ~ .did_floating_label {
   top: -8px;
   font-size: 14px;
   color: #a71b4a;
 }
+.did_floating_input:focus ~ .did_floating_label.otp_number {
+  top: -8px;
+  font-size: 14px;
+  color: #000;
+}
+.did_floating_input:focus ~ .did_floating_label.otp_number {
+  top: -12px;
+  font-size: 14px;
+  color: #000;
+}
 
 .did_floating_input:not(:placeholder-shown) ~ .did_floating_label {
   top: -8px;
+  font-size: 14px;
+}
+.did_floating_input:not(:placeholder-shown) ~ .did_floating_label.otp_number {
+  top: -12px;
   font-size: 14px;
 }
 .error {

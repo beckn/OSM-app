@@ -12,9 +12,9 @@ export interface PaymentDetailsProps {
 }
 
 const PaymentDetails: React.FC<PaymentDetailsProps> = (props) => {
-  const {t,locale} = useLanguage();
+  const { t, locale } = useLanguage();
   return (
-    <Box padding={"0px 15px"}>
+    <Box>
       <Flex
         justifyContent={"space-between"}
         alignItems={"center"}
@@ -37,12 +37,12 @@ const PaymentDetails: React.FC<PaymentDetailsProps> = (props) => {
       <Flex
         justifyContent={"space-between"}
         alignItems={"center"}
-        fontSize={"17px"}
-        fontWeight={"700"}
+        fontSize={"15px"}
+        fontWeight={"600"}
       >
         <Text>{props.totalText}</Text>
         <div className="flex">
-        <Text>{`${t.currencySymbol} ${props.totalValue}`}</Text>
+          <Text>{`${t.currencySymbol} ${props.totalValue}`}</Text>
         </div>
       </Flex>
     </Box>

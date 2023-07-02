@@ -11,6 +11,7 @@ export const AppHeader: React.FC<AppHeaderPropsModel> = (props) => {
   const goBack = () => Router.back();
   return (
     <Card
+      className="border_radius_all"
       marginLeft={"-20px"}
       marginRight={"-20px"}
       borderRadius={"none"}
