@@ -129,7 +129,6 @@ const TopHeader: React.FC<TopHeaderProps> = ({ handleMenuClick }) => {
             {!homeIconBlackList.includes(router.pathname) && (
               <Image
                 onClick={() => {
-                  localStorage.clear();
                   router.push("/");
                 }}
                 src="/images/Home_icon.svg"

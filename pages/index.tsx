@@ -30,6 +30,7 @@ const MobileLogin = () => {
   };
 
   const handleFormSubmit = () => {
+    localStorage.setItem("userPhone", phoneNumber);
     setPhoneNumber("");
     setPhoneNumberError("");
     Router.push("/mobileOtp");
