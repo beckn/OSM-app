@@ -35,6 +35,7 @@ import { useSelector } from "react-redux";
 import { TransactionIdRootState } from "../lib/types/cart";
 import useRequest from "../hooks/useRequest";
 import { renderOrderStatusList } from "../components/orderDetails/RenderOrderStatusTree";
+import { useRouter } from "next/router";
 
 const OrderDetails = () => {
   const [allOrderDelivered, setAllOrderDelivered] = useState(false);
@@ -48,6 +49,7 @@ const OrderDetails = () => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const statusRequest = useRequest();
   const trackRequest = useRequest();
+  const router = useRouter();
 
   const { t } = useLanguage();
 
@@ -94,6 +96,13 @@ const OrderDetails = () => {
   useEffect(() => {
     if (statusRequest.data) {
       setStatusResponse(statusRequest.data as any);
+      if (
+        statusRequest.data.every(
+          (res) => res.message.order.state === "DELIVERED"
+        )
+      ) {
+        setAllOrderDelivered(true);
+      }
     }
   }, [statusRequest.data]);
 
@@ -143,7 +152,11 @@ const OrderDetails = () => {
             </Flex>
             <Flex alignItems={"center"} fontSize={"15px"} pl={"20px"}>
               <Text>How did we do?</Text>
-              <Text pl={"10px"} color={"rgba(var(--color-primary))"}>
+              <Text
+                onClick={() => router.push("/feedback")}
+                pl={"10px"}
+                color={"rgba(var(--color-primary))"}
+              >
                 Rate Us
               </Text>
             </Flex>

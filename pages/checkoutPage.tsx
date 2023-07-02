@@ -68,7 +68,7 @@ const CheckoutPage = () => {
   );
 
   useEffect(() => {
-    if (localStorage) {
+    if (typeof window !== "undefined") {
       if (localStorage.getItem("shippingAdress")) {
         setFormData(
           JSON.parse(localStorage.getItem("shippingAdress") as string)
@@ -84,7 +84,10 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     if (initRequest.data) {
-      localStorage.setItem("initResult", JSON.stringify(initRequest.data));
+      if (typeof window !== "undefined") {
+        localStorage.setItem("initResult", JSON.stringify(initRequest.data));
+      }
+
       dispatch(responseDataActions.addInitResponse(initRequest.data));
     }
   }, [initRequest.data]);
@@ -93,7 +96,7 @@ const CheckoutPage = () => {
     const shippingAddressComplete = Object.values(formData).every(
       (value) => value.length > 0
     );
-    if (shippingAddressComplete) {
+    if (shippingAddressComplete && typeof window !== "undefined") {
       localStorage.setItem("shippingAdress", JSON.stringify(formData));
     }
   }, [formData]);
@@ -103,7 +106,7 @@ const CheckoutPage = () => {
       (value) => value.length > 0
     );
 
-    if (isBillingAddressComplete) {
+    if (isBillingAddressComplete && typeof window !== "undefined") {
       localStorage.setItem("billingAddress", JSON.stringify(billingFormData));
     }
     setIsBillingAddressSameAsShippingAddress(
@@ -147,8 +150,10 @@ const CheckoutPage = () => {
   }
 
   const isInitResultPresent = () => {
-    if (localStorage && localStorage.getItem("initResult")) {
-      return true;
+    if (typeof window !== "undefined") {
+      if (localStorage.getItem("initResult")) {
+        return true;
+      }
     }
 
     return !!initRequest.data;
