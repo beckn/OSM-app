@@ -109,7 +109,7 @@ const TopHeader: React.FC<TopHeaderProps> = ({ handleMenuClick }) => {
 
   return (
     <>
-      <div className="h-7 w-full bg-[#efefef]">
+      <div className="h-7 w-full bg-[#efefef] fixed z-[99]">
         <div className="px-5 h-full flex items-center">
           <div>
             <Image src="/images/CommerceLogo.svg" alt="App logo" />
@@ -128,6 +128,7 @@ const TopHeader: React.FC<TopHeaderProps> = ({ handleMenuClick }) => {
 
             {!homeIconBlackList.includes(router.pathname) && (
               <Image
+                w={"88%"}
                 onClick={() => {
                   router.push("/");
                 }}
@@ -166,7 +167,7 @@ const BottomHeader = () => {
   const router = useRouter();
 
   return (
-    <header className="md:fixed left-0 right-0 mb-4 top-0 md:bg-palette-fill shadow-sm pt-4 z-[1000] app_header_b ">
+    <header className="md:fixed left-0 right-0 mb-4 top-0 md:bg-palette-fill shadow-sm pt-4 z-[1000] app_header_b fixed mt-7 z-[99] bg-[#fff]">
       <div className="flex flex-col md:px-4 mb-2">
         <div className="flex items-center justify-between md:order-2 md:mt-2 py-4  relative">
           <div className="flex gap-4 items-center">

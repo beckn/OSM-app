@@ -17,7 +17,7 @@ export interface ShippingOrBillingDetailsProps {
   name: string;
   location: string;
   number: number | string;
-  accordionHeader:string;
+  accordionHeader: string;
 }
 
 const ShippingOrBillingDetails: React.FC<ShippingOrBillingDetailsProps> = (
