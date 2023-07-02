@@ -83,5 +83,7 @@ export interface RetailItem {
     Package?: string;
     Leh?: string;
     fulfillment_end_loc?: string;
+    authorName:string;
+    rating:string
   };
 }

@@ -8,6 +8,7 @@ import {
   Image,
   Stack,
   Checkbox,
+  Divider,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import DetailsCard from "../components/detailsCard/DetailsCard";
@@ -37,6 +38,7 @@ import {
 } from "../utilities/checkout-utils";
 import Loader from "../components/loader/Loader";
 import AddBillingButton from "../components/detailsCard/AddBillingButton";
+import { useRouter } from "next/router";
 
 export type ShippingFormData = {
   name: string;
@@ -68,6 +70,7 @@ const CheckoutPage = () => {
     zipCode: "",
   });
 
+  const router = useRouter();
   const initRequest = useRequest();
   const dispatch = useDispatch();
   const { t, locale } = useLanguage();
@@ -132,26 +135,39 @@ const CheckoutPage = () => {
       {/* <AppHeader appHeaderText={t.checkout} /> */}
       {/* start Item Details */}
       <Box>
-        <Box pb={"20px"}>
-          <Text>{t.items}</Text>
+        <Box pb={"10px"}>
+          <Text fontSize={"17px"}>{t.items}</Text>
         </Box>
-        {cartItems.map((item) => (
+        {/* {cartItems.map((item) => (
           <DetailsCard key={item.id}>
             <ItemDetails
               title={item.descriptor.name}
               description={item.descriptor.short_desc}
               quantity={item.quantity}
               price={`${t.currencySymbol}${item.totalPrice}`}
-              itemImage={item.descriptor.images[0]}
             />
           </DetailsCard>
-        ))}
+        ))} */}
+        <DetailsCard>
+          {cartItems.map((item) => {
+            return (
+              <>
+                <ItemDetails
+                  title={item.descriptor.name}
+                  description={item.descriptor.short_desc}
+                  quantity={item.quantity}
+                  price={`${t.currencySymbol}${item.totalPrice}`}
+                />
+              </>
+            );
+          })}
+        </DetailsCard>
       </Box>
       {/* end item details */}
       {/* start shipping detals */}
       {!initRequest.data ? (
         <Box>
-          <Flex pb={"20px"} mt={"20px"} justifyContent={"space-between"}>
+          <Flex pb={"10px"} mt={"20px"} justifyContent={"space-between"}>
             <Text fontSize={"17px"}>{t.shipping}</Text>
           </Flex>
           <DetailsCard>
@@ -166,7 +182,7 @@ const CheckoutPage = () => {
         </Box>
       ) : (
         <Box>
-          <Flex pb={"20px"} mt={"20px"} justifyContent={"space-between"}>
+          <Flex pb={"10px"} mt={"20px"} justifyContent={"space-between"}>
             <Text fontSize={"17px"}>{t.shipping}</Text>
             <AddShippingButton
               imgFlag={!initRequest.data}
@@ -176,13 +192,13 @@ const CheckoutPage = () => {
               formSubmitHandler={formSubmitHandler}
             />
           </Flex>
-          <DetailsCard>
-            <ShippingOrBillingDetails
-              name={formData.name}
-              location={formData.address}
-              number={formData.mobileNumber}
-            />
-          </DetailsCard>
+
+          <ShippingOrBillingDetails
+            accordionHeader={t.shipping}
+            name={formData.name}
+            location={formData.address}
+            number={formData.mobileNumber}
+          />
         </Box>
       )}
       {/* end shipping detals */}
@@ -230,13 +246,13 @@ const CheckoutPage = () => {
               billingFormSubmitHandler={formSubmitHandler}
             />
           </Flex>
-          <DetailsCard>
-            <ShippingOrBillingDetails
-              name={billingFormData.name}
-              location={billingFormData.address}
-              number={billingFormData.mobileNumber}
-            />
-          </DetailsCard>
+
+          <ShippingOrBillingDetails
+            accordionHeader={t.billing}
+            name={billingFormData.name}
+            location={billingFormData.address}
+            number={billingFormData.mobileNumber}
+          />
         </Box>
       )}
 
@@ -244,7 +260,7 @@ const CheckoutPage = () => {
       {/* start payment details */}
       {initRequest.data && (
         <Box>
-          <Flex pb={"20px"} mt={"20px"} justifyContent={"space-between"}>
+          <Flex pb={"10px"} mt={"20px"} justifyContent={"space-between"}>
             <Text fontSize={"17px"}>{t.paymentText}</Text>
           </Flex>
           <DetailsCard>
@@ -260,76 +276,33 @@ const CheckoutPage = () => {
               }`}
               totalText={t.totalText}
               totalValue={`${
-                getSubTotalAndDeliveryCharges(initRequest.data).subTotal
+                getSubTotalAndDeliveryCharges(initRequest.data).subTotal +
+                getSubTotalAndDeliveryCharges(initRequest.data)
+                  .totalDeliveryCharge
               }`}
             />
           </DetailsCard>
         </Box>
       )}
       {/* end payment details */}
-
       {!initRequest.data ? (
+        <Box position={"absolute"} left={"5%"} width={"90%"} bottom={"0"}>
+          <ButtonComp
+            buttonText={t.proceedToPay}
+            background={"rgba(var(--color-primary))"}
+            color={"rgba(var(--text-color))"}
+            handleOnClick={() => {}}
+            isDisabled={true}
+          />
+        </Box>
+      ) : (
         <ButtonComp
-          buttonText={t.proceedToPay}
+          buttonText={t.proceedToCheckout}
           background={"rgba(var(--color-primary))"}
           color={"rgba(var(--text-color))"}
-          handleOnClick={() => {}}
-          isDisabled={true}
+          handleOnClick={() => router.push("/paymentMode")}
+          isDisabled={false}
         />
-      ) : (
-        <Flex
-          mt={"20px"}
-          width={"99.8vw"}
-          marginLeft={"-19px"}
-          boxShadow={"0px -5px 40px rgba(0, 0, 0, 0.15)"}
-        >
-          <Button
-            width={"50%"}
-            height={"48px"}
-            backgroundColor={""}
-            color={""}
-            __css={{ "&:active": {} }}
-          >
-            <Box w={["120px", "30%"]} margin={"0 auto"} textAlign={"left"}>
-              <Text fontSize={"12px"} fontWeight={"700"}>
-                Total
-              </Text>
-              <Flex alignItems={"center"}>
-                <Text color={"rgba(var(--color-primary))"}>{`${
-                  t.currencySymbol
-                } ${
-                  getSubTotalAndDeliveryCharges(initRequest.data).subTotal
-                }`}</Text>
-                <Text fontSize={"10px"} pl={"2px"}>
-                  {totalItems} item(s)
-                </Text>
-              </Flex>
-            </Box>
-          </Button>
-          <Link href={"/paymentMode"}>
-            <Button
-              isDisabled={!initRequest.data}
-              height={"48px"}
-              fontSize={"14px"}
-              backgroundColor={
-                initRequest.data ? "rgba(var(--color-primary))" : "#DFDFDF"
-              }
-              color={"rgba(var(--text-color))"}
-              width={"50%"}
-              __css={{ "&:active": {} }}
-            >
-              <Flex
-                alignItems={"center"}
-                justifyContent={"space-between"}
-                p={"0 10px 0 15px"}
-              >
-                <Image src={proceedToPay} />
-                <Text> {t.proceedToPay}</Text>
-                <Image src={rightArrow} />
-              </Flex>
-            </Button>
-          </Link>
-        </Flex>
       )}
     </>
   );
