@@ -38,8 +38,11 @@ const OptionCard:React.FC<OptionCardProps> = ({optionMeta:{tagName,tagValue,titl
 				});
 
 			}
+			else{
 
 			setOption({tagName,tagValue})
+			}
+
 
 		}} >
 			{/* <OptionIcon /> */}
