@@ -64,7 +64,7 @@ const Homepage = () => {
 	});
 	const [isOptionModalOpen, setIsOptionModalOpen] = useState<boolean>(true);
 	const [isOptionDetailOpen, setIsOptionDetailOpen] = useState<boolean>(false);
-	const [isMenuModalOpen, setIsMenuModalOpen] = useState<boolean>(false);
+	const [isMenuModalOpen, setIsMenuModalOpen] = useState<boolean>(true);
 	const [option, setOption] = useState<OptionType>(initialOption);
 
 	//TODO local store and coords states can be removed in further iterations
@@ -248,7 +248,7 @@ const Homepage = () => {
 							<div onClick={() => setIsMenuModalOpen(prev => !prev)}>
 
 								<Image src="/images/Indicator.svg" className="mx-auto mb-3" alt="swipe indicator" />
-								<h3 className="text-base/[20px]">{t.explorePlaces}</h3>
+								<h3 className="text-[17px]/[20px]">{t.explorePlaces}</h3>
 							</div>
 							<div className={cs("justify-between  py-5", { ['flex']: isMenuModalOpen }, { ['hidden']: !isMenuModalOpen })}>
 								{optionData.map((currentOption, index) => {
