@@ -7,6 +7,7 @@ import useRequest from "../hooks/useRequest";
 import { responseDataActions } from "../store/responseData-slice";
 import { RetailItem } from "../lib/types/products";
 import Loader from "../components/loader/Loader";
+import { useLanguage } from "../hooks/useLanguage";
 
 //Mock data for testing search API. Will remove after the resolution of CORS issue
 
@@ -15,6 +16,7 @@ const Search = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [providerId, setProviderId] = useState("");
+  const { t, locale } = useLanguage();
 
   const { keyword } = router.query;
 
@@ -39,7 +41,7 @@ const Search = () => {
     message: {
       criteria: {
         dropLocation: "48.85041854,2.343660801",
-        categoryName: "eBook",
+        categoryName: locale === "en" ? "RetailEnglish" : "RetailFrench",
         providerId: providerId,
       },
     },
@@ -103,7 +105,7 @@ const Search = () => {
   return (
     <div>
       <SearchBar
-        searchString={keyword}
+        searchString={"books"}
         handleChange={(text: string) => {
           localStorage.removeItem("searchItems");
           fetchDataForSearch();

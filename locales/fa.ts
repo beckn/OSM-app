@@ -284,13 +284,19 @@ const fa: { [key: string]: string } = {
   summary: "Summary",
   fulfillment: "Fulfillment ",
   order: "Commande",
-  localStores:'Commerces de proximité',
-  cartLoader:'Obtention des devis',
-  initializingOrderLoader:'Initialisation de la commande',
-  confirmingOrderLoader:'Confirmation de la command',
-  orderConfirm:'Commande confirmée!',
-  confirmOrderMessage:'Merci ! Notre agent de livraison vous livrera votre commande.',
-  currencySymbol:'€',
-  explorePlaces:"Explorer de nouveaux endroits"
+  localStores: "Commerces de proximité",
+  cartLoader: "Obtention des devis",
+  initializingOrderLoader:
+    "Veuillez patienter pendant que nous préparons les choses pour vous",
+  confirmingOrderLoader:
+    "Veuillez patienter pendant que nous confirmons votre commande",
+  orderConfirm: "Commande confirmée!",
+  confirmOrderMessage:
+    "Merci ! Notre agent de livraison vous livrera votre commande.",
+  currencySymbol: "€",
+  saveShippingDetails: "Enregistrer l'expédition détails",
+  saveBillingDetails: "Enregistrer les détails de facturation",
+  addBillingDetails: "Add Billing Details",
+  explorePlaces: "Explorer de nouveaux endroits",
 };
 export default fa;

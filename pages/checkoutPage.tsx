@@ -14,7 +14,7 @@ import DetailsCard from "../components/detailsCard/DetailsCard";
 import ItemDetails from "../components/detailsCard/ItemDetails";
 import ButtonComp from "../components/button/Button";
 import { useLanguage } from "../hooks/useLanguage";
-import ShippingDetails from "../components/detailsCard/ShippingDetails";
+import ShippingOrBillingDetails from "../components/detailsCard/ShippingOrBillingDetails";
 import PaymentDetails from "../components/detailsCard/PaymentDetails";
 import TextareaWithReadMore from "../components/detailsCard/TextareaWithReadMore";
 import proceedToPay from "../public/images/proceedToPay.svg";
@@ -30,20 +30,20 @@ import { getCartItemsPerBpp } from "../utilities/cart-utils";
 import useRequest from "../hooks/useRequest";
 import { responseDataActions } from "../store/responseData-slice";
 import {
+  areShippingAndBillingDetailsSame,
   getPayloadForInitRequest,
   getSubTotalAndDeliveryCharges,
   getTotalCartItems,
 } from "../utilities/checkout-utils";
 import Loader from "../components/loader/Loader";
+import AddBillingButton from "../components/detailsCard/AddBillingButton";
 
 export type ShippingFormData = {
   name: string;
   mobileNumber: string;
   email: string;
   address: string;
-  buildingName: string;
-  pincode: string;
-  landmark: string;
+  zipCode: string;
 };
 
 const CheckoutPage = () => {
@@ -52,9 +52,20 @@ const CheckoutPage = () => {
     mobileNumber: "",
     email: "",
     address: "",
-    buildingName: "",
-    pincode: "",
-    landmark: "",
+    zipCode: "",
+  });
+
+  const [
+    isBillingAddressSameAsShippingAddress,
+    setIsBillingAddressSameAsShippingAddress,
+  ] = useState(true);
+
+  const [billingFormData, setBillingFormData] = useState<ShippingFormData>({
+    name: "",
+    mobileNumber: "",
+    email: "",
+    address: "",
+    zipCode: "",
   });
 
   const initRequest = useRequest();
@@ -71,15 +82,37 @@ const CheckoutPage = () => {
       dispatch(responseDataActions.addInitResponse(initRequest.data));
     }
   }, [initRequest.data]);
+
+  useEffect(() => {
+    const isBillingAddressComplete = Object.values(billingFormData).every(
+      (value) => value.length > 0
+    );
+
+    setIsBillingAddressSameAsShippingAddress(
+      areShippingAndBillingDetailsSame(
+        isBillingAddressComplete,
+        formData,
+        billingFormData
+      )
+    );
+  }, [billingFormData]);
+
   const formSubmitHandler = () => {
     if (formData) {
+      if (isBillingAddressSameAsShippingAddress) {
+        const copiedFormData = structuredClone(formData);
+        setBillingFormData(copiedFormData);
+      }
+
       const cartItemsPerBppPerProvider: DataPerBpp = getCartItemsPerBpp(
         cartItems as CartItemForRequest[]
       );
+
       const payLoadForInitRequest = getPayloadForInitRequest(
         cartItemsPerBppPerProvider,
         transactionId,
-        formData
+        formData,
+        billingFormData
       );
       initRequest.fetchData(
         `${apiUrl}/client/v2/initialize_order`,
@@ -144,7 +177,7 @@ const CheckoutPage = () => {
             />
           </Flex>
           <DetailsCard>
-            <ShippingDetails
+            <ShippingOrBillingDetails
               name={formData.name}
               location={formData.address}
               number={formData.mobileNumber}
@@ -154,29 +187,59 @@ const CheckoutPage = () => {
       )}
       {/* end shipping detals */}
       {/* start payment method */}
-      <Box>
-        <Flex pb={"20px"} mt={"20px"} justifyContent={"space-between"}>
-          <Text fontSize={"17px"}>{t.billing}</Text>
-          {/* TODO :- Will enable this button after demo */}
-          {/* <Text
+      {isBillingAddressSameAsShippingAddress ? (
+        <Box>
+          <Flex pb={"20px"} mt={"20px"} justifyContent={"space-between"}>
+            <Text fontSize={"17px"}>{t.billing}</Text>
+            <AddBillingButton
+              billingFormData={billingFormData}
+              setBillingFormData={setBillingFormData}
+              addBillingdetailsBtnText={t.changeText}
+              billingFormSubmitHandler={formSubmitHandler}
+            />
+            {/* TODO :- Will enable this button after demo */}
+            {/* <Text
             fontSize={"15px"}
             color={"rgba(var(--color-primary))"}
             cursor={"pointer"}
           >
             {t.changeText}
           </Text> */}
-        </Flex>
-        <DetailsCard>
-          {/* <OrderDetailsCheckbox
-            orderDetailsCheckboxText={t.orderDetailsCheckboxText}
-          /> */}
-          <Stack spacing={5} direction="row">
-            <Checkbox colorScheme={"red"} pr={"12px"} fontSize={"17px"}>
-              {t.orderDetailsCheckboxText}
-            </Checkbox>
-          </Stack>
-        </DetailsCard>
-      </Box>
+          </Flex>
+          <DetailsCard>
+            <Stack spacing={5} direction="row">
+              <Checkbox
+                colorScheme={"red"}
+                pr={"12px"}
+                fontSize={"17px"}
+                defaultChecked
+              >
+                {t.orderDetailsCheckboxText}
+              </Checkbox>
+            </Stack>
+          </DetailsCard>
+        </Box>
+      ) : (
+        <Box>
+          <Flex pb={"20px"} mt={"20px"} justifyContent={"space-between"}>
+            <Text fontSize={"17px"}>{t.billing}</Text>
+            <AddBillingButton
+              billingFormData={billingFormData}
+              setBillingFormData={setBillingFormData}
+              addBillingdetailsBtnText={t.changeText}
+              billingFormSubmitHandler={formSubmitHandler}
+            />
+          </Flex>
+          <DetailsCard>
+            <ShippingOrBillingDetails
+              name={billingFormData.name}
+              location={billingFormData.address}
+              number={billingFormData.mobileNumber}
+            />
+          </DetailsCard>
+        </Box>
+      )}
+
       {/* end payment method */}
       {/* start payment details */}
       {initRequest.data && (
@@ -204,20 +267,7 @@ const CheckoutPage = () => {
         </Box>
       )}
       {/* end payment details */}
-      {/* start order policy */}
-      <Box>
-        <Flex pb={"20px"} mt={"20px"} justifyContent={"space-between"}>
-          <Text fontSize={"17px"}>{t.orderpolicyText}</Text>
-        </Flex>
-        <DetailsCard>
-          <TextareaWithReadMore
-            orderPolicyText={t.orderPolicyText}
-            readMoreText={t.readMoreText}
-            readLessText={t.readLessText}
-          />
-        </DetailsCard>
-      </Box>
-      {/* end order policy */}
+
       {!initRequest.data ? (
         <ButtonComp
           buttonText={t.proceedToPay}

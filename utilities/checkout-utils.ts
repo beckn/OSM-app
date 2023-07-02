@@ -1,11 +1,13 @@
 import { CartRetailItem, DataPerBpp } from "../lib/types/cart";
 import { ResponseModel } from "../lib/types/responseModel";
 import { ShippingFormData } from "../pages/checkoutPage";
+import { areObjectPropertiesEqual } from "./common-utils";
 
 export const getPayloadForInitRequest = (
   cartItemsPerBppPerProvider: DataPerBpp,
   transactionId: { transactionId: string },
-  customerAddress: ShippingFormData
+  customerAddress: ShippingFormData,
+  billingFormData: ShippingFormData
 ) => {
   const payload: any = {
     initRequestDto: [],
@@ -33,15 +35,15 @@ export const getPayloadForInitRequest = (
           addOns: [],
           offers: [],
           billing: {
-            name: `./${customerAddress.name}/////`,
+            name: `./${billingFormData.name}/////`,
             phone: "9191223433",
             address: {
               door: "",
-              building: customerAddress.buildingName,
-              city: "Bengaluru",
-              state: "Karnataka",
+              building: billingFormData.address,
+              city: billingFormData.address,
+              state: customerAddress.address,
               country: "IND",
-              area_code: customerAddress.pincode,
+              area_code: billingFormData.zipCode,
             },
             email: "testemail1@mailinator.com",
           },
@@ -52,7 +54,7 @@ export const getPayloadForInitRequest = (
                 gps: cartItemsPerBppPerProvider[bppId][0].locations[0].gps,
                 address: {
                   door: "",
-                  building: customerAddress.buildingName,
+                  building: customerAddress.address,
                   street:
                     "Bengaluru, Bengaluru Urban, Bangalore Division, Karnataka",
                   city: "Bengaluru",
@@ -126,4 +128,15 @@ export const getTotalCartItems = (cartItems: CartRetailItem[]) => {
   });
 
   return quantity;
+};
+
+export const areShippingAndBillingDetailsSame = (
+  isBillingAddressComplete: boolean,
+  formData: ShippingFormData,
+  billingFormData: ShippingFormData
+) => {
+  if (isBillingAddressComplete) {
+    return areObjectPropertiesEqual(formData, billingFormData);
+  }
+  return !isBillingAddressComplete;
 };

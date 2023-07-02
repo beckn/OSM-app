@@ -24,12 +24,12 @@ export interface ShippingFormProps {
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
-  setFormData: Function;
-  formData: ShippingFormData;
+  setBillingFormData: Function;
+  billingFormData: ShippingFormData;
   formSubmitHandler: Function;
 }
 
-const ShippingForm: React.FC<ShippingFormProps> = (props) => {
+const BillingForm: React.FC<ShippingFormProps> = (props) => {
   const dispatch = useDispatch();
   const [formErrors, setFormErrors] = useState<FormErrors>({});
 
@@ -40,13 +40,13 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
     if (name === "mobileNumber" && !/^\d*$/.test(value)) {
       return;
     }
-    props.setFormData((prevFormData: ShippingFormData) => ({
+    props.setBillingFormData((prevFormData: ShippingFormData) => ({
       ...prevFormData,
       [name]: value,
     }));
 
     const updatedFormData = {
-      ...props.formData,
+      ...props.billingFormData,
       [name]: value,
     };
 
@@ -58,18 +58,18 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
   };
 
   const handleButtonClick = () => {
-    const errors = validateForm(props.formData);
+    const errors = validateForm(props.billingFormData);
     setFormErrors(errors);
     if (Object.keys(errors).length === 0) {
-      dispatch(responseDataActions.addCustomerDetails(props.formData));
-      props.setFormData(props.formData);
+      dispatch(responseDataActions.addCustomerDetails(props.billingFormData));
+      props.setBillingFormData(props.billingFormData);
       props.formSubmitHandler();
     } else {
       setFormErrors(errors);
     }
   };
 
-  const isFormValid = Object.entries(props.formData)
+  const isFormValid = Object.entries(props.billingFormData)
     .filter(([key]) => key !== "landmark")
     .every(([_, value]) => value.trim() !== "");
 
@@ -95,7 +95,7 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
             alignItems={"center"}
             padding={"22px 20px"}
           >
-            <Text>{t.addShippingdetailsBtnText}</Text>
+            <Text>{t.addBillingDetails}</Text>
             <ModalCloseButton position={"unset"}>
               <Image src={crossIcon} />
             </ModalCloseButton>
@@ -112,7 +112,7 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                   type="text"
                   placeholder=" "
                   name="name"
-                  value={props.formData.name}
+                  value={props.billingFormData.name}
                   onChange={handleInputChange}
                 />
                 <label className={style.did_floating_label}>Name</label>
@@ -126,7 +126,7 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                   type="text"
                   placeholder=" "
                   name="mobileNumber"
-                  value={props.formData.mobileNumber}
+                  value={props.billingFormData.mobileNumber}
                   onChange={handleInputChange}
                 />
                 <label className={style.did_floating_label}>
@@ -142,7 +142,7 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                   type="text"
                   placeholder=" "
                   name="email"
-                  value={props.formData.email}
+                  value={props.billingFormData.email}
                   onChange={handleInputChange}
                 />
                 <label className={style.did_floating_label}>Email ID</label>
@@ -156,7 +156,7 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                   type="text"
                   placeholder=" "
                   name="address"
-                  value={props.formData.address}
+                  value={props.billingFormData.address}
                   onChange={handleInputChange}
                 />
                 <label className={style.did_floating_label}>
@@ -173,7 +173,7 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                   type="text"
                   placeholder=" "
                   name="zipCode"
-                  value={props.formData.zipCode}
+                  value={props.billingFormData.zipCode}
                   onChange={handleInputChange}
                 />
                 <label className={style.did_floating_label}>Zip Code</label>
@@ -183,7 +183,7 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
               </div>
             </div>
             <Button
-              buttonText={t.saveShippingDetails}
+              buttonText={t.saveBillingDetails}
               background={"rgba(var(--color-primary))"}
               color={"rgba(var(--text-color))"}
               handleOnClick={handleButtonClick}
@@ -196,4 +196,4 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
   );
 };
 
-export default ShippingForm;
+export default BillingForm;

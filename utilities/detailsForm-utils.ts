@@ -5,9 +5,7 @@ export interface FormErrors {
   mobileNumber?: string;
   email?: string;
   address?: string;
-  buildingName?: string;
-  pincode?: string;
-  landmark?: string;
+  zipCode?: string;
 }
 
 export const validateForm = (formData: ShippingFormData): FormErrors => {
@@ -33,14 +31,10 @@ export const validateForm = (formData: ShippingFormData): FormErrors => {
     errors.address = "Complete Address is required";
   }
 
-  if (formData.buildingName.trim() === "") {
-    errors.buildingName = "Building Name/Floor is required";
-  }
-
-  if (formData.pincode.trim() === "") {
-    errors.pincode = "Pincode is required";
-  } else if (!/^\d{6}$/.test(formData.pincode)) {
-    errors.pincode = "Invalid Pincode";
+  if (formData.zipCode.trim() === "") {
+    errors.zipCode = "Pincode is required";
+  } else if (!/^\d{5}$/.test(formData.zipCode)) {
+    errors.zipCode = "Invalid Pincode";
   }
 
   return errors;
