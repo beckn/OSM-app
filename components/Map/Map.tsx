@@ -1,4 +1,5 @@
-import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap, ZoomControl } from "react-leaflet";
+import {Image} from '@chakra-ui/react'
 import React, { useEffect, useState } from "react";
 import Control from "react-leaflet-custom-control";
 import "leaflet/dist/leaflet.css";
@@ -6,6 +7,7 @@ import { GiHamburgerMenu } from 'react-icons/gi'
 import { data } from "./StoreMarkerData";
 import Icon from "./store-marker.svg";
 import SelectedIcon from './SelectedMarker.svg'
+import CenterMarker from './CenterMarker.svg'
 import L from "leaflet";
 import { isEmpty } from "lodash";
 
@@ -57,24 +59,33 @@ const Map: React.FC<MapProps> = ({ stores, selectedStore, coords, handleModalOpe
 
 
 
+
+
 	const customIcon = new L.Icon({
 		iconUrl: Icon,
 		iconSize: [25, 35],
 		iconAnchor: [5, 30]
 	});
 
-
-	const customSelectedIcon = new L.Icon({
-		iconUrl: SelectedIcon,
-		iconSize: [30, 40],
+	const customCenterMarker = new L.Icon({
+		iconUrl: CenterMarker,
+		iconSize: [40, 50],
 		iconAnchor: [5, 30]
 	});
+
+
+	const customSelectedIcon = new L.Icon({
+		iconUrl: Icon,
+		iconSize: [35, 45],
+		iconAnchor: [5, 30]
+	});
+
+
+
 
 	function MapView() {
 		let map = useMap();
 		map.setView([lat, long], map.getZoom());
-
-
 		return null;
 	}
 
@@ -83,14 +94,18 @@ const Map: React.FC<MapProps> = ({ stores, selectedStore, coords, handleModalOpe
 
 
 
+
+
+
 	return (
 		<MapContainer
-			style={{ height: '100vh' }}
+			style={{ maxHeight: '100vh', height: '90vh' }}
 			center={[lat, long]}
-			zoom={15}
+			zoom={18}
 			zoomControl={false}
 			scrollWheelZoom={true}
 			zoomAnimation={true}
+
 		>
 			<TileLayer
 				attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> 
@@ -99,8 +114,7 @@ const Map: React.FC<MapProps> = ({ stores, selectedStore, coords, handleModalOpe
 			/>
 			<Control prepend position='topright'>
 				<div className="flex flex-col basis-4">
-					<button onClick={(e) => handleModalOpen()}><img src="/images/menuham.svg" alt="..." /></button>
-					<button onClick={() => setFlyToUserLocation(true)}><img src="/images/Location.svg" alt="..." /></button>
+					<Image className="translate-x-0.5" onClick={() => setFlyToUserLocation(true)} src="/images/LocateMe.svg" alt="..." />
 				</div>
 			</Control>
 
@@ -121,7 +135,13 @@ const Map: React.FC<MapProps> = ({ stores, selectedStore, coords, handleModalOpe
 					)
 				})
 
+
 			}
+			<Marker icon={customCenterMarker} position={[lat, long]}
+
+			>
+			</Marker>
+			<ZoomControl position="topright" />
 
 			<MapView />
 			<ZoomToUserLocation />

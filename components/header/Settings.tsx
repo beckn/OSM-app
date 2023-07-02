@@ -26,7 +26,7 @@ const Settings = () => {
   }
 
   return (
-    <div className="relative md:hidden flex justify-between items-center z-[10000]">
+    <div className="relative md:hidden flex justify-between items-center z-[1000]">
       <div className="flex items-center" onClick={toggleShowSettingBox}>
         <span className="capitalize text-sm">{locale}</span>
         <AiOutlineDown style={{ fontSize: "0.8rem",marginTop:"0.2rem" }} />

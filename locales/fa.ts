@@ -298,5 +298,6 @@ const fa: { [key: string]: string } = {
   saveBillingDetails: "Enregistrer les détails de facturation",
   addBillingDetails: "Add Billing Details",
   explorePlaces: "Explorer de nouveaux endroits",
+  comingSoon:'À venir !'
 };
 export default fa;

@@ -18,4 +18,6 @@ export interface RetailContext {
 export interface ResponseModel {
   context: RetailContext;
   message: any;
+  // Hacky fix
+  name:string;
 }
