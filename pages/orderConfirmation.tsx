@@ -53,7 +53,8 @@ const OrderConfirmation = () => {
 
       const payLoadForConfirmRequest = getPayloadForConfirmRequest(
         initMetaDataPerBpp,
-        transactionId
+        transactionId,
+        localStorage.getItem("userPhone") as string
       );
       confirmRequest.fetchData(
         `${apiUrl}/client/v2/confirm`,

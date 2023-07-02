@@ -47,7 +47,7 @@ const headerValues = {
   feedback: "Feedback",
 };
 
-const headerValuesFrench =  {
+const headerValuesFrench = {
   "/checkoutPage": "Facturation et Livraison",
   "/orderHistory": "Historique des Commandes",
   "/orderDetails": "Détails de la Commande",
@@ -56,7 +56,7 @@ const headerValuesFrench =  {
   "/cart": "Panier",
   "/paymentMode": "Sélectionner la Méthode de Paiement",
   feedback: "Retour d'Information",
-  };
+};
 
 const topHeaderBlackList: string[] = [];
 
@@ -70,9 +70,9 @@ const getHeaderTitleForPage = (
   name: string,
   logo: string,
   pathName: string,
-  locale:string
+  locale: string | undefined
 ) => {
-  const values = locale === 'en' ? headerValues : headerValuesFrench;
+  const values = locale === "en" ? headerValues : headerValuesFrench;
   switch (true) {
     case storeHeaderBlackList.includes(pathName):
       return <Text>{values[pathName]}</Text>;
