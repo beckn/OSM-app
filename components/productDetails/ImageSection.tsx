@@ -13,15 +13,18 @@ const ImageSection: React.FC<Props> = ({ imgArray, product }) => {
     setSelectedImg(index);
   }
   return (
-    <div className="flex items-start rounded-lg w-full md:w-auto">
+    <div
+      className="flex items-start rounded-lg w-full md:w-auto"
+      style={{ marginBottom: "20px" }}
+    >
       <ProductPageActions product={product} />
       <div className="flex flex-col items-center w-full md:w-auto">
-        <div className="flex flex-grow md:ltr:mr-3 md:rtl:ml-3">
+        <div className="flex flex-grow md:ltr:mr-3 md:rtl:ml-3 image_section">
           <Image
             src={product.descriptor.images[0]}
             alt="product img"
-            width={450}
-            height={330}
+            width={"350px"}
+            height={"230px"}
             className="object-contain md:drop-shadow-xl dark:bg-palette-card"
           />
         </div>

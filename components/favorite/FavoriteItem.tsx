@@ -54,7 +54,7 @@ const FavoriteItem: React.FC<Props> = ({ product }) => {
       {/* </Link> */}
       <div className="flex flex-wrap items-center mb-3 mx-4">
         <button
-          className="flex items-center flex-grow border-2 border-palette-primary rounded-md shadow-md text-palette-primary justify-center py-1 rtl:ml-2 ltr:mr-2 my-2 sm:my-0 text-sm sm:text-base"
+          className=" flex items-center flex-grow border-2 border-palette-primary rounded-md shadow-md text-palette-primary justify-center py-1 rtl:ml-2 ltr:mr-2 my-2 sm:my-0 text-sm sm:text-base"
           onClick={() => onAddToCart(product)}
         >
           <span className="ltr:mr-1 rtl:ml-1">

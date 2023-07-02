@@ -46,46 +46,38 @@ const OrderConfirmation = () => {
   useEffect(() => {
     if (confirmRequest.data) {
       localStorage.setItem("confirmData", JSON.stringify(confirmRequest.data));
+      const timeout = setTimeout(() => {
+        router.push("/orderDetails");
+      }, 3000);
+
+      // Clean up the timeout on component unmount
+      return () => {
+        clearTimeout(timeout);
+      };
     }
   }, [confirmRequest.data]);
 
   if (confirmRequest.loading) {
-    return <Loader loadingText={t.confirmingOrderLoader}/>;
+    return <Loader loadingText={t.confirmingOrderLoader} />;
   }
 
   return (
     <Box position={"relative"}>
-      <Image src={orderConfirmmark} margin={"60px auto"} />
-      <Text fontSize={"24px"} textAlign={"center"}>
-        {t.orderConfirm}
+      <Image src={orderConfirmmark} margin={"41px auto"} />
+      <Text fontSize={"17px"} fontWeight={"600"} textAlign={"center"}>
+        Order Placed!
       </Text>
       <Stack>
         <Text
           textAlign={"center"}
-          marginTop={"15px"}
+          marginTop={"8px"}
           marginBottom={"15px"}
-          fontSize={"12px"}
-          lineHeight={"21px"}
+          fontSize={"15px"}
         >
-          {t.confirmOrderMessage}
-          
-          <span color="rgba(var(--color-primary))"> #456789120</span> shortly!
+          Thank you! Our order will be <br />
+          confirmed shortly
         </Text>
       </Stack>
-      <Button
-        buttonText={t.backToHome}
-        background={"rgba(var(--color-primary))"}
-        color={"rgba(var(--text-color))"}
-        handleOnClick={() => router.push("/")}
-        isDisabled={false}
-      />
-      <Button
-        buttonText={t.orderDetails}
-        background={"rgba(var(--text-color))"}
-        color={"rgba(var(--color-primary))"}
-        handleOnClick={() => router.push("/orderDetails")}
-        isDisabled={false}
-      />
     </Box>
   );
 };

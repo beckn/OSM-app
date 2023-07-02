@@ -8,6 +8,8 @@ import { cartActions } from "../../store/cart-slice";
 import { RetailItem } from "../../lib/types/products";
 import ProductPrice from "../UI/ProductPrice";
 import { toast } from "react-toastify";
+import Button from "../button/Button";
+import { Flex } from "@chakra-ui/react";
 
 interface Props {
   product: RetailItem;
@@ -55,8 +57,8 @@ const CallToAction: React.FC<Props> = ({ product }) => {
   }
 
   return (
-    <div className="flex flex-col items-center flex-grow sticky top-10 md:top-36 max-w-[350px] mt-8 rtl:mr-auto ltr:ml-auto xl:rtl:ml-2 px-6 py-4 sm:p-4 xl:p-6 border-2 shadow-lg">
-      <div className="flex flex-col w-full ">
+    <div className="flex flex-col items-center flex-grow sticky top-10 md:top-36 max-w-[350px] mt-8 rtl:mr-auto ltr:ml-auto xl:rtl:ml-2 px-6 py-4 sm:p-4 xl:p-6 border-2 shadow-lg border_radius_all">
+      <div className="flex  w-full justify-between items-center ">
         <p className="text-lg">{t.price}</p>
         <ProductPrice
           price={parseFloat(product.price.value)}
@@ -80,13 +82,18 @@ const CallToAction: React.FC<Props> = ({ product }) => {
         </div>
       </div>
       <br />
-      <button
-        className="border-none bg-palette-primary/90 hover:bg-palette-primary/100 transition-colors duration-200 shadow-lg px-3 lg:px-8 py-4 text-palette-side flex items-center rounded-lg cursor-pointer  text-[12px] sm:text-base"
-        onClick={addToCartHandler}
-      >
-        <BsCartPlus style={{ fontSize: "1.2rem", margin: "0 0.4rem" }} />
-        {t.addToCart}
-      </button>
+      <Button
+        buttonText={
+          <Flex justifyContent={"center"} alignItems={"center"}>
+            <BsCartPlus style={{ fontSize: "1.2rem", margin: "0 0.4rem" }} />
+            {t.addToCart}
+          </Flex>
+        }
+        background={"rgba(var(--color-primary))"}
+        color={"rgba(var(--text-color))"}
+        isDisabled={false}
+        handleOnClick={addToCartHandler}
+      />
     </div>
   );
 };

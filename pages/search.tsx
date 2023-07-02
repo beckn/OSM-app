@@ -89,6 +89,7 @@ const Search = () => {
                   ...item,
                   providerId: provider.id,
                   locations: provider.locations,
+                  bppName: catalog.message.catalog["bpp/descriptor"].name,
                 };
               });
             }

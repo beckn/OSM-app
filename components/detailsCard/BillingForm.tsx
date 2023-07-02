@@ -13,7 +13,7 @@ import {
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import style from "./ShippingForm.module.css";
-import crossIcon from "../../public/images/crossIcon.svg";
+import crossIcon from "../../public/images/Indicator.svg";
 import Button from "../button/Button";
 import { ShippingFormData } from "../../pages/checkoutPage";
 import { responseDataActions } from "../../store/responseData-slice";
@@ -90,15 +90,20 @@ const BillingForm: React.FC<ShippingFormProps> = (props) => {
           borderRadius="1.75rem 1.75rem 0px 0px"
           maxW="lg"
         >
+          <ModalCloseButton
+            height={"unset"}
+            pt={"5px"}
+            margin={"0 auto"}
+            position={"unset"}
+          >
+            <Image src={crossIcon} />
+          </ModalCloseButton>
           <Flex
             justifyContent={"space-between"}
             alignItems={"center"}
-            padding={"22px 20px"}
+            padding={"15px 20px"}
           >
             <Text>{t.addBillingDetails}</Text>
-            <ModalCloseButton position={"unset"}>
-              <Image src={crossIcon} />
-            </ModalCloseButton>
           </Flex>
           <Box>
             <Divider />
