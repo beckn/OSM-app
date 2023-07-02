@@ -4,6 +4,7 @@ import { Box, Image, Text } from "@chakra-ui/react";
 import Settings from "./Settings";
 import CartIcon from "../cart/CartIcon";
 import { useRouter } from "next/router";
+
 import { useLanguage } from "../../hooks/useLanguage";
 
 const cartIconBlackList = [
@@ -46,6 +47,17 @@ const headerValues = {
   feedback: "Feedback",
 };
 
+const headerValuesFrench =  {
+  "/checkoutPage": "Facturation et Livraison",
+  "/orderHistory": "Historique des Commandes",
+  "/orderDetails": "Détails de la Commande",
+  "/": "Se Connecter",
+  "/mobileOtp": "Se Connecter",
+  "/cart": "Panier",
+  "/paymentMode": "Sélectionner la Méthode de Paiement",
+  feedback: "Retour d'Information",
+  };
+
 const topHeaderBlackList: string[] = [];
 
 const bottomHeaderBlackList = ["/homePage", "/orderConfirmation"];
@@ -57,11 +69,13 @@ const languageIconWhiteList = ["/homePage"];
 const getHeaderTitleForPage = (
   name: string,
   logo: string,
-  pathName: string
+  pathName: string,
+  locale:string
 ) => {
+  const values = locale === 'en' ? headerValues : headerValuesFrench;
   switch (true) {
     case storeHeaderBlackList.includes(pathName):
-      return <Text>{headerValues[pathName]}</Text>;
+      return <Text>{values[pathName]}</Text>;
     default:
       return (
         <Box width={"260px"} className="md:hidden ml-2    flex gap-1 my-2">
@@ -144,6 +158,7 @@ const TopHeader: React.FC<TopHeaderProps> = ({ handleMenuClick }) => {
 
 const BottomHeader = () => {
   const [optionTags, setOptionTags] = useState<any>();
+  const { t, locale } = useLanguage();
 
   useEffect(() => {
     setOptionTags(JSON.parse(localStorage.getItem("optionTags") as string));
@@ -166,7 +181,8 @@ const BottomHeader = () => {
           {getHeaderTitleForPage(
             optionTags?.name,
             optionTags?.logo,
-            router.pathname
+            router.pathname,
+            locale
           )}
           <div className="flex gap-4">
             {!cartIconBlackList.includes(router.pathname) && <CartIcon />}

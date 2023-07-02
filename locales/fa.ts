@@ -297,7 +297,19 @@ const fa: { [key: string]: string } = {
   saveShippingDetails: "Enregistrer l'expédition détails",
   saveBillingDetails: "Enregistrer les détails de facturation",
   addBillingDetails: "Add Billing Details",
-  explorePlaces: "Explorer de nouveaux endroits",
-  comingSoon:'À venir !'
+  comingSoon: 'À venir !',
+  proceedToCheckout: 'Vérifier',
+  confirmOrder: 'Confirmer la commande',
+  orderPlacedAt: 'Placé à',
+  ordersFulfilled: 'Commande honorée',
+  subTotal: 'Sous-total',
+  deliveryCharge: 'Frais de livraison',
+  total: 'Total',
+  status: 'Statut',
+  paymentMethod: 'Méthode de paiement',
+  explorePlaces: "Explorer les lieux à proximité",
+  cards: "Cartes bancaires",
+addCard: "Ajouter une Carte",
+orderPlaced:'commande passée'
 };
 export default fa;

@@ -24,10 +24,8 @@ function PaymentMode() {
             fontSize={"17px"}
             mb={"10px"}
           >
-            <Text>Credit & Debit cards</Text>
-            <Text color={"rgba(var(--color-primary))"} fontSize={"15px"}>
-              Add Card
-            </Text>
+            <Text className="text-ellipsis">{t.cards}</Text>
+            <Text color={"rgba(var(--color-primary))"} fontSize={"15px"}>{t.addCard}</Text>
           </Flex>
           <Card className="border_radius_all" mb={"20px"}>
             <CardBody padding={"15px 20px"}>
