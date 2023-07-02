@@ -23,6 +23,8 @@
     --color-text-muted: 107, 114, 128; /*#6b7280*/
     --color-text-side: 255, 231, 231; /*#fff*/
     --text-color: 255, 255, 255; /* #fff  added for white color  */
+    --pending-status-color: 189, 148, 43, 1; /*#BD942B*/
+    --delivered-status-color: 80, 201, 23, 1; /*#50C917*/
     --font-family: iranyekan, "IRANSans", "Tahoma";
   }
 

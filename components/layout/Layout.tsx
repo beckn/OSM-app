@@ -15,7 +15,9 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const { locale } = useLanguage();
   const router = useRouter();
   const isHomepage = router.pathname === "/homePage";
+  const isSearch = router.pathname === "/search";
   const paddingStyles = "px-5 xl:px-16";
+  const marginStyles = "mt-[106px]";
 
   return (
     <Provider store={store}>
@@ -32,7 +34,15 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
         >
           <NextNProgress height={7} />
           <Header />
-          <main className={cs("flex-grow", { [paddingStyles]: !isHomepage })}>
+          <main
+            className={cs(
+              "flex-grow",
+              { [paddingStyles]: !isHomepage },
+              { [marginStyles]: !isHomepage && !isSearch },
+              { ["mt-[24px]"]: isHomepage },
+              { ["mt-[124px]"]: isSearch }
+            )}
+          >
             {children}
           </main>
           {/* <Footer /> */}

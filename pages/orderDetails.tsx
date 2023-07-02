@@ -43,6 +43,7 @@ const OrderDetails = () => {
   const [statusResponse, setStatusResponse] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [formData, setFormData] = useState();
+  const [orderStatus, setOrderStatus] = useState("pending");
   const transactionId = useSelector(
     (state: { transactionId: TransactionIdRootState }) => state.transactionId
   );
@@ -237,7 +238,15 @@ const OrderDetails = () => {
                   </Text>
                 </Flex>
 
-                <Text fontSize={"15px"} fontWeight={"600"}>
+                <Text
+                  fontSize={"15px"}
+                  fontWeight={"600"}
+                  color={
+                    orderStatus === "pending"
+                      ? "rgba(var(--pending-status-color))"
+                      : "rgba(var(--delivered-status-color))"
+                  }
+                >
                   Pending
                 </Text>
               </Flex>
