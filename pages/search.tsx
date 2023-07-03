@@ -118,8 +118,8 @@ const Search = () => {
         <div>
           <Loader
             stylesForLoadingText={{ fontWeight: "600", fontSize: "17px" }}
-            subLoadingText="Fetching store catalog from the network"
-            loadingText="Please wait!"
+            subLoadingText={t.catalogSubLoader}
+            loadingText={t.catalogLoader}
           />
         </div>
       ) : (

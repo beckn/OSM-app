@@ -37,11 +37,11 @@ export type ShippingFormData = {
 
 const CheckoutPage = () => {
   const [formData, setFormData] = useState<ShippingFormData>({
-    name: "",
-    mobileNumber: "",
-    email: "",
-    address: "",
-    zipCode: "",
+    name: "Antoine Dubois",
+    mobileNumber: "0612345678",
+    email: "antoine.dubois@gmail.com",
+    address: "15 Rue du Soleil, Paris, France",
+    zipCode: "75001",
   });
 
   const [
@@ -50,11 +50,11 @@ const CheckoutPage = () => {
   ] = useState(true);
 
   const [billingFormData, setBillingFormData] = useState<ShippingFormData>({
-    name: "",
-    mobileNumber: "",
-    email: "",
-    address: "",
-    zipCode: "",
+    name: "Antoine Dubois",
+    mobileNumber: "0612345678",
+    email: "antoine.dubois@gmail.com",
+    address: "15 Rue du Soleil, Paris, France",
+    zipCode: "75001",
   });
 
   const router = useRouter();

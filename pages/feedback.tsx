@@ -55,8 +55,10 @@ const Feedback = () => {
         background={"rgba(var(--color-primary))"}
         color={"rgba(var(--text-color))"}
         handleOnClick={() => {
+          let user = localStorage.getItem('userPhone')as string;
           localStorage.clear();
-          router.push("/");
+          localStorage.setItem('userPhone',user);
+          router.push("/homePage");
         }}
         isDisabled={false}
       />
@@ -65,8 +67,10 @@ const Feedback = () => {
         background={"rgba(var(--text-color))"}
         color={"rgba(var(--color-primary))"}
         handleOnClick={() => {
+          let user = localStorage.getItem('userPhone') as string;
           localStorage.clear();
-          router.push("/");
+          localStorage.setItem('userPhone',user);
+          router.push("/homePage");
         }}
         isDisabled={false}
       />
