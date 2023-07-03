@@ -12,7 +12,7 @@ import {
 } from "../utilities/orderHistory-utils";
 
 const OrderHistory = () => {
-  const [orders, setOrders] = useState([]);
+  const [orderHistoryList, setOrderHistoryList] = useState<any>([]);
   const { data, fetchData, loading, error } = useRequest();
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -30,7 +30,7 @@ const OrderHistory = () => {
   useEffect(() => {
     if (data) {
       const ordersArray = (data as any).orders;
-      setOrders(ordersArray);
+      setOrderHistoryList(ordersArray);
     }
   }, [data]);
 
@@ -38,34 +38,37 @@ const OrderHistory = () => {
     return <Loader />;
   }
 
-  if (!orders.length) {
+  if (!orderHistoryList.length) {
     return <p>No orders placed</p>;
   }
-  return orders.map((order: any, index) => {
-    const keyOfOrder = Object.keys(order);
 
+  return orderHistoryList.map((orderInHistory: any, index: number) => {
     const createdAt = getOrderPlacementTimeline(
-      order.orders[0].message.order.created_at
+      orderInHistory.orders.length > 0
+        ? orderInHistory.orders[0].message.order.created_at
+        : ""
     );
 
     const totalQuantityOfSingleOrder = getTotalQuantityOfSingleOrder(
-      order.orders
+      orderInHistory.orders
     );
-    const totalPriceOfSingleOrder = getTotalPriceOfSingleOrder(order.orders);
+    const totalPriceOfSingleOrder = getTotalPriceOfSingleOrder(
+      orderInHistory.orders
+    );
 
     return (
       <Link
         key={index}
         href={{
           pathname: "/orderDetails",
-          query: { orderId: order.parentOrderId },
+          query: { orderId: orderInHistory.parentOrderId },
         }}
       >
         <Box pt={"20px"}>
           <DetailsCard>
             <OrderHistoryDetails
               createdAt={createdAt}
-              orderId={order.parentOrderId}
+              orderId={orderInHistory.parentOrderId}
               quantity={totalQuantityOfSingleOrder}
               totalAmount={totalPriceOfSingleOrder}
             />
