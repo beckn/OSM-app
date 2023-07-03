@@ -55,6 +55,7 @@ const Feedback = () => {
         background={"rgba(var(--color-primary))"}
         color={"rgba(var(--text-color))"}
         handleOnClick={() => {
+          localStorage.clear();
           router.push("/");
         }}
         isDisabled={false}
@@ -64,6 +65,7 @@ const Feedback = () => {
         background={"rgba(var(--text-color))"}
         color={"rgba(var(--color-primary))"}
         handleOnClick={() => {
+          localStorage.clear();
           router.push("/");
         }}
         isDisabled={false}

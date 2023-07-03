@@ -11,8 +11,17 @@ const orderStatusMap = {
   DELIVERED: "Order Delivered",
 };
 
+export const orderCardStatusMap = {
+  INITIATED: "Pending",
+  ACKNOWLEDGED: "Confirmed",
+  PACKED: "Confirmed",
+  SHIPPED: "Confirmed",
+  DELIVERED: "Completed",
+};
+
 export const renderOrderStatusList = (res: any) => {
   const order = res.message.order;
+  console.log("order.state", order.state);
   if (order.state === "INITIATED") {
     return (
       <Box>
@@ -161,7 +170,7 @@ export const renderOrderStatusList = (res: any) => {
           <Flex>
             <Image src={lineBlack} width={"12px"} height={"40px"} />
             <Text paddingLeft={"10px"} fontSize={"10px"} pt={"10px"}>
-              {getOrderPlacementTimeline(order.context.timestamp)}
+              {getOrderPlacementTimeline(res.context.timestamp)}
             </Text>
           </Flex>
         </Box>
@@ -186,7 +195,7 @@ export const renderOrderStatusList = (res: any) => {
             <Flex alignItems={"center"}>
               <Image width={"12px"} height={"13px"} src={TrackIcon} />
               <Text paddingLeft={"10px"} fontSize={"15px"} fontWeight={"600"}>
-                {getOrderPlacementTimeline(res.context.timestamp)}
+                {orderStatusMap["SHIPPED"]}
               </Text>
             </Flex>
           </Flex>
