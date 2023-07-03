@@ -68,6 +68,25 @@ const CheckoutPage = () => {
   );
 
   useEffect(() => {
+    if (localStorage) {
+      if (localStorage.getItem("userPhone")) {
+        const copiedFormData = structuredClone(formData);
+        const copiedBillingFormData = structuredClone(billingFormData);
+
+        copiedFormData.mobileNumber = localStorage.getItem(
+          "userPhone"
+        ) as string;
+        copiedBillingFormData.mobileNumber = localStorage.getItem(
+          "userPhone"
+        ) as string;
+
+        setFormData(copiedFormData);
+        setBillingFormData(copiedBillingFormData);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     if (typeof window !== "undefined") {
       if (localStorage.getItem("shippingAdress")) {
         setFormData(

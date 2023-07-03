@@ -65,7 +65,7 @@ export const getPayloadForConfirmRequest = (
                 address: initMetaDataPerBpp[bppId].billing.address,
               },
               contact: {
-                phone: "9191223433",
+                phone: initMetaDataPerBpp[bppId].billing.phone,
                 email: "testemail1@mailinator.com",
               },
             },
