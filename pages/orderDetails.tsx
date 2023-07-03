@@ -24,6 +24,7 @@ import {
   getPayloadForTrackRequest,
 } from "../utilities/confirm-utils";
 import {
+  generateAlphanumericID,
   getDataPerBpp,
   storeOrderDetails,
 } from "../utilities/orderDetails-utils";
@@ -280,7 +281,7 @@ const OrderDetails = () => {
                   whiteSpace={"nowrap"}
                   w={"210px"}
                 >
-                  {res.message.order.id}
+                  {generateAlphanumericID()}
                 </Text>
               </Flex>
               <Flex justifyContent={"space-between"} alignItems={"center"}>
