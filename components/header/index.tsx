@@ -22,7 +22,7 @@ const cartIconBlackList = [
 
 const backIconList = ["/", "/orderDetails"];
 
-const homeIconBlackList = ["/orderHistory", "/", "/homePage"];
+const homeIconBlackList = ["/orderHistory", "/", "/homePage", "/mobileOtp"];
 
 const storeHeaderBlackList = [
   "/checkoutPage",

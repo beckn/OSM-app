@@ -5,7 +5,7 @@ import Button from "../components/button/Button";
 import style from "../components/detailsCard/ShippingForm.module.css";
 
 const MobileOtp = () => {
-  const [OTP, setOTP] = useState("663423");
+  const [OTP, setOTP] = useState("");
   const [OTPError, setOTPError] = useState("");
 
   const handleOTP = (event: React.ChangeEvent<HTMLInputElement>) => {

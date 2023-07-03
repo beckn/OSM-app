@@ -3,6 +3,8 @@ import React from "react";
 
 interface LoaderPropsModel {
   loadingText?: string;
+  subLoadingText?: string;
+  stylesForLoadingText?: React.CSSProperties;
 }
 
 const Loader: React.FC<LoaderPropsModel> = (props) => {
@@ -15,7 +17,14 @@ const Loader: React.FC<LoaderPropsModel> = (props) => {
         color="#A71B4A"
         size="xl"
       />
-      {props.loadingText && <Text marginTop={"21px"}>{props.loadingText}</Text>}
+      {props.loadingText && (
+        <Text style={props.stylesForLoadingText} marginTop={"21px"}>
+          {props.loadingText}
+        </Text>
+      )}
+      {props.subLoadingText && (
+        <Text>{props.subLoadingText}</Text>
+      )}
     </div>
   );
 };

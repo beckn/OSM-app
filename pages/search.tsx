@@ -8,6 +8,7 @@ import { responseDataActions } from "../store/responseData-slice";
 import { RetailItem } from "../lib/types/products";
 import Loader from "../components/loader/Loader";
 import { useLanguage } from "../hooks/useLanguage";
+import { Text } from "@chakra-ui/react";
 
 //Mock data for testing search API. Will remove after the resolution of CORS issue
 
@@ -113,7 +114,17 @@ const Search = () => {
         }}
       />
 
-      {loading ? <Loader /> : <ProductList productList={items} />}
+      {loading ? (
+        <div>
+          <Loader
+            stylesForLoadingText={{ fontWeight: "600", fontSize: "17px" }}
+            subLoadingText="Fetching store catalog from the network"
+            loadingText="Please wait!"
+          />
+        </div>
+      ) : (
+        <ProductList productList={items} />
+      )}
     </div>
   );
 };
