@@ -329,6 +329,7 @@ formZipCode:'Zip Code',
 errorName:"Name is required",
 errorNumber:"Mobile Number is required",
 errorNumber2:"Invalid Mobile Number",
+errorNumber3:"Mobile Number must have 10 digits",
 errorEmail:"Email is required",
 errorEmail2:"Email Mobile Number",
 errorAddress:"Complete Address is required",
@@ -336,6 +337,13 @@ errorZipcode:'Zip code is required',
 errorZipcode2:'Invalid Zip code',
 confirmMessage1:'Thank you! Our order will be',
 confirmMessage2:'confirmed shortly',
-
+sendOtpButton:'Send Otp',
+verifyMobile:'Verify your Mobile Number',
+otpMessage1:'Have sent an OTP to your mobile',
+otpMessage2:'number ending with',
+otpPlaceholder:'Enter OTP here',
+loginButton:'Login',
+errorOtp1:'OTP is required',
+errorOtp2:'OTP must have 6 digits'
 };
 export default en;
