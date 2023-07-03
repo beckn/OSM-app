@@ -23,7 +23,7 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
     <Provider store={store}>
       <ThemeProvider enableSystem={true}>
         <Head>
-          <title>GeoShopr</title>
+          <title>Open Street Commerce</title>
         </Head>
         <div
           className={cs(
