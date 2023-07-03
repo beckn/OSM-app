@@ -52,8 +52,53 @@ const OrderDetails = () => {
   const statusRequest = useRequest();
   const trackRequest = useRequest();
   const router = useRouter();
+  const { orderId } = router.query;
 
   const { t } = useLanguage();
+
+  useEffect(() => {
+    if (orderId && localStorage && localStorage.getItem("orderHistoryArray")) {
+      const parsedOrderHistoryArray = JSON.parse(
+        localStorage.getItem("orderHistoryArray") as string
+      );
+
+      const relatedOrder = parsedOrderHistoryArray.find(
+        (parsedOrder: any) => parsedOrder.parentOrderId === orderId
+      );
+
+      setConfirmData(relatedOrder.orders);
+
+      const confirmOrderMetaDataPerBpp = getConfirmMetaDataForBpp(
+        relatedOrder.orders
+      );
+      const payloadForStatusRequest = getPayloadForStatusRequest(
+        confirmOrderMetaDataPerBpp,
+        transactionId
+      );
+      const payloadForTrackRequest = getPayloadForTrackRequest(
+        confirmOrderMetaDataPerBpp,
+        transactionId
+      );
+
+      trackRequest.fetchData(
+        `${apiUrl}/client/v2/track`,
+        "POST",
+        payloadForTrackRequest
+      );
+
+      const intervalId = setInterval(() => {
+        statusRequest.fetchData(
+          `${apiUrl}/client/v2/status`,
+          "POST",
+          payloadForStatusRequest
+        );
+      }, 2000);
+
+      return () => {
+        clearInterval(intervalId);
+      };
+    }
+  }, []);
 
   useEffect(() => {
     if (localStorage) {
@@ -106,6 +151,8 @@ const OrderDetails = () => {
       }
     }
   }, [statusRequest.data]);
+
+  console.log("confirmData", confirmData);
 
   if (!confirmData.length) {
     return <></>;
@@ -224,7 +271,18 @@ const OrderDetails = () => {
           key={index}
           accordionHeader={
             <Box>
-              <Text mb={"15px"}>Order ID #123456789102 </Text>
+              <Flex mb={"15px"} fontSize={"17px"} alignItems={"center"}>
+                <Text pr={"8px"}>Order ID</Text>
+
+                <Text
+                  textOverflow={"ellipsis"}
+                  overflow={"hidden"}
+                  whiteSpace={"nowrap"}
+                  w={"210px"}
+                >
+                  {res.message.order.id}
+                </Text>
+              </Flex>
               <Flex justifyContent={"space-between"} alignItems={"center"}>
                 <Flex maxWidth={"57vw"}>
                   <Text
