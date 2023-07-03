@@ -129,8 +129,18 @@ const OrderDetails = () => {
     return count;
   };
 
+  const getExtractedName = (str: string) => {
+    const parts = str
+      .trim()
+      .split("/")
+      .filter((part) => part !== "");
+    const extracted = parts[parts.length - 1];
+
+    return extracted;
+  };
+
   const shippingDetails = {
-    name: orderFromConfirmData.billing.name.replace(/^\.+/, "").trim(),
+    name: getExtractedName(orderFromConfirmData.billing.name),
     address: orderFromConfirmData.billing.address.state,
     phone: orderFromConfirmData.billing.phone,
   };

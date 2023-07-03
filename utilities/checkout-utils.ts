@@ -36,7 +36,7 @@ export const getPayloadForInitRequest = (
           offers: [],
           billing: {
             name: `./${customerAddress.name}/////`,
-            phone: "9191223433",
+            phone: customerAddress.mobileNumber,
             address: {
               door: "",
               building: customerAddress.address,

@@ -130,6 +130,7 @@ const TopHeader: React.FC<TopHeaderProps> = ({ handleMenuClick }) => {
               <Image
                 w={"88%"}
                 onClick={() => {
+                  localStorage.clear();
                   router.push("/");
                 }}
                 src="/images/Home_icon.svg"

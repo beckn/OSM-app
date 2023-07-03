@@ -4,7 +4,7 @@ import lineBlack from "../../public/images/lineBlack.svg";
 import TrackIcon from "../../public/images/TrackIcon.svg";
 
 const orderStatusMap = {
-  INITIATED: "Status Pending",
+  INITIATED: "Confirmation Pending",
   ACKNOWLEDGED: "Items Confirmed",
   PACKED: "Order Packed",
   SHIPPED: "Order Out for Delivery",
