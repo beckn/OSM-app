@@ -46,7 +46,7 @@ const OrderHistory = () => {
   return orderHistoryList.map((orderInHistory: any, index: number) => {
     const createdAt = getOrderPlacementTimeline(
       orderInHistory.orders.length > 0
-        ? orderInHistory.orders[0].message.order.created_at
+        ? orderInHistory.orders[0].message.responses[0].message.order.created_at
         : ""
     );
 
