@@ -18,12 +18,16 @@ const Loader: React.FC<LoaderPropsModel> = (props) => {
         size="xl"
       />
       {props.loadingText && (
-        <Text style={props.stylesForLoadingText} marginTop={"21px"}>
+        <Text
+          style={props.stylesForLoadingText}
+          marginTop={"21px"}
+          textAlign="center"
+        >
           {props.loadingText}
         </Text>
       )}
       {props.subLoadingText && (
-        <Text>{props.subLoadingText}</Text>
+        <Text textAlign="center">{props.subLoadingText}</Text>
       )}
     </div>
   );

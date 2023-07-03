@@ -30,6 +30,7 @@ const OrderHistory = () => {
   useEffect(() => {
     if (data) {
       const ordersArray = (data as any).orders;
+      localStorage.setItem("orderHistoryArray", JSON.stringify(ordersArray));
       setOrderHistoryList(ordersArray);
     }
   }, [data]);

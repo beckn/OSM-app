@@ -34,7 +34,10 @@ import ViewMoreOrderModal from "../components/orderDetails/ViewMoreOrderModal";
 import { useSelector } from "react-redux";
 import { TransactionIdRootState } from "../lib/types/cart";
 import useRequest from "../hooks/useRequest";
-import { renderOrderStatusList } from "../components/orderDetails/RenderOrderStatusTree";
+import {
+  orderCardStatusMap,
+  renderOrderStatusList,
+} from "../components/orderDetails/RenderOrderStatusTree";
 import { useRouter } from "next/router";
 
 const OrderDetails = () => {
@@ -42,8 +45,6 @@ const OrderDetails = () => {
   const [confirmData, setConfirmData] = useState<ResponseModel[]>([]);
   const [statusResponse, setStatusResponse] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [formData, setFormData] = useState();
-  const [orderStatus, setOrderStatus] = useState("pending");
   const transactionId = useSelector(
     (state: { transactionId: TransactionIdRootState }) => state.transactionId
   );
@@ -60,7 +61,6 @@ const OrderDetails = () => {
       if (stringifiedConfirmData) {
         const parsedConfirmedData = JSON.parse(stringifiedConfirmData);
         setConfirmData(parsedConfirmedData);
-        storeOrderDetails(parsedConfirmedData);
 
         const confirmOrderMetaDataPerBpp =
           getConfirmMetaDataForBpp(parsedConfirmedData);
@@ -226,12 +226,11 @@ const OrderDetails = () => {
             <Box>
               <Text mb={"15px"}>Order ID #123456789102 </Text>
               <Flex justifyContent={"space-between"} alignItems={"center"}>
-                <Flex>
+                <Flex maxWidth={"57vw"}>
                   <Text
                     textOverflow={"ellipsis"}
                     overflow={"hidden"}
                     whiteSpace={"nowrap"}
-                    width={"70%"}
                     fontSize={"12px"}
                     fontWeight={"400"}
                   >
@@ -252,12 +251,12 @@ const OrderDetails = () => {
                   fontSize={"15px"}
                   fontWeight={"600"}
                   color={
-                    orderStatus === "pending"
+                    res.message.order.state === "INITIATED"
                       ? "rgba(var(--pending-status-color))"
                       : "rgba(var(--delivered-status-color))"
                   }
                 >
-                  Pending
+                  {orderCardStatusMap[res.message.order.state]}
                 </Text>
               </Flex>
             </Box>
