@@ -3,11 +3,13 @@ import Router from "next/router";
 import React, { useEffect, useState } from "react";
 import Button from "../components/button/Button";
 import style from "../components/detailsCard/ShippingForm.module.css";
+import { useLanguage } from "../hooks/useLanguage";
 
 const MobileOtp = () => {
   const [OTP, setOTP] = useState("");
   const [OTPError, setOTPError] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const {t,locale} = useLanguage()
 
   const handleOTP = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -26,11 +28,11 @@ const MobileOtp = () => {
 
   const validateOTP = (value: string) => {
     if (!value) {
-      return "OTP is required";
+      return "errorOtp1";
     }
 
     if (value.length !== 6) {
-      return "OTP must have 6 digits";
+      return "errorOtp2";
     }
 
     return "";
@@ -51,13 +53,11 @@ const MobileOtp = () => {
     <>
       <Box padding={"0 21px"}>
         <Box mt={"20px"}>
-          <Text fontSize={"30px"} fontWeight={"600"}>
-            Verify your mobile number
-          </Text>
+          <Text fontSize={"30px"} fontWeight={"600"}>{t.verifyMobile}</Text>
 
           <Text pt={"10px"} fontSize={"15px"}>
-            Have sent an OTP to your mobile <br />
-            number ending with {phoneNumber}
+            {t.otpMessage1} <br />
+            {t.otpMessage2} {phoneNumber}
           </Text>
         </Box>
 
@@ -73,19 +73,19 @@ const MobileOtp = () => {
                 onChange={handleOTP}
               />
 
-              {OTPError && <span className={style.error}>{OTPError}</span>}
+              {OTPError && <span className={style.error}>{t[`${OTPError}`]}</span>}
 
               <label
                 className={`${style["did_floating_label"]} ${style["otp_number"]}`}
               >
-                Enter OTP here
+                {t.otpPlaceholder}
               </label>
             </div>
           </div>
         </Box>
 
         <Button
-          buttonText={"Login"}
+          buttonText={t.loginButton}
           background={"rgba(var(--color-primary))"}
           color={"rgba(var(--text-color))"}
           isDisabled={false}

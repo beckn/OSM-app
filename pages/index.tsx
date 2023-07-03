@@ -1,5 +1,6 @@
 import { Box, Image, Input } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { useLanguage } from "../hooks/useLanguage";
 import LoginIcon from "../public/images/LoginIcon.svg";
 import style from "../components/detailsCard/ShippingForm.module.css";
 import Button from "../components/button/Button";
@@ -20,11 +21,11 @@ const MobileLogin = () => {
 
   const validatePhoneNumber = (value: any) => {
     if (!value) {
-      return "Phone number is required";
+      return "errorNumber";
     }
 
     if (value.length !== 10) {
-      return "Phone number must have 10 digits";
+      return "errorNumber3";
     }
     return "";
   };
@@ -36,6 +37,10 @@ const MobileLogin = () => {
     Router.push("/mobileOtp");
   };
 
+
+  const {t,locale} = useLanguage();
+
+  
   return (
     <Box padding={"0 21px"}>
       <Box mt={"30px"}>
@@ -54,20 +59,18 @@ const MobileLogin = () => {
             />
 
             {phoneNumberError && (
-              <span className={style.error}>{phoneNumberError}</span>
+              <span className={style.error}>{t[`${phoneNumberError}`]}</span>
             )}
 
             <label
               className={`${style["did_floating_label"]} ${style["otp_number"]}`}
-            >
-              Mobile Number
-            </label>
+            >{t.formNumber}</label>
           </div>
         </div>
       </Box>
 
       <Button
-        buttonText={"Send OTP"}
+        buttonText={t.sendOtpButton}
         background={"rgba(var(--color-primary))"}
         color={"rgba(var(--text-color))"}
         isDisabled={phoneNumber.length === 0 || phoneNumberError.length !== 0}

@@ -323,6 +323,7 @@ formZipCode: "Code postal",
 errorName: "Le nom est requis",
 errorNumber: "Le numéro de téléphone portable est requis",
 errorNumber2: "Numéro de téléphone portable invalide",
+errorNumber3: "Le numéro de téléphone portable doit comporter 10 chiffres",
 errorEmail: "L'e-mail est requis",
 errorEmail2: "Adresse e-mail invalide",
 errorAddress: "L'adresse complète est requise",
@@ -330,6 +331,15 @@ errorZipcode: "Le code postal est requis",
 errorZipcode2: "Code postal invalide",
 confirmMessage1: "Merci ! Notre commande sera",
 confirmMessage2: "confirmée sous peu",
+sendOtpButton: "Envoyer",
+verifyMobile: "Vérifier le numéro de téléphone",
+otpMessage1: "Un code a été envoyé à votre téléphone",
+otpMessage2: "se termine par",
+otpPlaceholder: "Entrez le code ici",
+loginButton: "Se connecter",
+errorOtp1: "Code requis",
+errorOtp2: "Code invalide",
+
 };
 export default fa;
 
