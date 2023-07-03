@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { useLanguage } from "../../hooks/useLanguage";
 import { ICartRootState } from "../../lib/types/cart";
 import ProductPrice from "../UI/ProductPrice";
-import { changeNumbersFormatEnToFa } from "../../utilities/changeNumbersFormatEnToFa";
 
 interface OrderSummaryBoxPropsModel {
   onOrderClick: () => void;
@@ -37,11 +36,7 @@ const OrderSummaryBox: React.FC<OrderSummaryBoxPropsModel> = (props) => {
               <p className="text-sm sm:text-base text-palette-mute md:text-palette-base">
                 {t.totalQuantity}
               </p>
-              <p className="rtl:ml-1 ltr:mr-1 font-bold">
-                {locale === "en"
-                  ? totalQuantity
-                  : changeNumbersFormatEnToFa(totalQuantity)}
-              </p>
+              <p className="rtl:ml-1 ltr:mr-1 font-bold">{totalQuantity}</p>
             </div>
             <div className="flex flex-wrap items-baseline justify-between flex-grow md:my-4">
               <p className="text-sm sm:text-base text-palette-mute md:text-palette-base">
