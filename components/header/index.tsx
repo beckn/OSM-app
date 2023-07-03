@@ -64,7 +64,7 @@ const bottomHeaderBlackList = ["/homePage", "/orderConfirmation"];
 
 const menuIconWhiteList = ["/homePage"];
 
-const languageIconWhiteList = ["/homePage"];
+const languageIconWhiteList = ["/homePage","/","/mobileOtp"];
 
 const getHeaderTitleForPage = (
   name: string,

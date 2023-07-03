@@ -296,7 +296,7 @@ const fa: { [key: string]: string } = {
   currencySymbol: "€",
   saveShippingDetails: "Enregistrer l'expédition détails",
   saveBillingDetails: "Enregistrer les détails de facturation",
-  addBillingDetails: "Add Billing Details",
+  addBillingDetails: "Ajouter les détails de facturation",
   comingSoon: 'À venir !',
   proceedToCheckout: 'Vérifier',
   confirmOrder: 'Confirmer la commande',
@@ -309,7 +309,67 @@ const fa: { [key: string]: string } = {
   paymentMethod: 'Méthode de paiement',
   explorePlaces: "Explorer les lieux à proximité",
   cards: "Cartes bancaires",
-addCard: "Ajouter une Carte",
-orderPlaced:'commande passée'
+addCard: "Ajouter",
+orderPlaced:'commande passée',
+inStoreShopping: "Achats en magasin",
+delivery: "Livraison",
+clickAndCollect: "Retrait en magasin",
+bookstore: "Librairie",
+formName: "Nom",
+formNumber: "Numéro de téléphone portable",
+formEmail: "Adresse e-mail",
+formAddress: "Adresse complète",
+formZipCode: "Code postal",
+errorName: "Le nom est requis",
+errorNumber: "Le numéro de téléphone portable est requis",
+errorNumber2: "Numéro de téléphone portable invalide",
+errorEmail: "L'e-mail est requis",
+errorEmail2: "Adresse e-mail invalide",
+errorAddress: "L'adresse complète est requise",
+errorZipcode: "Le code postal est requis",
+errorZipcode2: "Code postal invalide",
+confirmMessage1: "Merci ! Notre commande sera",
+confirmMessage2: "confirmée sous peu",
 };
 export default fa;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

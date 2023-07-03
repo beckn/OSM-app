@@ -12,29 +12,29 @@ export const validateForm = (formData: ShippingFormData): FormErrors => {
   const errors: FormErrors = {};
 
   if (formData.name.trim() === "") {
-    errors.name = "Name is required";
+    errors.name = "errorName";
   }
 
   if (formData.mobileNumber.trim() === "") {
-    errors.mobileNumber = "Mobile Number is required";
+    errors.mobileNumber = "errorNumber";
   } else if (!/^\d{10}$/.test(formData.mobileNumber)) {
-    errors.mobileNumber = "Invalid Mobile Number";
+    errors.mobileNumber = "errorNumber2";
   }
 
   if (formData.email.trim() === "") {
-    errors.email = "Email ID is required";
+    errors.email = "errorEmail";
   } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-    errors.email = "Invalid Email ID";
+    errors.email = "errorEmail2";
   }
 
   if (formData.address.trim() === "") {
-    errors.address = "Complete Address is required";
+    errors.address = "errorAddress";
   }
 
   if (formData.zipCode.trim() === "") {
-    errors.zipCode = "Pincode is required";
+    errors.zipCode = "errorZipcode";
   } else if (!/^\d{5}$/.test(formData.zipCode)) {
-    errors.zipCode = "Invalid Zip code";
+    errors.zipCode = "errorZipcode2";
   }
 
   return errors;

@@ -96,7 +96,7 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
             margin={"0 auto"}
             position={"unset"}
           >
-            <Image src={crossIcon} />
+            <Image src={crossIcon} alt="Close Icon" />
           </ModalCloseButton>
           <Flex
             justifyContent={"space-between"}
@@ -120,9 +120,9 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                   value={props.formData.name}
                   onChange={handleInputChange}
                 />
-                <label className={style.did_floating_label}>Name</label>
+                <label className={style.did_floating_label}>{t.formName}</label>
                 {formErrors.name && (
-                  <div className={style.error}>{formErrors.name}</div>
+                  <div className={style.error}>{t[`${formErrors.name}`]}</div>
                 )}
               </div>
               <div className={style.did_floating_label_content}>
@@ -134,11 +134,9 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                   value={props.formData.mobileNumber}
                   onChange={handleInputChange}
                 />
-                <label className={style.did_floating_label}>
-                  Mobile Number
-                </label>
+                <label className={style.did_floating_label}>{t.formNumber}</label>
                 {formErrors.mobileNumber && (
-                  <span className={style.error}>{formErrors.mobileNumber}</span>
+                  <span className={style.error}>{t[`${formErrors.mobileNumber}`]}</span>
                 )}
               </div>
               <div className={style.did_floating_label_content}>
@@ -150,9 +148,9 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                   value={props.formData.email}
                   onChange={handleInputChange}
                 />
-                <label className={style.did_floating_label}>Email ID</label>
+                <label className={style.did_floating_label}>{t.formEmail}</label>
                 {formErrors.email && (
-                  <span className={style.error}>{formErrors.email}</span>
+                  <span className={style.error}>{t[`${formErrors.email}`]}</span>
                 )}
               </div>
               <div className={style.did_floating_label_content}>
@@ -164,11 +162,9 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                   value={props.formData.address}
                   onChange={handleInputChange}
                 />
-                <label className={style.did_floating_label}>
-                  Complete Address
-                </label>
+                <label className={style.did_floating_label}>{t.formAddress}</label>
                 {formErrors.address && (
-                  <span className={style.error}>{formErrors.address}</span>
+                  <span className={style.error}>{t[`${formErrors.address}`]}</span>
                 )}
               </div>
 
@@ -181,9 +177,9 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                   value={props.formData.zipCode}
                   onChange={handleInputChange}
                 />
-                <label className={style.did_floating_label}>Zip Code</label>
+                <label className={style.did_floating_label}>{t.formZipCode}</label>
                 {formErrors.zipCode && (
-                  <span className={style.error}>{formErrors.zipCode}</span>
+                  <span className={style.error}>{t[`${formErrors.zipCode}`]}</span>
                 )}
               </div>
             </div>

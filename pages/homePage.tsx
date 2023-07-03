@@ -40,7 +40,7 @@ const transitionStyles = {
   exited: { height: "3.8rem" },
 };
 
-const staticTagsList = ["In-store-shopping", "Delivery", "Click & Collect"];
+const staticTagsList = ["inStoreShopping", "delivery", "clickAndCollect"];
 
 import MapSearch from "../components/Map/MapSearch";
 import { isEmpty } from "lodash";
@@ -56,10 +56,15 @@ const Homepage = () => {
 
   // create a state value called query in typescript
   const [query, setQuery] = useState<string>("");
+  // const [coords, setCoords] = useState<Coords>({
+  //   lat: 48.719242,
+  //   long: 2.346078,
+  // });
   const [coords, setCoords] = useState<Coords>({
-    lat: 48.84619085,
-    long: 2.346078521905153,
+    lat: 48.800345,
+    long: 2.346078,
   });
+
   const [isOptionModalOpen, setIsOptionModalOpen] = useState<boolean>(true);
   const [isOptionDetailOpen, setIsOptionDetailOpen] = useState<boolean>(false);
   const [isMenuModalOpen, setIsMenuModalOpen] = useState<boolean>(true);
@@ -292,7 +297,7 @@ const Homepage = () => {
               <span className="font-bold text-ellipsis max-w-[70%]">
                 {selectedStore?.tags.name}
               </span>{" "}
-              - Bookstore
+              - {t.bookstore}
             </p>
           </div>
           <div className="flex justify-between gap-2">
@@ -322,7 +327,7 @@ const Homepage = () => {
               return (
                 <div key={tag} className="flex items-center">
                   <div className="h-2 w-2 bg-palette-primary mr-2 rounded-full"></div>
-                  <p className="text-[10px] leading-[15px]">{tag}</p>
+                  <p className="text-[10px] leading-[15px]">{t[`${tag}`]}</p>
                 </div>
               );
             })}

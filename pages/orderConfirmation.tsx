@@ -93,8 +93,8 @@ const OrderConfirmation = () => {
           marginBottom={"15px"}
           fontSize={"15px"}
         >
-          Thank you! Our order will be <br />
-          confirmed shortly
+          {t.confirmMessage1} <br />
+          {t.confirmMessage2}
         </Text>
       </Stack>
     </Box>
