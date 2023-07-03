@@ -41,3 +41,25 @@ export const getDataPerBpp = (confirmData: ResponseModel[]) => {
 
   return responsesPerBpp;
 };
+
+export const generateAlphanumericID = (function () {
+  const length = 10;
+  const characters = "0123456789";
+  let cachedID: any = null;
+
+  return function () {
+    if (cachedID) {
+      return cachedID;
+    }
+
+    let id = "#";
+
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      id += characters[randomIndex];
+    }
+
+    cachedID = id;
+    return id;
+  };
+})();
