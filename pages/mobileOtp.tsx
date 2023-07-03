@@ -1,12 +1,13 @@
 import { Box, Text } from "@chakra-ui/react";
 import Router from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../components/button/Button";
 import style from "../components/detailsCard/ShippingForm.module.css";
 
 const MobileOtp = () => {
   const [OTP, setOTP] = useState("");
   const [OTPError, setOTPError] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   const handleOTP = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -14,6 +15,14 @@ const MobileOtp = () => {
     setOTP(sanitizedValue);
     setOTPError(validateOTP(sanitizedValue));
   };
+
+  useEffect(() => {
+    if (localStorage && localStorage.getItem("userPhone")) {
+      let str = localStorage.getItem("userPhone") as string;
+      const storedPhoneNumber = str.substring(str.length - 4);
+      setPhoneNumber(storedPhoneNumber);
+    }
+  }, []);
 
   const validateOTP = (value: string) => {
     if (!value) {
@@ -48,7 +57,7 @@ const MobileOtp = () => {
 
           <Text pt={"10px"} fontSize={"15px"}>
             Have sent an OTP to your mobile <br />
-            number ending with 4321
+            number ending with {phoneNumber}
           </Text>
         </Box>
 
