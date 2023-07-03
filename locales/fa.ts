@@ -339,7 +339,8 @@ otpPlaceholder: "Entrez le code ici",
 loginButton: "Se connecter",
 errorOtp1: "Code requis",
 errorOtp2: "Code invalide",
-
+catalogLoader: "Veuillez patienter !",
+catalogSubLoader: "Récupération du catalogue du magasin depuis le réseau",
 };
 export default fa;
 
