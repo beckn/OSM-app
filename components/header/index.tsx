@@ -109,7 +109,7 @@ const TopHeader: React.FC<TopHeaderProps> = ({ handleMenuClick }) => {
 
   return (
     <>
-      <div className="h-7 w-full bg-[#efefef] fixed z-[99]">
+      <div className="h-7 w-full bg-[#efefef] fixed z-[1000]">
         <div className="px-5 h-full flex items-center">
           <div>
             <Image src="/images/CommerceLogo.svg" alt="App logo" />
