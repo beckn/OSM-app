@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { cartUiActions } from "../../store/cartUI-slice";
 import { useLanguage } from "../../hooks/useLanguage";
 import { ICartRootState } from "../../lib/types/cart";
-import { changeNumbersFormatEnToFa } from "../../utilities/changeNumbersFormatEnToFa";
 import { gbpCurrencyFormat } from "../../utilities/currencyFormat";
 import CartItem from "./CartItem";
 import { useExchangeRateGBPToIRR } from "../../hooks/useExchangeRateGBPToIRR";
@@ -39,9 +38,7 @@ const CartBox = () => {
       <div className="relative">
         <header className="flex items-center justify-between sticky top-0 left-0 right-0 text-sm font-normal z-10 bg-palette-card p-2">
           <span>
-            {locale === "en"
-              ? cartItemQuantity
-              : changeNumbersFormatEnToFa(cartItemQuantity)}{" "}
+            {cartItemQuantity}
             {t.product}
           </span>
           <span onClick={onCloseCartBoxHandler}>

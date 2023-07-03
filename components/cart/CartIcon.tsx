@@ -6,7 +6,6 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { cartUiActions } from "../../store/cartUI-slice";
 import CartBox from "./CartBox";
 import { ICartUiRootState, ICartRootState } from "../../lib/types/cart";
-import { changeNumbersFormatEnToFa } from "../../utilities/changeNumbersFormatEnToFa";
 import { useLanguage } from "../../hooks/useLanguage";
 
 const Basket = () => {
@@ -35,9 +34,7 @@ const Basket = () => {
         <a className="relative flex items-center ltr:md:pl-6 rtl:md:pr-6 rtl:md:border-r-2 rtl:md:border-r-slate-300 ltr:md:border-l-2 ltr:md:border-l-slate-300 z-50">
           <AiOutlineShoppingCart style={{ fontSize: "1.6rem" }} />
           <span className="absolute -top-3 -right-[0.3rem] rtl:md:right-[1rem]  flex items-center justify-center w-5 h-5 rtl:pt-[0.1rem] rounded-full bg-palette-primary text-[0.75rem] leading-3 text-white shadow-lg">
-            {locale === "en"
-              ? cartItemQuantity
-              : changeNumbersFormatEnToFa(cartItemQuantity)}
+            {cartItemQuantity}
           </span>
         </a>
       </Link>
