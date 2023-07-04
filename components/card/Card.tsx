@@ -1,5 +1,6 @@
 import { Box, Card, CardBody, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { useLanguage } from "../../hooks/useLanguage";
 
 import styles from "./Card.module.css";
 
@@ -9,6 +10,7 @@ export interface CardWithCheckBoxPropsModel {
 
 const CardWithCheckBox: React.FC<CardWithCheckBoxPropsModel> = (props) => {
   const [checked, setChecked] = useState(false);
+  const { t } = useLanguage();
 
   const handleChange = () => {
     setChecked((prevValue) => !prevValue);
@@ -55,7 +57,7 @@ const CardWithCheckBox: React.FC<CardWithCheckBoxPropsModel> = (props) => {
               width={"50vw"}
               marginLeft="40px"
             >
-              Click & Collect
+              {t.clickAndCollect}
             </Text>
           </label>
         </Box>
