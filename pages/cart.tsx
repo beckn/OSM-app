@@ -28,6 +28,7 @@ const Cart = () => {
   const quoteRequest = useRequest();
   const dispatch = useDispatch();
   const router = useRouter();
+  const { t } = useLanguage();
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const cartItems = useSelector((state: ICartRootState) => state.cart.items);
@@ -77,7 +78,7 @@ const Cart = () => {
   };
 
   if (quoteRequest.loading || isLoadingForCartCountChange) {
-    return <Loader />;
+    return <Loader loadingText={t.quoteRequestLoader} />;
   }
 
   if (!itemsForCart.length) {
