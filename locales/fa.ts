@@ -313,7 +313,7 @@ const fa: { [key: string]: string } = {
   orderPlaced: "commande passée",
   inStoreShopping: "Achats en magasin",
   delivery: "Livraison",
-  clickAndCollect: "Retrait en magasin",
+  clickAndCollect: "cliquez et récupérez",
   bookstore: "Librairie",
   formName: "Nom",
   formNumber: "Numéro de téléphone portable",
