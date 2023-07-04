@@ -347,5 +347,6 @@ const en: { [key: string]: string } = {
   errorOtp2: "OTP must have 6 digits",
   catalogLoader: "Please Wait!",
   catalogSubLoader: "Fetching store catalog from the network",
+  quoteRequestLoader: "Please wait! Your order is getting processed",
 };
 export default en;

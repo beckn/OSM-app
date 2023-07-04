@@ -297,90 +297,51 @@ const fa: { [key: string]: string } = {
   saveShippingDetails: "Enregistrer l'expédition détails",
   saveBillingDetails: "Enregistrer les détails de facturation",
   addBillingDetails: "Ajouter les détails de facturation",
-  comingSoon: 'À venir !',
-  proceedToCheckout: 'Vérifier',
-  confirmOrder: 'Confirmer la commande',
-  orderPlacedAt: 'Placé à',
-  ordersFulfilled: 'Commande honorée',
-  subTotal: 'Sous-total',
-  deliveryCharge: 'Frais de livraison',
-  total: 'Total',
-  status: 'Statut',
-  paymentMethod: 'Méthode de paiement',
+  comingSoon: "À venir !",
+  proceedToCheckout: "Vérifier",
+  confirmOrder: "Confirmer la commande",
+  orderPlacedAt: "Placé à",
+  ordersFulfilled: "Commande honorée",
+  subTotal: "Sous-total",
+  deliveryCharge: "Frais de livraison",
+  total: "Total",
+  status: "Statut",
+  paymentMethod: "Méthode de paiement",
   explorePlaces: "Explorer les lieux à proximité",
   cards: "Cartes bancaires",
-addCard: "Ajouter",
-orderPlaced:'commande passée',
-inStoreShopping: "Achats en magasin",
-delivery: "Livraison",
-clickAndCollect: "Retrait en magasin",
-bookstore: "Librairie",
-formName: "Nom",
-formNumber: "Numéro de téléphone portable",
-formEmail: "Adresse e-mail",
-formAddress: "Adresse complète",
-formZipCode: "Code postal",
-errorName: "Le nom est requis",
-errorNumber: "Le numéro de téléphone portable est requis",
-errorNumber2: "Numéro de téléphone portable invalide",
-errorNumber3: "Le numéro de téléphone portable doit comporter 10 chiffres",
-errorEmail: "L'e-mail est requis",
-errorEmail2: "Adresse e-mail invalide",
-errorAddress: "L'adresse complète est requise",
-errorZipcode: "Le code postal est requis",
-errorZipcode2: "Code postal invalide",
-confirmMessage1: "Merci ! Notre commande sera",
-confirmMessage2: "confirmée sous peu",
-sendOtpButton: "Envoyer",
-verifyMobile: "Vérifier le numéro de téléphone",
-otpMessage1: "Un code a été envoyé à votre téléphone",
-otpMessage2: "se termine par",
-otpPlaceholder: "Entrez le code ici",
-loginButton: "Se connecter",
-errorOtp1: "Code requis",
-errorOtp2: "Code invalide",
-catalogLoader: "Veuillez patienter !",
-catalogSubLoader: "Récupération du catalogue du magasin depuis le réseau",
+  addCard: "Ajouter",
+  orderPlaced: "commande passée",
+  inStoreShopping: "Achats en magasin",
+  delivery: "Livraison",
+  clickAndCollect: "Retrait en magasin",
+  bookstore: "Librairie",
+  formName: "Nom",
+  formNumber: "Numéro de téléphone portable",
+  formEmail: "Adresse e-mail",
+  formAddress: "Adresse complète",
+  formZipCode: "Code postal",
+  errorName: "Le nom est requis",
+  errorNumber: "Le numéro de téléphone portable est requis",
+  errorNumber2: "Numéro de téléphone portable invalide",
+  errorNumber3: "Le numéro de téléphone portable doit comporter 10 chiffres",
+  errorEmail: "L'e-mail est requis",
+  errorEmail2: "Adresse e-mail invalide",
+  errorAddress: "L'adresse complète est requise",
+  errorZipcode: "Le code postal est requis",
+  errorZipcode2: "Code postal invalide",
+  confirmMessage1: "Merci ! Notre commande sera",
+  confirmMessage2: "confirmée sous peu",
+  sendOtpButton: "Envoyer",
+  verifyMobile: "Vérifier le numéro de téléphone",
+  otpMessage1: "Un code a été envoyé à votre téléphone",
+  otpMessage2: "se termine par",
+  otpPlaceholder: "Entrez le code ici",
+  loginButton: "Se connecter",
+  errorOtp1: "Code requis",
+  errorOtp2: "Code invalide",
+  catalogLoader: "Veuillez patienter !",
+  catalogSubLoader: "Récupération du catalogue du magasin depuis le réseau",
+  quoteRequestLoader:
+    "S'il vous plaît, attendez! Votre commande est en cours de traitement",
 };
 export default fa;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
