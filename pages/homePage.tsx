@@ -326,20 +326,18 @@ const Homepage = () => {
                                     - {t.bookstore}
                                 </p>
                             </div>
-                            <div className="flex justify-between gap-2">
+                            <div className="flex justify-between gap-2 overflow-x-scroll">
                                 {selectedStore?.tags?.image
                                     .split(',')
                                     .map((singleImage: string, i: number) => {
-                                        if (i < 4)
-                                            return (
-                                                <Image
-                                                    src={singleImage}
-                                                    className="w-[75px] h-[75px] rounded-xl"
-                                                    alt="store"
-                                                    key={i}
-                                                />
-                                            )
-                                        else null
+                                        return (
+                                            <Image
+                                                src={singleImage}
+                                                className="w-[75px] h-[75px] rounded-xl"
+                                                alt="store"
+                                                key={i}
+                                            />
+                                        )
                                     })}
                             </div>
                             <p className="font-semibold text-[12px] capitalize leading-[18px]">
