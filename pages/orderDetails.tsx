@@ -291,7 +291,7 @@ const OrderDetails = () => {
                                         as={'span'}
                                         pl={'2px'}
                                     >
-                                        {statusResponse.length}
+                                        {confirmData.length}
                                     </Text>
                                 </Box>
                             </Flex>
