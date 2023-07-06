@@ -147,22 +147,15 @@ const Homepage = () => {
         tagValue: string,
         tagName: string
     ) => {
+        // UJJWAL use variable tavValue and tagName in the url below.
+        // You can uncomment the below url and remove the bottommost one
         // let url = `${process.env.NEXT_PUBLIC_BECKN_API_URL}/stores?tagName=${tagName}&tagValue=${tagValue}&latitude=${lat}&longitude=${long}`;
-        // static tagName and tagValue for now
+
+        // static tagName and tagValue for now. Remove this
         let url = `${process.env.NEXT_PUBLIC_BECKN_API_URL}/stores?tagName=becknified&tagValue=true&latitude=${lat}&longitude=${long}`
 
-        // Only fetch when Books are selected for now
         fetchStores(url, 'GET')
     }
-
-    // useEffect(() => {
-    //   if (searchedLocationData && !isEmpty(searchedLocationData)) {
-    //     setCoords({
-    //       lat: (searchedLocationData[0] as any).lat,
-    //       long: (searchedLocationData[0] as any).lon,
-    //     });
-    //   }
-    // }, [searchedLocationData]);
 
     useEffect(() => {
         // Not refilling stores if option is empty
@@ -171,11 +164,6 @@ const Homepage = () => {
         }
     }, [storesByLocation])
 
-    // useEffect(() => {
-    //     if (query.length < 1) return
-    //     fetchLocationByQuery(query)
-    // }, [query])
-
     useEffect(() => {
         if (isEmpty(query) && !isEmpty(coords)) {
             fetchLocationNameByCoords(coords.lat, coords.long)
@@ -183,20 +171,13 @@ const Homepage = () => {
     }, [coords])
 
     useEffect(() => {
-        if (
-            !isEmpty(coords) &&
-            !isEmpty(option?.tagValue) &&
-            option?.tagValue === 'Books'
-        ) {
+        if (!isEmpty(coords) && !isEmpty(option?.tagValue)) {
             fetchStoresByLocation(
                 coords.lat,
                 coords.long,
                 option?.tagValue,
                 option?.tagName
             )
-        }
-        if (option?.tagValue !== 'Books') {
-            setStores([])
         }
     }, [coords, option])
 
@@ -307,6 +288,7 @@ const Homepage = () => {
                         </Transition>
                     </div>
 
+                    {/* UJJWAL below is the code for store details Modal */}
                     <BottomModal
                         isOpen={isOptionDetailOpen}
                         onClose={handleOptionDetailClose}

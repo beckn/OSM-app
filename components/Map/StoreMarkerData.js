@@ -976,6 +976,10 @@ export const data = {
 }
 
 
+// UJJWAL
+// We are getting those tagValue and tagName from here.
+//In case different tag values are needed I recommend adding a key-value map in the homePage component rather than chaning these values
+// Some UI might depend on these
 export const optionData = [
 	{
 		tagName: 'amenity',
