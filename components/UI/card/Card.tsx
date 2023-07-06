@@ -16,11 +16,10 @@ interface Props {
 
 const Card: React.FC<Props> = ({ product }) => {
     const encodedProduct = window.btoa(toBinary(JSON.stringify(product)))
-    const [productType, setProductType] = useState(true)
 
     return (
         <Box
-            minH={'168px'}
+            minH={product.tags.foodType ? '138px' : '168px'}
             maxH={'100%'}
             className="col-span-6 sm:col-span-3 md:col-span-4 lg:col-span-3 2xl:col-span-2 shadow-xl my-1 md:my-4 ltr:mr-2 rtl:ml-1 md:mx-6  bg-[#fff] rounded-xl flex relative"
         >
@@ -69,20 +68,23 @@ const Card: React.FC<Props> = ({ product }) => {
                             >
                                 {product.descriptor.name}
                             </Text>
-                            {productType ? (
-                                <Image
-                                    pt={'4px'}
-                                    src={greenVegIcon}
-                                />
-                            ) : (
-                                <Image
-                                    pt={'4px'}
-                                    src={redNonVegIcon}
-                                />
-                            )}
+
+                            {product.tags.foodType ? (
+                                product.tags.foodType === 'veg' ? (
+                                    <Image
+                                        pt={'4px'}
+                                        src={greenVegIcon}
+                                    />
+                                ) : (
+                                    <Image
+                                        pt={'4px'}
+                                        src={redNonVegIcon}
+                                    />
+                                )
+                            ) : null}
                         </Flex>
 
-                        {productType ? (
+                        {!product.tags.foodType ? (
                             <Flex
                                 fontSize={'12px'}
                                 alignItems={'center'}

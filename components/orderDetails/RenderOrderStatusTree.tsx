@@ -21,7 +21,7 @@ export const orderCardStatusMap = {
 
 export const renderOrderStatusList = (res: any) => {
   const order = res.message.order;
-  console.log("order.state", order.state);
+
   if (order.state === "INITIATED") {
     return (
       <Box>
@@ -272,7 +272,7 @@ export const renderOrderStatusList = (res: any) => {
           <Flex>
             <Image src={lineBlack} width={"12px"} height={"40px"} />
             <Text paddingLeft={"10px"} fontSize={"10px"} pt={"10px"}>
-              21st Jun 2021, 12:11pm
+            {getOrderPlacementTimeline(res.context.timestamp)}
             </Text>
           </Flex>
         </Box>

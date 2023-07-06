@@ -13,7 +13,6 @@ interface Props {
 const DetailsSection: React.FC<Props> = ({ product }) => {
     const { t } = useLanguage()
     const [showComponent, setShowComponent] = useState(false)
-    const [productType, setProductType] = useState()
 
     useEffect(() => {
         setShowComponent(true)
@@ -46,17 +45,19 @@ const DetailsSection: React.FC<Props> = ({ product }) => {
                 >
                     {product.descriptor.name}
                 </h2>
-                {productType ? (
-                    <Image
-                        pt={'8px'}
-                        src={greenVegIcon}
-                    />
-                ) : (
-                    <Image
-                        pt={'8px'}
-                        src={redNonVegIcon}
-                    />
-                )}
+                {product.tags.foodType ? (
+                    product.tags.foodType === 'veg' ? (
+                        <Image
+                            pt={'4px'}
+                            src={greenVegIcon}
+                        />
+                    ) : (
+                        <Image
+                            pt={'4px'}
+                            src={redNonVegIcon}
+                        />
+                    )
+                ) : null}
             </Flex>
             <hr className="mt-1 hidden md:block" />
             <div className="flex items-start flex-wrap relative">
