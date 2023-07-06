@@ -45,7 +45,10 @@ const ProductList: React.FC<Props> = ({ productList }) => {
                             selectedBtn={selectedRadioBtn}
                             onChangeSelectedBtn={onChangeHandler}
                         />
-                        <div className="grid gap-4 md:gap-2 grid-cols-6 md:grid-cols-12">
+                        <div
+                            className="grid gap-4 md:gap-2 grid-cols-6 md:grid-cols-12"
+                            style={{ marginTop: '140px' }}
+                        >
                             {sortedProductList.map((product: RetailItem) => {
                                 return (
                                     <Card
@@ -57,7 +60,7 @@ const ProductList: React.FC<Props> = ({ productList }) => {
                         </div>
                     </div>
                 ) : (
-                    <p className="text-palette-mute text-center mt-8">
+                    <p className="text-palette-mute text-center mt-14">
                         {t.noProduct}
                     </p>
                 )}
