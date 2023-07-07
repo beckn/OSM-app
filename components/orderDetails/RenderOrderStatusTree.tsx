@@ -1,3 +1,4 @@
+import React from 'react'
 import { Box, Flex, Text, Image } from '@chakra-ui/react'
 import { getOrderPlacementTimeline } from '../../utilities/confirm-utils'
 import lineBlack from '../../public/images/lineBlack.svg'
@@ -20,7 +21,7 @@ export const orderCardStatusMap = {
     DELIVERED: 'delivered',
 }
 
-export const renderOrderStatusList = (res: any) => {
+export const RenderOrderStatusList = (res: any) => {
     const order = res.message.order
     const { t } = useLanguage()
 

@@ -37,7 +37,7 @@ import { TransactionIdRootState } from '../lib/types/cart'
 import useRequest from '../hooks/useRequest'
 import {
     orderCardStatusMap,
-    renderOrderStatusList,
+    RenderOrderStatusList,
 } from '../components/orderDetails/RenderOrderStatusTree'
 import { useRouter } from 'next/router'
 
@@ -379,7 +379,7 @@ const OrderDetails = () => {
                     />
                     <Divider mb={'20px'} />
                     <CardBody pt={'unset'}>
-                        {renderOrderStatusList(res)}
+                        {RenderOrderStatusList(res)}
                     </CardBody>
                 </Accordion>
             ))}
