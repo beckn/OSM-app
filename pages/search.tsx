@@ -123,7 +123,7 @@ const Search = () => {
                 mt={'-20px'}
             >
                 <SearchBar
-                    searchString={'books'}
+                    searchString={''}
                     handleChange={(text: string) => {
                         localStorage.removeItem('searchItems')
                         fetchDataForSearch()
