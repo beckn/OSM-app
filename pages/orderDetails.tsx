@@ -310,13 +310,12 @@ const OrderDetails = () => {
                                 fontSize={'17px'}
                                 alignItems={'center'}
                             >
-                                <Text pr={'8px'}>Order ID</Text>
+                                <Text pr={'8px'}>{t.orderId}:</Text>
 
                                 <Text
                                     textOverflow={'ellipsis'}
                                     overflow={'hidden'}
                                     whiteSpace={'nowrap'}
-                                    w={'210px'}
                                 >
                                     {generateAlphanumericID()}
                                 </Text>
@@ -359,8 +358,12 @@ const OrderDetails = () => {
                                     }
                                 >
                                     {
-                                        orderCardStatusMap[
-                                            res.message.order.state
+                                        t[
+                                            `${
+                                                orderCardStatusMap[
+                                                    res.message.order.state
+                                                ]
+                                            }`
                                         ]
                                     }
                                 </Text>

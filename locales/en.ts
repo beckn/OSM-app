@@ -262,7 +262,6 @@ const en: { [key: string]: string } = {
     OFDMssg:
         'Order has been picked up! Our delivery partner is on their way to your location for delivery.',
     OFDTime: '11.27AM',
-    orderDelivered: 'Order Delivered',
     orderDeliveredMssg: 'Order has been delivered ',
     orderDeliveredTime: '12.23 PM',
     checkout: 'Checkout',
@@ -353,5 +352,18 @@ const en: { [key: string]: string } = {
     catalogSubLoader: 'Fetching store catalog from the network',
     quoteRequestLoader: 'Please wait! Your order is getting processed',
     estimatedDelivery: 'Estimated delivery time',
+    orderId: 'Order ID',
+    pending: 'Pending',
+    confirmed: 'Confirmed',
+    delivered: 'Delivered',
+    confirmationPending: 'Confirmation Pending',
+    itemsConfirmed: 'Items Confirmed',
+    orderPacked: 'Order Packed',
+    outForDelivery: 'Order Out for Delivery',
+    orderDelivered: 'Order Delivered',
+    rateStore: 'Rate the store',
+    rateDeliveryExperience: 'Rate the delivery experience',
+    addCommentsHere: 'Add your comments here',
+    writeExperience: 'Write about your experience..',
 }
 export default en

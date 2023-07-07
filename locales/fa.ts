@@ -251,8 +251,6 @@ const fa: { [key: string]: string } = {
     agentAssignedTime: '10h35',
     OFD: 'En cours de livraison',
     OFDMssg: 'La commande a été récupérée ! ',
-    OFDTime: '11h27',
-    orderDelivered: 'Commande livrée',
     orderDeliveredMssg:
         'La commande a été retirée ! Notre transporteur est en chemin pour vous livrer',
     orderDeliveredTime: '12h23',
@@ -348,7 +346,19 @@ const fa: { [key: string]: string } = {
     catalogSubLoader: 'Récupération du catalogue du magasin depuis le réseau',
     quoteRequestLoader:
         "S'il vous plaît, attendez! Votre commande est en cours de traitement",
-    orderId: 'numéro de commande',
     estimatedDelivery: 'Délai de livraison estimé au ',
+    orderId: 'De la livraison',
+    pending: 'En attente',
+    confirmed: 'Confirmé',
+    delivered: 'Livrée',
+    confirmationPending: 'Confirmation en attente',
+    itemsConfirmed: 'Articles confirmés',
+    orderPacked: 'Commande emballée',
+    outForDelivery: 'Prêt pour la livraison',
+    orderDelivered: 'Commande livrée',
+    rateStore: 'Évaluer le magasin',
+    rateDeliveryExperience: "Évaluer l'expérience de livraison",
+    addCommentsHere: 'Ajoutez vos commentaires ici',
+    writeExperience: 'Décrivez votre expérience..',
 }
 export default fa

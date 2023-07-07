@@ -112,7 +112,7 @@ const SearchBar: React.FC<SearchBarProp> = ({
                             >
                                 <Image
                                     className="mt-1"
-                                    src="images/SearchLocationMarker.svg"
+                                    src="/images/SearchLocationMarker.svg"
                                     alt="Location point"
                                 />
                                 <div>

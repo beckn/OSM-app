@@ -82,7 +82,7 @@ const TrackOrder = () => {
             </Stack>
             <Stack>
                 <Text>
-                    Order id
+                    {t.orderId}
                     <Text
                         as={'span'}
                         color={'rgba(var(--color-primary))'}
