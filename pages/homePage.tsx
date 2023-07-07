@@ -11,6 +11,11 @@ import { Image } from '@chakra-ui/react'
 import { useLanguage } from '../hooks/useLanguage'
 import { toast } from 'react-toastify'
 
+const tagValuetoApiMap = {
+    Books: 'books',
+    restaurant: 'bakery',
+}
+
 type Coords = {
     lat: number
     long: number
@@ -40,7 +45,20 @@ const transitionStyles = {
     exited: { height: '3.8rem' },
 }
 
+const getProperImages = (selectedStore: any) => {
+    if (selectedStore && selectedStore.tags) {
+        if (selectedStore.tags.image) return selectedStore.tags.image
+        else return selectedStore.tags.images
+    } else return ''
+}
+
 const staticTagsList = ['inStoreShopping', 'delivery', 'clickAndCollect']
+
+const getStaticTags = (tag: string) => {
+    if (tag === 'books')
+        return ['inStoreShopping', 'delivery', 'clickAndCollect']
+    else return ['dineIn', 'takeAway', 'delivery']
+}
 
 import MapSearch from '../components/Map/MapSearch'
 import { isEmpty } from 'lodash'
@@ -147,22 +165,12 @@ const Homepage = () => {
         tagValue: string,
         tagName: string
     ) => {
-        // let url = `${process.env.NEXT_PUBLIC_BECKN_API_URL}/stores?tagName=${tagName}&tagValue=${tagValue}&latitude=${lat}&longitude=${long}`;
         // static tagName and tagValue for now
-        let url = `${process.env.NEXT_PUBLIC_BECKN_API_URL}/stores?tagName=becknified&tagValue=true&latitude=${lat}&longitude=${long}`
+        let url = `${process.env.NEXT_PUBLIC_BECKN_API_URL}/stores?tagName=becknified&tagValue=true&latitude=${lat}&longitude=${long}&filter=${tagValuetoApiMap[tagValue]}`
 
         // Only fetch when Books are selected for now
         fetchStores(url, 'GET')
     }
-
-    // useEffect(() => {
-    //   if (searchedLocationData && !isEmpty(searchedLocationData)) {
-    //     setCoords({
-    //       lat: (searchedLocationData[0] as any).lat,
-    //       long: (searchedLocationData[0] as any).lon,
-    //     });
-    //   }
-    // }, [searchedLocationData]);
 
     useEffect(() => {
         // Not refilling stores if option is empty
@@ -170,11 +178,6 @@ const Homepage = () => {
             setStores(storesByLocation)
         }
     }, [storesByLocation])
-
-    // useEffect(() => {
-    //     if (query.length < 1) return
-    //     fetchLocationByQuery(query)
-    // }, [query])
 
     useEffect(() => {
         if (isEmpty(query) && !isEmpty(coords)) {
@@ -186,7 +189,7 @@ const Homepage = () => {
         if (
             !isEmpty(coords) &&
             !isEmpty(option?.tagValue) &&
-            option?.tagValue === 'Books'
+            (option?.tagValue === 'Books' || option?.tagValue === 'restaurant')
         ) {
             fetchStoresByLocation(
                 coords.lat,
@@ -230,14 +233,12 @@ const Homepage = () => {
                     </div>
 
                     <div className="bottom-0 absolute z-[1000] max-h-fit w-[100vw]  flex items-end justify-center  sm:p-0">
-                        {/* <div className="w-full  p-4 mx-auto bg-[#F3F4F5]  rounded-t-[1.5rem] shadow-lg sm:rounded-lg sm:overflow-hidden"> */}
                         <Transition
                             nodeRef={nodeRef}
                             in={isMenuModalOpen}
                             timeout={duration}
                         >
                             {(state) => (
-                                // <div className={cs("w-full   p-4 mx-auto bg-[#F3F4F5]  rounded-t-[1.5rem] shadow-lg sm:rounded-lg sm:overflow-hidden",{['h-[4rem]']:!isMenuModalOpen})}>
                                 <div
                                     ref={nodeRef}
                                     style={{
@@ -313,7 +314,13 @@ const Homepage = () => {
                     >
                         <div className="flex flex-col gap-2">
                             <p className="text-[16px] leading-[20px]">
-                                {t['localStores']}{' '}
+                                {
+                                    t[
+                                        option?.tagValue === 'books'
+                                            ? 'localStores'
+                                            : 'restaurants'
+                                    ]
+                                }{' '}
                                 <span className="font-bold">
                                     {query ? query : locationData?.name}
                                 </span>{' '}
@@ -323,43 +330,46 @@ const Homepage = () => {
                                     <span className="font-bold text-ellipsis max-w-[70%]">
                                         {selectedStore?.tags.name}
                                     </span>{' '}
-                                    - {t.bookstore}
+                                    -{' '}
+                                    {option?.tagValue === 'books'
+                                        ? t.bookstore
+                                        : t.optionRestaurant}
                                 </p>
                             </div>
                             <div className="flex justify-between gap-2 overflow-x-scroll">
-                                {selectedStore?.tags?.image
+                                {getProperImages(selectedStore)
                                     .split(',')
                                     .map((singleImage: string, i: number) => {
                                         return (
                                             <Image
-                                                src={singleImage}
-                                                className="w-[75px] h-[75px] rounded-xl"
-                                                alt="store"
                                                 key={i}
+                                                src={singleImage}
+                                                className="rounded-xl object-cover min-w-[75px] h-[75px]"
+                                                alt="store"
                                             />
                                         )
                                     })}
                             </div>
-                            <p className="font-semibold text-[12px] capitalize leading-[18px]">
-                                {selectedStore?.tags.category}
-                            </p>
                             <p className="text-[10px] leading-[15px]">
-                                {selectedStore?.tags['addr:full']}
+                                {selectedStore?.tags['addr:full'] ||
+                                    selectedStore?.tags['addr:street']}
                             </p>
                             <div className="flex justify-between w-[90%] ">
-                                {staticTagsList.map((tag, i) => {
-                                    return (
-                                        <div
-                                            key={tag}
-                                            className="flex items-center"
-                                        >
-                                            <div className="h-2 w-2 bg-palette-primary mr-2 rounded-full"></div>
-                                            <p className="text-[10px] leading-[15px]">
-                                                {t[`${tag}`]}
-                                            </p>
-                                        </div>
-                                    )
-                                })}
+                                {getStaticTags(option?.tagValue).map(
+                                    (tag, i) => {
+                                        return (
+                                            <div
+                                                key={tag}
+                                                className="flex items-center"
+                                            >
+                                                <div className="h-2 w-2 bg-palette-primary mr-2 rounded-full"></div>
+                                                <p className="text-[10px] leading-[15px]">
+                                                    {t[`${tag}`]}
+                                                </p>
+                                            </div>
+                                        )
+                                    }
+                                )}
                             </div>
                             <button
                                 onClick={() => {
