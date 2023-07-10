@@ -6,13 +6,6 @@ import { Image } from '@chakra-ui/react'
 import { useLanguage } from '../../hooks/useLanguage'
 import useDebounce from '../../hooks/useDebounce'
 
-// const formatLocationName = (name: string) => {
-//     let list = name.split(',')
-//     let primaryName = list[0]
-//     let secondaryName = list[1]
-//     return { primaryName, secondaryName }
-// }
-
 interface LocalNameFormat {
     primaryName: string
     secondaryName: string
@@ -93,7 +86,7 @@ const SearchBar: React.FC<SearchBarProp> = ({
                 )}
             </div>
             {!isEmpty(value) && locations && !isEmpty(locations) && (
-                <div className="flex flex-col overflow-scroll max-h-[100vh]  bg-white  rounded-md h-[100vh] relative z-[9999] divide-y">
+                <div className="flex flex-col overflow-scroll max-h-[100vh]  bg-white  rounded-md h-[100vh] relative z-[9995] divide-y">
                     {locations.map((singleLocation, index) => {
                         const { primaryName, secondaryName } =
                             formatLocationName(singleLocation.display_name)
