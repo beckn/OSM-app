@@ -317,7 +317,7 @@ const OrderDetails = () => {
                                     overflow={'hidden'}
                                     whiteSpace={'nowrap'}
                                 >
-                                    {generateAlphanumericID()}
+                                    {res.message.order.displayId}
                                 </Text>
                             </Flex>
                             <Flex
@@ -376,6 +376,7 @@ const OrderDetails = () => {
                         onOpen={onOpen}
                         onClose={onClose}
                         items={res.message.order.items}
+                        orderId={res.message.order.displayId}
                     />
                     <Divider mb={'20px'} />
                     <CardBody pt={'unset'}>

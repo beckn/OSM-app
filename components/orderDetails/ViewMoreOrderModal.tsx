@@ -21,6 +21,7 @@ export interface ViewMoreOrderModalProps {
     onOpen: () => void
     onClose: () => void
     items: any
+    orderId: string
 }
 
 const ViewMoreOrderModal: React.FC<ViewMoreOrderModalProps> = (props) => {
@@ -49,7 +50,7 @@ const ViewMoreOrderModal: React.FC<ViewMoreOrderModalProps> = (props) => {
                         fontSize={'17px'}
                     >
                         <Text>
-                            {t.orderId}: {generateAlphanumericID()}
+                            {t.orderId}: {props.orderId}
                         </Text>
                         <ModalCloseButton position={'unset'}>
                             <Image src={crossIcon} />
