@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { Box, Image, Stack, Text } from '@chakra-ui/react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import orderConfirmmark from '../public/images/orderConfirmmark.svg'
 import { useLanguage } from '../hooks/useLanguage'
 import useRequest from '../hooks/useRequest'
@@ -11,7 +11,6 @@ import {
 } from '../utilities/confirm-utils'
 import Loader from '../components/loader/Loader'
 import { TransactionIdRootState } from '../lib/types/cart'
-import { cartActions } from '../store/cart-slice'
 
 const OrderConfirmation = () => {
     const { t } = useLanguage()
@@ -20,7 +19,6 @@ const OrderConfirmation = () => {
     const initResponse = useSelector(
         (state: any) => state.initResponse.initResponse
     )
-    const dispatch = useDispatch()
 
     const transactionId = useSelector(
         (state: { transactionId: TransactionIdRootState }) =>
@@ -72,7 +70,6 @@ const OrderConfirmation = () => {
 
     useEffect(() => {
         if (confirmRequest.data) {
-            dispatch(cartActions.clearCart())
             localStorage.setItem(
                 'confirmData',
                 JSON.stringify(confirmRequest.data)
