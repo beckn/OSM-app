@@ -72,7 +72,13 @@ const OrderConfirmation = () => {
 
     useEffect(() => {
         if (confirmRequest.data) {
-            dispatch(cartActions.clearCart())
+            try {
+                dispatch(cartActions.clearCart())
+                console.log('went in try')
+            } catch (error) {
+                console.error(`went in catch with ${error}`)
+            }
+
             localStorage.setItem(
                 'confirmData',
                 JSON.stringify(confirmRequest.data)
