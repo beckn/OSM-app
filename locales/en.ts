@@ -365,5 +365,6 @@ const en: { [key: string]: string } = {
     rateDeliveryExperience: 'Rate the delivery experience',
     addCommentsHere: 'Add your comments here',
     writeExperience: 'Write about your experience..',
+    completed: 'Completed',
 }
 export default en
