@@ -1,65 +1,144 @@
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import StarRatingComponent from "react-star-rating-component";
-import { IProduct } from "../../../lib/types/products";
-import { urlFor } from "../../../lib/client";
-import CardActions from "./CardActions";
-import ProductPrice from "../ProductPrice";
+import React, { useState } from 'react'
+import Link from 'next/link'
+import StarRatingComponent from 'react-star-rating-component'
+import { RetailItem } from '../../../lib/types/products'
+import CardActions from './CardActions'
+import ProductPrice from '../ProductPrice'
+import { toBinary } from '../../../utilities/common-utils'
+import { Box, Flex, Text, Image } from '@chakra-ui/react'
+import StarIcon from '../../../public/images/Star.svg'
+import greenVegIcon from '../../../public/images/greenVeg.svg'
+import redNonVegIcon from '../../../public/images/redNonVeg.svg'
 
 interface Props {
-  product: IProduct;
+    product: RetailItem
 }
 
 const Card: React.FC<Props> = ({ product }) => {
-  return (
-    <div className="col-span-6 sm:col-span-3 md:col-span-4 lg:col-span-3 2xl:col-span-2 shadow-xl my-1 md:my-4 ltr:mr-2 rtl:ml-1 md:mx-6  bg-palette-card rounded-xl flex relative">
-      <Link
-        href={`/${product.category[0]}/${product.category[1]}/${product.category[2]}/${product.slug.current}`}
-      >
-        <a className="flex md:items-center md:flex-col relative w-full">
-          <div className="w-1/2 md:w-full relative bg-slate-400/30 px-1 md:px-6 py-2 rounded-bl-xl rounded-tl-xl md:rounded-tr-xl md:rounded-bl-none rtl:order-2 rtl:md:order-none flex flex-col justify-between items-center">
-            <div className="flex items-center h-full">
-              <Image
-                src={urlFor(product?.image[0]).url()}
-                width={280}
-                height={300}
-                alt={product.name}
-                className=" drop-shadow-xl object-contain hover:scale-110 transition-transform duration-300 ease-in-out !py-2 "
-              />
-            </div>
-            {product?.discount ? (
-              <span className="w-8 sm:w-auto block absolute -top-2 -right-2">
-                <Image
-                  src="/images/discount-icon/discount.webp"
-                  width={40}
-                  height={40}
-                  alt="discount-icon"
-                />
-              </span>
-            ) : null}
-          </div>
-          <div className="flex flex-col justify-between  flex-grow  w-1/2 md:w-full  px-1 md:px-3 py-2 md:py-4">
-            <div className="flex justify-center md:justify-start flex-col  flex-grow overflow-hidden">
-              <div className="self-center">
-                <StarRatingComponent
-                  name={`product_rate_${product.slug.current}`}
-                  starCount={5}
-                  value={product.starRating}
-                />
-              </div>
-              <h3 className="text-sm sm:text-[12px] md:text-sm text-center text-palette-mute  ">
-                {product.name}
-              </h3>
-            </div>
-            <ProductPrice price={product.price} discount={product.discount} />
-          </div>
-        </a>
-      </Link>
+    const encodedProduct = window.btoa(toBinary(JSON.stringify(product)))
 
-      <CardActions product={product} />
-    </div>
-  );
-};
+    return (
+        <Box
+            minH={product.tags.foodType ? '138px' : '168px'}
+            maxH={'100%'}
+            className="col-span-6 sm:col-span-3 md:col-span-4 lg:col-span-3 2xl:col-span-2 shadow-xl my-1 md:my-4 ltr:mr-2 rtl:ml-1 md:mx-6  bg-[#fff] rounded-xl flex relative"
+        >
+            <Link
+                href={{
+                    pathname: '/product',
+                    query: { productDetails: encodedProduct },
+                }}
+            >
+                <a className="flex md:items-center md:flex-col relative w-full ">
+                    <Box
+                        w={'125px'}
+                        className=" md:w-full relative bg-slate-400/30  md:px-6  rounded-bl-xl rounded-tl-xl md:rounded-tr-xl md:rounded-bl-none rtl:order-2 rtl:md:order-none flex flex-col justify-between items-center"
+                    >
+                        <div className="flex items-center h-full  product-img-span">
+                            <Image
+                                src={product.descriptor.images[0]}
+                                width={'110px'}
+                                height={'133px'}
+                                alt={product.descriptor.name}
+                                className=" drop-shadow-xl object-contain hover:scale-110 transition-transform duration-300 ease-in-out "
+                            />
+                        </div>
+                    </Box>
+                    <Box
+                        p={'15px'}
+                        pt={'11px'}
+                        w={'63%'}
+                        position={'relative'}
+                        className="flex flex-col md:w-full md:px-3  md:py-4"
+                    >
+                        <Flex
+                            justifyContent={'space-between'}
+                            alignItems={'flex-start'}
+                            w={'100%'}
+                        >
+                            <Text
+                                w={'80%'}
+                                fontWeight={'600'}
+                                fontSize={'15px'}
+                                mb={'10px'}
+                                noOfLines={2}
+                                textOverflow="ellipsis"
+                                whiteSpace="pre-wrap"
+                                overflowWrap="break-word"
+                            >
+                                {product.descriptor.name}
+                            </Text>
 
-export default Card;
+                            {product.tags.foodType ? (
+                                product.tags.foodType === 'veg' ? (
+                                    <Image
+                                        pt={'4px'}
+                                        src={greenVegIcon}
+                                    />
+                                ) : (
+                                    <Image
+                                        pt={'4px'}
+                                        src={redNonVegIcon}
+                                    />
+                                )
+                            ) : null}
+                        </Flex>
+
+                        {!product.tags.foodType ? (
+                            <Flex
+                                fontSize={'12px'}
+                                alignItems={'center'}
+                                mb={'8px'}
+                            >
+                                <Text fontWeight={'600'}>Author:</Text>
+
+                                <Text
+                                    pl={'3px'}
+                                    noOfLines={1}
+                                    textOverflow="ellipsis"
+                                    whiteSpace="pre-wrap"
+                                    overflowWrap="break-word"
+                                >
+                                    {product.tags.authorName}
+                                </Text>
+                            </Flex>
+                        ) : null}
+
+                        <Flex
+                            fontSize={'12px'}
+                            alignItems={'center'}
+                            mb={'8px'}
+                        >
+                            <Text fontWeight={'600'}>Sold by:</Text>
+                            <Text pl={'3px'}>{(product as any).bppName}</Text>
+                        </Flex>
+                        <Flex
+                            justifyContent={'space-between'}
+                            alignItems={'center'}
+                            position={'absolute'}
+                            bottom={'11px'}
+                            width={'calc(100% - 30px)'}
+                        >
+                            <ProductPrice
+                                price={parseFloat(product.price.value)}
+                            />
+                            <Flex alignItems={'center'}>
+                                <Image src={StarIcon} />
+                                <Text
+                                    fontSize={'12px'}
+                                    pl={'5px'}
+                                >
+                                    {product.tags.rating}
+                                </Text>
+                            </Flex>
+                        </Flex>
+                    </Box>
+                </a>
+            </Link>
+
+            <CardActions product={product} />
+        </Box>
+    )
+}
+
+export default Card
