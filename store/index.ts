@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-
 import specialOfferProductsReducer from "./specialOfferProducts-slice";
 import newestProductReducer from "./newestProduct-slice";
 import SortedProductsListReducer from "./sortedProductList-slice";
@@ -11,6 +10,7 @@ import megaMenuReducer from "./megaMenu-slice";
 import activeMenuItemReducer from "./activeMenuItem-slice";
 import settingBoxReducer from "./settingBox-slice";
 import favoriteReducer from "./favorite-slice";
+import responseDataReducer from "./responseData-slice";
 
 const store = configureStore({
   reducer: {
@@ -25,6 +25,10 @@ const store = configureStore({
     activeMenuItem: activeMenuItemReducer,
     settingBox: settingBoxReducer,
     favorite: favoriteReducer,
+    transactionId: responseDataReducer,
+    quoteResponse: responseDataReducer,
+    customerDetails: responseDataReducer,
+    initResponse: responseDataReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

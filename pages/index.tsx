@@ -1,59 +1,94 @@
-import type { NextPage } from "next";
-import { useEffect } from "react";
-import dynamic from "next/dynamic";
+import { Box, Image, Input } from '@chakra-ui/react'
+import React, { useEffect, useState } from 'react'
+import { useLanguage } from '../hooks/useLanguage'
+import LoginIcon from '../public/images/LoginIcon.svg'
+import style from '../components/detailsCard/ShippingForm.module.css'
+import Button from '../components/button/Button'
+import Router from 'next/router'
 
-import { useDispatch } from "react-redux";
-import { specialOfferProductsActions } from "../store/specialOfferProducts-slice";
-import { newestProductsActions } from "../store/newestProduct-slice";
+const MobileLogin = () => {
+    const [phoneNumber, setPhoneNumber] = useState('')
+    const [phoneNumberError, setPhoneNumberError] = useState('')
 
-import { client } from "../lib/client";
+    const handlePhoneNumberChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const value = event.target.value
+        const sanitizedValue = value.replace(/\D/g, '')
+        setPhoneNumber(sanitizedValue)
+        setPhoneNumberError(validatePhoneNumber(sanitizedValue))
+    }
 
-import Benefits from "../components/Benefits";
-import Carousel from "../components/carousel";
-const Offers = dynamic(() => import("../components/Offers/Offers"));
-const Category = dynamic(() => import("../components/category/Category"));
-const Newest = dynamic(() => import("../components/newest/Newest"));
-const Brands = dynamic(() => import("../components/brands"));
-const Banners = dynamic(() => import("../components/banners"), { ssr: false });
+    const validatePhoneNumber = (value: any) => {
+        if (!value) {
+            return 'errorNumber'
+        }
 
-import { IProduct } from "../lib/types/products";
-import { newestProductsFn } from "../utilities/sortByTimeStamp";
+        if (value.length !== 10) {
+            return 'errorNumber3'
+        }
+        return ''
+    }
 
-const Home: NextPage<{ products: IProduct[] }> = ({ products }) => {
-  const dispatch = useDispatch();
+    useEffect(() => {
+        localStorage.clear()
+    }, [])
 
-  useEffect(() => {
-    //add products to offers list
-    const offersProducts = products.filter((item) => item.discount);
-    dispatch(specialOfferProductsActions.addProducts(offersProducts));
+    const handleFormSubmit = () => {
+        localStorage.setItem('userPhone', phoneNumber)
+        setPhoneNumber('')
+        setPhoneNumberError('')
+        Router.push('/mobileOtp')
+    }
 
-    //add products to newest list
-    const sortedProductsByTimeStamp = newestProductsFn(products);
-    dispatch(newestProductsActions.addProducts(sortedProductsByTimeStamp));
-  }, [dispatch, products]);
+    const { t, locale } = useLanguage()
 
-  return (
-    <div>
-      <Carousel />
-      <Benefits />
-      <Offers />
-      <Category />
-      <Newest />
-      <Banners />
-      <Brands />
-    </div>
-  );
-};
+    return (
+        <Box padding={'0 21px'}>
+            <Box mt={'30px'}>
+                <Image src={LoginIcon} />
+            </Box>
+            <Box
+                mt={'60px'}
+                mb={'37px'}
+            >
+                <div className={style.container}>
+                    <div className={style.did_floating_label_content}>
+                        <input
+                            className={`${style['did_floating_input']} {$style["otp_number_input"]}`}
+                            type="text"
+                            placeholder=" "
+                            name="mobileNumber"
+                            value={phoneNumber}
+                            onChange={handlePhoneNumberChange}
+                        />
 
-export default Home;
+                        {phoneNumberError && (
+                            <span className={style.error}>
+                                {t[`${phoneNumberError}`]}
+                            </span>
+                        )}
 
-export const getStaticProps = async () => {
-  const productQuery = `*[_type=='product']`;
-  const products = await client.fetch(productQuery);
+                        <label
+                            className={`${style['did_floating_label']} ${style['otp_number']}`}
+                        >
+                            {t.formNumber}
+                        </label>
+                    </div>
+                </div>
+            </Box>
 
-  return {
-    props: {
-      products,
-    },
-  };
-};
+            <Button
+                buttonText={t.sendOtpButton}
+                background={'rgba(var(--color-primary))'}
+                color={'rgba(var(--text-color))'}
+                isDisabled={
+                    phoneNumber.length === 0 || phoneNumberError.length !== 0
+                }
+                handleOnClick={handleFormSubmit}
+            />
+        </Box>
+    )
+}
+
+export default MobileLogin

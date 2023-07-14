@@ -1,15 +1,15 @@
-import { IProduct } from "../lib/types/products";
+import { RetailItem } from "../lib/types/products";
 
 export const sortByExpensive = (
-  product1: IProduct,
-  product2: IProduct
+  product1: RetailItem,
+  product2: RetailItem
 ): number => {
-  return product2.price - product1.price;
+  return parseFloat(product2.price.value) - parseFloat(product1.price.value);
 };
 
 export const sortByCheapest = (
-  product1: IProduct,
-  product2: IProduct
+  product1: RetailItem,
+  product2: RetailItem
 ): number => {
-  return product1.price - product2.price;
+  return parseFloat(product1.price.value) - parseFloat(product2.price.value);
 };

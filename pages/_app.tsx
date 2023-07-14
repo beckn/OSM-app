@@ -6,14 +6,17 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import "react-toastify/dist/ReactToastify.css";
+import {ChakraProvider} from '@chakra-ui/react'
 
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
+    <ChakraProvider>
     <Layout>
       <Component {...pageProps} />
     </Layout>
+    </ChakraProvider>
   );
 }
 

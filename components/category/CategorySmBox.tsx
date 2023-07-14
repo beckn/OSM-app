@@ -17,7 +17,9 @@ const CategorySmBox: React.FC<Props> = ({
 }) => {
   const { t, locale } = useLanguage();
   return (
-    <Link href={`${href}`}>
+    <Link
+      href={{ pathname: "/search", query: { keyword: t[`${categoryTitle}`] } }}
+    >
       <a>
         <div
           className={`flex flex-col items-center text-center  ${
@@ -32,8 +34,8 @@ const CategorySmBox: React.FC<Props> = ({
             <Image
               src={`/images/category-icon/${imgSrc}`}
               alt={categoryTitle}
-              width={45}
-              height={45}
+              width={143}
+              height={111}
               className="drop-shadow-lg"
             />
           </div>

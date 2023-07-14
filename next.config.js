@@ -1,14 +1,21 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   i18n: {
     locales: ["en", "fa"],
     defaultLocale: "en",
     localeDetection: false,
   },
   images: {
-    domains: ["cdn.sanity.io"],
+    domains: [
+      "cdn.sanity.io",
+      "bazaar.becknprotocol.io",
+      "mandi.succinct.in",
+      "market.becknprotocol.io",
+      "retail-osm-stage.becknprotocol.io",
+      "retail-osm-prod.becknprotocol.io",
+    ],
   },
   webpack: function (config) {
     config.module.rules.push({

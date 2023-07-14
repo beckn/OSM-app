@@ -1,7 +1,7 @@
-import { IProduct } from "./products";
+import { RetailItem } from "./products";
 
 export interface IProductList {
-  productsList: IProduct[] | [];
+  productsList: RetailItem[] | [];
 }
 
 export interface IProductListRootState {

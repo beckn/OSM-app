@@ -1,7 +1,7 @@
 export const categoryLgContent = [
   {
     name: "digital",
-    title: "digitalCategoryTitle",
+    title: "fruitsVegetablesTitle",
     description: "digitalCategoryDescription",
     styles: {
       backgroundColor: "var(--digital-category-bgc)",
@@ -12,13 +12,13 @@ export const categoryLgContent = [
       gridColumn: "span 3 / span 3",
     },
     href: "/digital",
-    imgSrc: "/images/category-img/digital-category.webp",
+    imgSrc: "/images/category-img/fruits-Vegetable.svg",
     imgWidth: 190,
     imgHeight: 240,
   },
   {
     name: "fashion",
-    title: "fashionCategoryTitle",
+    title: "frozenFood",
     description: "fashionCategoryDescription",
     styles: {
       backgroundColor: "var(--fashion-category-bgc)",
@@ -29,13 +29,13 @@ export const categoryLgContent = [
       gridColumn: "span 3 / span 3",
     },
     href: "/fashion",
-    imgSrc: "/images/category-img/fashion-category.webp",
+    imgSrc: "/images/category-img/frozen-food.svg",
     imgWidth: 240,
     imgHeight: 250,
   },
   {
     name: "beauty",
-    title: "beautyCategoryTitle",
+    title: "beverages",
     description: "beautyCategoryDescription",
     styles: {
       backgroundColor: "var(--beauty-category-bgc)",
@@ -46,13 +46,13 @@ export const categoryLgContent = [
       gridColumn: "span 3 / span 3",
     },
     href: "/beauty",
-    imgSrc: "/images/category-img/beauty-category.webp",
+    imgSrc: "/images/category-img/beverages.svg",
     imgWidth: 170,
     imgHeight: 150,
   },
   {
     name: "sport",
-    title: "sportCategoryTitle",
+    title: "meatAndFish",
     description: "sportCategoryDescription",
     styles: {
       backgroundColor: "var(--sport-category-bgc)",
@@ -63,13 +63,13 @@ export const categoryLgContent = [
       gridColumn: "span 3 / span 3",
     },
     href: "/sport",
-    imgSrc: "/images/category-img/sport-category.webp",
+    imgSrc: "/images/category-img/meat-and-fish.svg",
     imgWidth: 130,
     imgHeight: 150,
   },
   {
     name: "house",
-    title: "houseCategoryTitle",
+    title: "snacks",
     description: "houseCategoryDescription",
     styles: {
       backgroundColor: "var(--house-category-bgc)",
@@ -80,13 +80,13 @@ export const categoryLgContent = [
       gridColumn: "span 5 / span 5",
     },
     href: "/house",
-    imgSrc: "/images/category-img/house-category.webp",
+    imgSrc: "/images/category-img/snacks.svg",
     imgWidth: 320,
     imgHeight: 240,
   },
   {
     name: "toy",
-    title: "toyCategoryTitle",
+    title: "dairy",
     description: "toyCategoryDescription",
     styles: {
       backgroundColor: "var(--toy-category-bgc)",
@@ -98,7 +98,7 @@ export const categoryLgContent = [
       gridColumn: "span 2 / span 2",
     },
     href: "/toy",
-    imgSrc: "/images/category-img/toy-category.webp",
+    imgSrc: "/images/category-img/dairy.svg",
     imgWidth: 130,
     imgHeight: 110,
   },
