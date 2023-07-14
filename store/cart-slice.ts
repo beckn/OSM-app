@@ -77,9 +77,7 @@ const cartSlice = createSlice({
         },
 
         clearCart(state: ICart) {
-            state.items = []
-            state.totalAmount = 0
-            state.totalQuantity = 0
+            return { ...initialState }
         },
     },
 })
