@@ -42,6 +42,7 @@ const OrderConfirmation = () => {
                 payLoadForConfirmRequest
             )
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
@@ -66,7 +67,8 @@ const OrderConfirmation = () => {
                 payLoadForConfirmRequest
             )
         }
-    }, [])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [initResponse, transactionId])
 
     useEffect(() => {
         if (confirmRequest.data) {
@@ -83,6 +85,7 @@ const OrderConfirmation = () => {
                 clearTimeout(timeout)
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [confirmRequest.data])
 
     if (confirmRequest.loading) {
@@ -92,6 +95,7 @@ const OrderConfirmation = () => {
     return (
         <Box position={'relative'}>
             <Image
+                alt="orderConfirmmark"
                 src={orderConfirmmark}
                 margin={'41px auto'}
             />

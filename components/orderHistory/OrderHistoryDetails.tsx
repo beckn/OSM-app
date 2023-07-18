@@ -51,6 +51,7 @@ const OrderHistoryDetails: React.FC<OrderHistoryDetailsPropsModel> = (
             >
                 <Text>{props.quantity} items</Text>
                 <Flex>
+                    {/* eslint-disable-next-line jsx-a11y/alt-text */}
                     <Image
                         src={
                             props.orderState === 'completed' ||

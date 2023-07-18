@@ -50,11 +50,13 @@ const DetailsSection: React.FC<Props> = ({ product }) => {
                         <Image
                             pt={'4px'}
                             src={greenVegIcon}
+                            alt="greenVegIcon"
                         />
                     ) : (
                         <Image
                             pt={'4px'}
                             src={redNonVegIcon}
+                            alt="redNonVegIcon"
                         />
                     )
                 ) : null}

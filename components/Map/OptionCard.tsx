@@ -1,5 +1,4 @@
 import React from 'react'
-import { IconType } from 'react-icons'
 import cs from 'classnames'
 import { useLanguage } from '../../hooks/useLanguage'
 import { toast } from 'react-toastify'
@@ -52,9 +51,10 @@ const OptionCard: React.FC<OptionCardProps> = ({
                     { ['bg-white']: !isSelected }
                 )}
             >
+                {/* eslint-disable-next-line  @next/next/no-img-element */}
                 <img
                     src={isSelected ? iconUrlLight : iconUrl}
-                    alt=""
+                    alt="url"
                 />
             </div>
             <p

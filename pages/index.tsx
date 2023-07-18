@@ -46,7 +46,10 @@ const MobileLogin = () => {
     return (
         <Box padding={'0 21px'}>
             <Box mt={'30px'}>
-                <Image src={LoginIcon} />
+                <Image
+                    alt="login"
+                    src={LoginIcon}
+                />
             </Box>
             <Box
                 mt={'60px'}

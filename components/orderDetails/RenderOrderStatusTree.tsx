@@ -37,6 +37,7 @@ export const RenderOrderStatusList = (res: any) => {
                             width={'12px'}
                             height={'13px'}
                             src={TrackIcon}
+                            alt="TrackIcon"
                         />
                         <Text
                             paddingLeft={'10px'}
@@ -60,6 +61,7 @@ export const RenderOrderStatusList = (res: any) => {
                         src={lineBlack}
                         width={'12px'}
                         height={'40px'}
+                        alt="lineBlack"
                     />
                     <Text
                         paddingLeft={'10px'}
@@ -85,6 +87,7 @@ export const RenderOrderStatusList = (res: any) => {
                                 width={'12px'}
                                 height={'13px'}
                                 src={TrackIcon}
+                                alt="TrackIcon"
                             />
                             <Text
                                 paddingLeft={'10px'}
@@ -100,6 +103,7 @@ export const RenderOrderStatusList = (res: any) => {
                             src={lineBlack}
                             width={'12px'}
                             height={'40px'}
+                            alt="lineBlack"
                         />
                         <Text
                             paddingLeft={'10px'}
@@ -120,6 +124,7 @@ export const RenderOrderStatusList = (res: any) => {
                                 width={'12px'}
                                 height={'13px'}
                                 src={TrackIcon}
+                                alt="TrackIcon"
                             />
                             <Text
                                 paddingLeft={'10px'}
@@ -135,6 +140,7 @@ export const RenderOrderStatusList = (res: any) => {
                             src={lineBlack}
                             width={'12px'}
                             height={'40px'}
+                            alt="lineBlack"
                         />
                         <Text
                             paddingLeft={'10px'}
@@ -161,6 +167,7 @@ export const RenderOrderStatusList = (res: any) => {
                                 width={'12px'}
                                 height={'13px'}
                                 src={TrackIcon}
+                                alt="TrackIcon"
                             />
                             <Text
                                 paddingLeft={'10px'}
@@ -176,6 +183,7 @@ export const RenderOrderStatusList = (res: any) => {
                             src={lineBlack}
                             width={'12px'}
                             height={'40px'}
+                            alt="lineBlack"
                         />
                         <Text
                             paddingLeft={'10px'}
@@ -196,6 +204,7 @@ export const RenderOrderStatusList = (res: any) => {
                                 width={'12px'}
                                 height={'13px'}
                                 src={TrackIcon}
+                                alt="track"
                             />
                             <Text
                                 paddingLeft={'10px'}
@@ -207,6 +216,7 @@ export const RenderOrderStatusList = (res: any) => {
                         </Flex>
                     </Flex>
                     <Flex>
+                        {/* eslint-disable-next-line jsx-a11y/alt-text */}
                         <Image
                             src={lineBlack}
                             width={'12px'}
@@ -227,6 +237,7 @@ export const RenderOrderStatusList = (res: any) => {
                         justifyContent={'space-between'}
                     >
                         <Flex alignItems={'center'}>
+                            {/* eslint-disable-next-line jsx-a11y/alt-text */}
                             <Image
                                 width={'12px'}
                                 height={'13px'}
@@ -242,6 +253,7 @@ export const RenderOrderStatusList = (res: any) => {
                         </Flex>
                     </Flex>
                     <Flex>
+                        {/* eslint-disable-next-line jsx-a11y/alt-text */}
                         <Image
                             src={lineBlack}
                             width={'12px'}
@@ -268,6 +280,7 @@ export const RenderOrderStatusList = (res: any) => {
                         justifyContent={'space-between'}
                     >
                         <Flex alignItems={'center'}>
+                            {/* eslint-disable-next-line jsx-a11y/alt-text */}
                             <Image
                                 width={'12px'}
                                 height={'13px'}
@@ -283,6 +296,7 @@ export const RenderOrderStatusList = (res: any) => {
                         </Flex>
                     </Flex>
                     <Flex>
+                        {/* eslint-disable-next-line jsx-a11y/alt-text */}
                         <Image
                             src={lineBlack}
                             width={'12px'}
@@ -303,6 +317,7 @@ export const RenderOrderStatusList = (res: any) => {
                         justifyContent={'space-between'}
                     >
                         <Flex alignItems={'center'}>
+                            {/* eslint-disable-next-line jsx-a11y/alt-text */}
                             <Image
                                 width={'12px'}
                                 height={'13px'}
@@ -318,6 +333,7 @@ export const RenderOrderStatusList = (res: any) => {
                         </Flex>
                     </Flex>
                     <Flex>
+                        {/* eslint-disable-next-line jsx-a11y/alt-text */}
                         <Image
                             src={lineBlack}
                             width={'12px'}
@@ -338,6 +354,7 @@ export const RenderOrderStatusList = (res: any) => {
                         justifyContent={'space-between'}
                     >
                         <Flex alignItems={'center'}>
+                            {/* eslint-disable-next-line jsx-a11y/alt-text */}
                             <Image
                                 width={'12px'}
                                 height={'13px'}
@@ -353,6 +370,7 @@ export const RenderOrderStatusList = (res: any) => {
                         </Flex>
                     </Flex>
                     <Flex>
+                        {/* eslint-disable-next-line jsx-a11y/alt-text */}
                         <Image
                             src={lineBlack}
                             width={'12px'}
@@ -373,6 +391,7 @@ export const RenderOrderStatusList = (res: any) => {
                         justifyContent={'space-between'}
                     >
                         <Flex alignItems={'center'}>
+                            {/* eslint-disable-next-line jsx-a11y/alt-text */}
                             <Image
                                 width={'12px'}
                                 height={'13px'}
@@ -388,6 +407,7 @@ export const RenderOrderStatusList = (res: any) => {
                         </Flex>
                     </Flex>
                     <Flex>
+                        {/* eslint-disable-next-line jsx-a11y/alt-text */}
                         <Image
                             src={lineBlack}
                             width={'12px'}
@@ -414,6 +434,7 @@ export const RenderOrderStatusList = (res: any) => {
                         justifyContent={'space-between'}
                     >
                         <Flex alignItems={'center'}>
+                            {/* eslint-disable-next-line jsx-a11y/alt-text */}
                             <Image
                                 width={'12px'}
                                 height={'13px'}
@@ -429,6 +450,7 @@ export const RenderOrderStatusList = (res: any) => {
                         </Flex>
                     </Flex>
                     <Flex>
+                        {/* eslint-disable-next-line jsx-a11y/alt-text */}
                         <Image
                             src={lineBlack}
                             width={'12px'}
@@ -449,6 +471,7 @@ export const RenderOrderStatusList = (res: any) => {
                         justifyContent={'space-between'}
                     >
                         <Flex alignItems={'center'}>
+                            {/* eslint-disable-next-line jsx-a11y/alt-text */}
                             <Image
                                 width={'12px'}
                                 height={'13px'}
@@ -464,6 +487,7 @@ export const RenderOrderStatusList = (res: any) => {
                         </Flex>
                     </Flex>
                     <Flex>
+                        {/* eslint-disable-next-line jsx-a11y/alt-text */}
                         <Image
                             src={lineBlack}
                             width={'12px'}
@@ -484,6 +508,7 @@ export const RenderOrderStatusList = (res: any) => {
                         justifyContent={'space-between'}
                     >
                         <Flex alignItems={'center'}>
+                            {/* eslint-disable-next-line jsx-a11y/alt-text */}
                             <Image
                                 width={'12px'}
                                 height={'13px'}
@@ -499,6 +524,7 @@ export const RenderOrderStatusList = (res: any) => {
                         </Flex>
                     </Flex>
                     <Flex>
+                        {/* eslint-disable-next-line jsx-a11y/alt-text */}
                         <Image
                             src={lineBlack}
                             width={'12px'}
@@ -519,6 +545,7 @@ export const RenderOrderStatusList = (res: any) => {
                         justifyContent={'space-between'}
                     >
                         <Flex alignItems={'center'}>
+                            {/* eslint-disable-next-line jsx-a11y/alt-text */}
                             <Image
                                 width={'12px'}
                                 height={'13px'}
@@ -534,6 +561,7 @@ export const RenderOrderStatusList = (res: any) => {
                         </Flex>
                     </Flex>
                     <Flex>
+                        {/* eslint-disable-next-line jsx-a11y/alt-text */}
                         <Image
                             src={lineBlack}
                             width={'12px'}
@@ -554,6 +582,7 @@ export const RenderOrderStatusList = (res: any) => {
                         justifyContent={'space-between'}
                     >
                         <Flex alignItems={'center'}>
+                            {/* eslint-disable-next-line jsx-a11y/alt-text */}
                             <Image
                                 width={'12px'}
                                 height={'13px'}
@@ -569,6 +598,7 @@ export const RenderOrderStatusList = (res: any) => {
                         </Flex>
                     </Flex>
                     <Flex>
+                        {/* eslint-disable-next-line jsx-a11y/alt-text */}
                         <Image
                             src={lineBlack}
                             width={'12px'}

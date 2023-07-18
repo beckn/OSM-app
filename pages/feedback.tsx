@@ -25,6 +25,7 @@ const Feedback = () => {
                 <Image
                     src={feedbackImg}
                     margin={'0 auto'}
+                    alt="feedback"
                 />
             </Box>
             <StarRating

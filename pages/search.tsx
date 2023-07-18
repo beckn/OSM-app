@@ -70,6 +70,7 @@ const Search = () => {
                 fetchData(`${apiUrl}/client/v2/search`, 'POST', searchPayload)
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [providerId])
 
     useEffect(() => {
@@ -120,6 +121,7 @@ const Search = () => {
             localStorage.setItem('searchItems', JSON.stringify(allItems))
             setItems(allItems)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data])
 
     return (

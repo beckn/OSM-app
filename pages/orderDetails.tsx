@@ -104,7 +104,8 @@ const OrderDetails = () => {
                 clearInterval(intervalId)
             }
         }
-    }, [])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [orderId, transactionId])
 
     useEffect(() => {
         if (localStorage) {
@@ -143,7 +144,8 @@ const OrderDetails = () => {
                 }
             }
         }
-    }, [])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [transactionId])
 
     useEffect(() => {
         if (statusRequest.data) {
@@ -216,6 +218,7 @@ const OrderDetails = () => {
                                 width={'12px'}
                                 height={'13px'}
                                 src={TrackIcon}
+                                alt="TrackIcon"
                             />
                             <Text
                                 pl={'8px'}
@@ -399,6 +402,7 @@ const OrderDetails = () => {
                                 <Image
                                     src={nameIcon}
                                     pr={'12px'}
+                                    alt="nameIcon"
                                 />
                                 <Text fontSize={'17px'}>
                                     {shippingDetails.name}
@@ -408,6 +412,7 @@ const OrderDetails = () => {
                                 <Image
                                     src={locationIcon}
                                     pr={'12px'}
+                                    alt="locationIcon"
                                 />
                                 <Text fontSize={'15px'}>
                                     {shippingDetails.address}
@@ -417,6 +422,7 @@ const OrderDetails = () => {
                                 <Image
                                     src={CallphoneIcon}
                                     pr={'12px'}
+                                    alt="CallphoneIcon"
                                 />
                                 <Text fontSize={'15px'}>
                                     {shippingDetails.phone}

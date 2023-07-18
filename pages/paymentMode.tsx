@@ -42,7 +42,10 @@ function PaymentMode() {
                         mb={'20px'}
                     >
                         <CardBody padding={'15px 20px'}>
-                            <Image src={creditCardImg} />
+                            <Image
+                                src={creditCardImg}
+                                alt="creditCardImage"
+                            />
                         </CardBody>
                     </Card>
                 </Box>
