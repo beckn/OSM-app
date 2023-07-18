@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box, Flex, Text, Image, Card, CardBody } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useDispatch } from 'react-redux'
@@ -9,6 +9,8 @@ import creditCardImg from '../public/images/creditCardImg.svg'
 import { cartActions } from '../store/cart-slice'
 
 function PaymentMode() {
+    const [checked, setChecked] = useState(false)
+
     const { t } = useLanguage()
     const router = useRouter()
     const dispatch = useDispatch()
@@ -50,7 +52,10 @@ function PaymentMode() {
                 >
                     Other
                 </Text>
-                <CardWithCheckBox paymentMethod={t.cashOnDelivery} />
+                <CardWithCheckBox
+                    setChecked={setChecked}
+                    paymentMethod={t.cashOnDelivery}
+                />
             </Box>
             <Box
                 position={'absolute'}
@@ -61,7 +66,7 @@ function PaymentMode() {
                     buttonText={t.confirmOrder}
                     background={'rgba(var(--color-primary))'}
                     color={'rgba(var(--text-color))'}
-                    isDisabled={false}
+                    isDisabled={!checked}
                     handleOnClick={() => {
                         dispatch(cartActions.clearCart())
                         router.push('/orderConfirmation')
