@@ -16,6 +16,11 @@ const tagValuetoApiMap = {
     restaurant: 'bakery',
 }
 
+enum StoreType {
+    books = 'Books',
+    restaurant = 'restaurant',
+}
+
 type Coords = {
     lat: number
     long: number
@@ -55,7 +60,7 @@ const getProperImages = (selectedStore: any) => {
 const staticTagsList = ['inStoreShopping', 'delivery', 'clickAndCollect']
 
 const getStaticTags = (tag: string) => {
-    if (tag === 'books')
+    if (tag === StoreType.books)
         return ['inStoreShopping', 'delivery', 'clickAndCollect']
     else return ['dineIn', 'takeAway', 'delivery']
 }
@@ -191,7 +196,8 @@ const Homepage = () => {
         if (
             !isEmpty(coords) &&
             !isEmpty(option?.tagValue) &&
-            (option?.tagValue === 'Books' || option?.tagValue === 'restaurant')
+            (option?.tagValue === StoreType.books ||
+                option?.tagValue === StoreType.restaurant)
         ) {
             fetchStoresByLocation(
                 coords.lat,
@@ -200,7 +206,7 @@ const Homepage = () => {
                 option?.tagName
             )
         }
-        if (option?.tagValue !== 'Books') {
+        if (option?.tagValue !== StoreType.books) {
             setStores([])
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -319,7 +325,7 @@ const Homepage = () => {
                             <p className="text-[16px] leading-[20px]">
                                 {
                                     t[
-                                        option?.tagValue === 'books'
+                                        option?.tagValue === StoreType.books
                                             ? 'localStores'
                                             : 'restaurants'
                                     ]
@@ -334,7 +340,7 @@ const Homepage = () => {
                                         {selectedStore?.tags.name}
                                     </span>{' '}
                                     -{' '}
-                                    {option?.tagValue === 'books'
+                                    {option?.tagValue === StoreType.books
                                         ? t.bookstore
                                         : t.optionRestaurant}
                                 </p>
