@@ -16,8 +16,10 @@ const tagValuetoApiMap = {
     restaurant: 'bakery',
 }
 
-const booksConstant = 'Books'
-const restaurantConstant = 'restaurant'
+enum tagConstants {
+    books = 'Books',
+    restaurant = 'restaurant',
+}
 
 type Coords = {
     lat: number
@@ -58,7 +60,7 @@ const getProperImages = (selectedStore: any) => {
 const staticTagsList = ['inStoreShopping', 'delivery', 'clickAndCollect']
 
 const getStaticTags = (tag: string) => {
-    if (tag === booksConstant)
+    if (tag === tagConstants.books)
         return ['inStoreShopping', 'delivery', 'clickAndCollect']
     else return ['dineIn', 'takeAway', 'delivery']
 }
@@ -194,8 +196,8 @@ const Homepage = () => {
         if (
             !isEmpty(coords) &&
             !isEmpty(option?.tagValue) &&
-            (option?.tagValue === booksConstant ||
-                option?.tagValue === restaurantConstant)
+            (option?.tagValue === tagConstants.books ||
+                option?.tagValue === tagConstants.restaurant)
         ) {
             fetchStoresByLocation(
                 coords.lat,
@@ -204,7 +206,7 @@ const Homepage = () => {
                 option?.tagName
             )
         }
-        if (option?.tagValue !== booksConstant) {
+        if (option?.tagValue !== tagConstants.books) {
             setStores([])
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -323,7 +325,7 @@ const Homepage = () => {
                             <p className="text-[16px] leading-[20px]">
                                 {
                                     t[
-                                        option?.tagValue === booksConstant
+                                        option?.tagValue === tagConstants.books
                                             ? 'localStores'
                                             : 'restaurants'
                                     ]
@@ -338,7 +340,7 @@ const Homepage = () => {
                                         {selectedStore?.tags.name}
                                     </span>{' '}
                                     -{' '}
-                                    {option?.tagValue === booksConstant
+                                    {option?.tagValue === tagConstants.books
                                         ? t.bookstore
                                         : t.optionRestaurant}
                                 </p>
