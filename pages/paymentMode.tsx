@@ -42,6 +42,7 @@ function PaymentMode() {
                         mb={'20px'}
                     >
                         <CardBody padding={'15px 20px'}>
+                            {/* eslint-disable-next-line jsx-a11y/alt-text */}
                             <Image src={creditCardImg} />
                         </CardBody>
                     </Card>

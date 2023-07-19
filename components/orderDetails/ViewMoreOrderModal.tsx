@@ -53,6 +53,7 @@ const ViewMoreOrderModal: React.FC<ViewMoreOrderModalProps> = (props) => {
                             {t.orderId}: {props.orderId}
                         </Text>
                         <ModalCloseButton position={'unset'}>
+                            {/* eslint-disable-next-line jsx-a11y/alt-text */}
                             <Image src={crossIcon} />
                         </ModalCloseButton>
                     </Flex>
