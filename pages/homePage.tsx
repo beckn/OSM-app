@@ -16,7 +16,7 @@ const tagValuetoApiMap = {
     restaurant: 'bakery',
 }
 
-enum tagConstants {
+enum storeType {
     books = 'Books',
     restaurant = 'restaurant',
 }
