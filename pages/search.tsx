@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useRouter } from 'next/router'
+import { Box } from '@chakra-ui/react'
 import SearchBar from '../components/header/SearchBar'
 import ProductList from '../components/productList/ProductList'
 import useRequest from '../hooks/useRequest'
@@ -8,32 +8,45 @@ import { responseDataActions } from '../store/responseData-slice'
 import { RetailItem } from '../lib/types/products'
 import Loader from '../components/loader/Loader'
 import { useLanguage } from '../hooks/useLanguage'
-import { Box, Text } from '@chakra-ui/react'
 
 //Mock data for testing search API. Will remove after the resolution of CORS issue
 
 const Search = () => {
     const [items, setItems] = useState([])
-    const router = useRouter()
     const dispatch = useDispatch()
     const [providerId, setProviderId] = useState('')
     const { t, locale } = useLanguage()
-
-    const { keyword } = router.query
+    const [tagValue, setTagValue] = useState('')
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
     const { data, loading, error, fetchData } = useRequest()
 
+    const categoryMap = {
+        Books: { en: 'BookEnglish', fa: 'BookFrench' },
+        restaurant: { en: 'FoodEnglish', fa: 'FoodFrench' },
+    }
+
     useEffect(() => {
         if (localStorage) {
             const stringifiedOptiontags = localStorage.getItem('optionTags')
+            const stringifiedSelectedOption =
+                localStorage.getItem('selectedOption')
             if (stringifiedOptiontags) {
                 const providerId = JSON.parse(stringifiedOptiontags).providerId
                 setProviderId(providerId)
             }
+            if (stringifiedSelectedOption) {
+                setTagValue(JSON.parse(stringifiedSelectedOption).tagValue)
+            }
         }
     }, [])
+
+    const categoryName = () => {
+        if (tagValue && categoryMap[tagValue]) {
+            return categoryMap[tagValue][locale] || categoryMap[tagValue]['en']
+        }
+    }
 
     const searchPayload = {
         context: {
@@ -42,8 +55,7 @@ const Search = () => {
         message: {
             criteria: {
                 dropLocation: '48.85041854,2.343660801',
-                categoryName:
-                    locale === 'en' ? 'RetailEnglish' : 'RetailFrench',
+                categoryName: categoryName(),
                 providerId: providerId,
             },
         },
@@ -58,6 +70,7 @@ const Search = () => {
                 fetchData(`${apiUrl}/client/v2/search`, 'POST', searchPayload)
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [providerId])
 
     useEffect(() => {
@@ -108,6 +121,7 @@ const Search = () => {
             localStorage.setItem('searchItems', JSON.stringify(allItems))
             setItems(allItems)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data])
 
     return (

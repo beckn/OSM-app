@@ -19,6 +19,7 @@ export const AppHeader: React.FC<AppHeaderPropsModel> = (props) => {
     >
       <CardBody display={"flex"} alignItems={"center"}>
         <Box onClick={() => goBack()} cursor={"pointer"}>
+          {/* eslint-disable-next-line jsx-a11y/alt-text */}
           <Image src={backArrow} />
         </Box>
         <Text fontSize={"18px"} textAlign={"center"} width={"100%"}>

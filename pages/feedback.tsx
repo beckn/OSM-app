@@ -22,6 +22,7 @@ const Feedback = () => {
                 <Text fontSize={'12px'}>{t.shareYourfeedback}</Text>
             </Box>
             <Box mb={'10px'}>
+                {/* eslint-disable-next-line jsx-a11y/alt-text */}
                 <Image
                     src={feedbackImg}
                     margin={'0 auto'}

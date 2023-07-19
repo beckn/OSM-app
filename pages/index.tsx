@@ -46,6 +46,7 @@ const MobileLogin = () => {
     return (
         <Box padding={'0 21px'}>
             <Box mt={'30px'}>
+                {/* eslint-disable-next-line jsx-a11y/alt-text */}
                 <Image src={LoginIcon} />
             </Box>
             <Box

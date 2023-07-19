@@ -75,6 +75,7 @@ const TrackOrder = () => {
         <>
             {/* <AppHeader appHeaderText={t.trackOrder} /> */}
             <Stack marginBottom={'50px'}>
+                {/* eslint-disable-next-line jsx-a11y/alt-text */}
                 <Image
                     src={trackOrderMap}
                     margin={'0 auto'}
@@ -108,6 +109,7 @@ const TrackOrder = () => {
                         justifyContent={'space-between'}
                     >
                         <Flex alignItems={'center'}>
+                            {/* eslint-disable-next-line jsx-a11y/alt-text */}
                             <Image
                                 width={'12px'}
                                 height={'13px'}
@@ -129,6 +131,7 @@ const TrackOrder = () => {
                         </Text>
                     </Flex>
                     <Flex paddingTop={'12px'}>
+                        {/* eslint-disable-next-line jsx-a11y/alt-text */}
                         <Image
                             src={getStepLineImage(0)}
                             width={'12px'}
@@ -148,6 +151,7 @@ const TrackOrder = () => {
                         justifyContent={'space-between'}
                     >
                         <Flex alignItems={'center'}>
+                            {/* eslint-disable-next-line jsx-a11y/alt-text */}
                             <Image
                                 width={'12px'}
                                 height={'13px'}
@@ -169,6 +173,7 @@ const TrackOrder = () => {
                         </Text>
                     </Flex>
                     <Flex paddingTop={'12px'}>
+                        {/* eslint-disable-next-line jsx-a11y/alt-text */}
                         <Image
                             src={getStepLineImage(1)}
                             width={'12px'}
@@ -188,6 +193,7 @@ const TrackOrder = () => {
                         justifyContent={'space-between'}
                     >
                         <Flex alignItems={'center'}>
+                            {/* eslint-disable-next-line jsx-a11y/alt-text */}
                             <Image src={getStepImage(2)} />
                             <Text
                                 paddingLeft={'7px'}
@@ -205,6 +211,7 @@ const TrackOrder = () => {
                         </Text>
                     </Flex>
                     <Flex paddingTop={'12px'}>
+                        {/* eslint-disable-next-line jsx-a11y/alt-text */}
                         <Image
                             src={getStepLineImage(2)}
                             width={'12px'}
@@ -224,6 +231,7 @@ const TrackOrder = () => {
                         justifyContent={'space-between'}
                     >
                         <Flex alignItems={'center'}>
+                            {/* eslint-disable-next-line jsx-a11y/alt-text */}
                             <Image
                                 width={'12px'}
                                 height={'13px'}

@@ -177,12 +177,14 @@ const Homepage = () => {
         if (storesByLocation && !isEmpty(option.tagValue)) {
             setStores(storesByLocation)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [storesByLocation])
 
     useEffect(() => {
         if (isEmpty(query) && !isEmpty(coords)) {
             fetchLocationNameByCoords(coords.lat, coords.long)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [coords])
 
     useEffect(() => {
@@ -201,6 +203,7 @@ const Homepage = () => {
         if (option?.tagValue !== 'Books') {
             setStores([])
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [coords, option])
 
     //resetting option state and stores when location changes

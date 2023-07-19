@@ -54,6 +54,7 @@ const SearchBar: React.FC<SearchBarProp> = ({
 
     useEffect(() => {
         setShowSuggestions(!isEmpty(value) && locations && !isEmpty(locations))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [locations, value])
 
     useEffect(() => {
@@ -66,6 +67,7 @@ const SearchBar: React.FC<SearchBarProp> = ({
     useEffect(() => {
         // setQuery(debouncedValue);
         fetchResults(debouncedValue)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedValue])
 
     return (
