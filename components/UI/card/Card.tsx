@@ -74,11 +74,13 @@ const Card: React.FC<Props> = ({ product }) => {
                                     <Image
                                         pt={'4px'}
                                         src={greenVegIcon}
+                                        alt="greenVegIcon"
                                     />
                                 ) : (
                                     <Image
                                         pt={'4px'}
                                         src={redNonVegIcon}
+                                        alt="nonVegIcon"
                                     />
                                 )
                             ) : null}
@@ -123,6 +125,7 @@ const Card: React.FC<Props> = ({ product }) => {
                                 price={parseFloat(product.price.value)}
                             />
                             <Flex alignItems={'center'}>
+                                {/* eslint-disable-next-line jsx-a11y/alt-text */}
                                 <Image src={StarIcon} />
                                 <Text
                                     fontSize={'12px'}

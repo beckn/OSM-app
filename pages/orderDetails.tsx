@@ -104,6 +104,7 @@ const OrderDetails = () => {
                 clearInterval(intervalId)
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
@@ -143,6 +144,7 @@ const OrderDetails = () => {
                 }
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
@@ -212,6 +214,7 @@ const OrderDetails = () => {
                             alignItems={'center'}
                             pb={'3px'}
                         >
+                            {/* eslint-disable-next-line jsx-a11y/alt-text */}
                             <Image
                                 width={'12px'}
                                 height={'13px'}
@@ -396,6 +399,7 @@ const OrderDetails = () => {
                             spacing="4"
                         >
                             <Flex alignItems={'center'}>
+                                {/* eslint-disable-next-line jsx-a11y/alt-text */}
                                 <Image
                                     src={nameIcon}
                                     pr={'12px'}
@@ -405,6 +409,7 @@ const OrderDetails = () => {
                                 </Text>
                             </Flex>
                             <Flex alignItems={'center'}>
+                                {/* eslint-disable-next-line jsx-a11y/alt-text */}
                                 <Image
                                     src={locationIcon}
                                     pr={'12px'}
@@ -414,6 +419,7 @@ const OrderDetails = () => {
                                 </Text>
                             </Flex>
                             <Flex alignItems={'center'}>
+                                {/* eslint-disable-next-line jsx-a11y/alt-text */}
                                 <Image
                                     src={CallphoneIcon}
                                     pr={'12px'}

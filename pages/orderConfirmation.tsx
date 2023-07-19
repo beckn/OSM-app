@@ -42,6 +42,7 @@ const OrderConfirmation = () => {
                 payLoadForConfirmRequest
             )
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
@@ -66,6 +67,7 @@ const OrderConfirmation = () => {
                 payLoadForConfirmRequest
             )
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
@@ -83,6 +85,7 @@ const OrderConfirmation = () => {
                 clearTimeout(timeout)
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [confirmRequest.data])
 
     if (confirmRequest.loading) {
@@ -91,6 +94,7 @@ const OrderConfirmation = () => {
 
     return (
         <Box position={'relative'}>
+            {/* eslint-disable-next-line jsx-a11y/alt-text */}
             <Image
                 src={orderConfirmmark}
                 margin={'41px auto'}
