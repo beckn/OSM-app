@@ -45,16 +45,19 @@ const DetailsSection: React.FC<Props> = ({ product }) => {
                 >
                     {product.descriptor.name}
                 </h2>
+
                 {product.tags.foodType ? (
                     product.tags.foodType === 'veg' ? (
                         <Image
                             pt={'4px'}
                             src={greenVegIcon}
+                            alt="greenVegIcon"
                         />
                     ) : (
                         <Image
                             pt={'4px'}
                             src={redNonVegIcon}
+                            alt="redNonVegIcon"
                         />
                     )
                 ) : null}
