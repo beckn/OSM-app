@@ -36,7 +36,7 @@ export const getPayloadForInitRequest = (
                     addOns: [],
                     offers: [],
                     billing: {
-                        name: `./${customerAddress.name}/////`,
+                        name: customerAddress.name,
                         phone: customerAddress.mobileNumber,
                         address: {
                             door: '',
@@ -57,9 +57,9 @@ export const getPayloadForInitRequest = (
                                 address: {
                                     door: '',
                                     building: customerAddress.address,
-                                    street: 'Bengaluru, Bengaluru Urban, Bangalore Division, Karnataka',
-                                    city: 'Bengaluru',
-                                    state: 'Karnataka',
+                                    street: customerAddress.address,
+                                    city: customerAddress.address,
+                                    state: customerAddress.address,
                                     country: 'IND',
                                     area_code: '560076',
                                 },
@@ -71,7 +71,7 @@ export const getPayloadForInitRequest = (
                         },
                         customer: {
                             person: {
-                                name: `./${customerAddress.name}/////`,
+                                name: customerAddress.name,
                             },
                         },
                         id: cartItemsPerBppPerProvider[bppId][0].providerId,
