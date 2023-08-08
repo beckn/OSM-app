@@ -45,7 +45,10 @@ const Cart = () => {
     )
 
     useEffect(() => {
-        if (localStorage && !localStorage.getItem('quoteResponse')) {
+        if (
+            (localStorage && !localStorage.getItem('quoteResponse')) ||
+            localStorage.getItem('quoteResponse')
+        ) {
             quoteRequest.fetchData(
                 `${apiUrl}/client/v2/get_quote`,
                 'POST',
@@ -88,7 +91,13 @@ const Cart = () => {
     }
 
     if (!itemsForCart.length) {
-        return <></>
+        return (
+            <>
+                <p className="mt-20 text-center text-palette-mute font-normal">
+                    {t.cartIsEmpty}
+                </p>
+            </>
+        )
     }
 
     return (
