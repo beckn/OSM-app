@@ -17,6 +17,7 @@ const Search = () => {
     const [providerId, setProviderId] = useState('')
     const { t, locale } = useLanguage()
     const [tagValue, setTagValue] = useState('')
+    const [searchString, setSearchString] = useState('')
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
@@ -61,8 +62,17 @@ const Search = () => {
         },
     }
 
-    const fetchDataForSearch = () =>
-        fetchData(`${apiUrl}/client/v2/search`, 'POST', searchPayload)
+    const fetchDataForSearch = (searchString: string) =>
+        fetchData(`${apiUrl}/client/v2/search`, 'POST', {
+            ...searchPayload,
+            message: {
+                ...searchPayload.message,
+                criteria: {
+                    ...searchPayload.message.criteria,
+                    searchString: searchString,
+                },
+            },
+        })
 
     useEffect(() => {
         if (localStorage && !localStorage.getItem('searchItems')) {
@@ -137,10 +147,11 @@ const Search = () => {
                 mt={'-20px'}
             >
                 <SearchBar
-                    searchString={''}
+                    searchString={searchString}
                     handleChange={(text: string) => {
                         localStorage.removeItem('searchItems')
-                        fetchDataForSearch()
+                        setSearchString(text)
+                        fetchDataForSearch(text)
                     }}
                 />
             </Box>
