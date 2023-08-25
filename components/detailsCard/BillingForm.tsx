@@ -37,6 +37,9 @@ const BillingForm: React.FC<ShippingFormProps> = (props) => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    if (name === "name" && !/^[A-Za-z\s]*$/.test(value)) {
+      return;
+    }
     if (name === "mobileNumber" && !/^\d*$/.test(value)) {
       return;
     }
@@ -49,10 +52,6 @@ const BillingForm: React.FC<ShippingFormProps> = (props) => {
       ...props.billingFormData,
       [name]: value,
     };
-
-    console.log("Dank",props.billingFormData)
-
-
     const errors = validateForm(updatedFormData);
     setFormErrors((prevErrors) => ({
       ...prevErrors,
@@ -174,7 +173,7 @@ const BillingForm: React.FC<ShippingFormProps> = (props) => {
               <div className={style.did_floating_label_content}>
                 <input
                   className={style.did_floating_input}
-                  type="text"
+                  type="number"
                   placeholder=" "
                   name="zipCode"
                   value={props.billingFormData.zipCode}
