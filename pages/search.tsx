@@ -17,6 +17,7 @@ const Search = () => {
     const [providerId, setProviderId] = useState('')
     const { t, locale } = useLanguage()
     const [tagValue, setTagValue] = useState('')
+    const [searchString, setSearchString] = useState('')
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
@@ -61,15 +62,39 @@ const Search = () => {
         },
     }
 
-    const fetchDataForSearch = () =>
-        fetchData(`${apiUrl}/client/v2/search`, 'POST', searchPayload)
+    const fetchDataForSearch = (searchString: string) =>
+        fetchData(`${apiUrl}/client/v2/search`, 'POST', {
+            ...searchPayload,
+            message: {
+                ...searchPayload.message,
+                criteria: {
+                    ...searchPayload.message.criteria,
+                    searchString: searchString,
+                },
+            },
+        })
 
     useEffect(() => {
-        if (localStorage && !localStorage.getItem('searchItems')) {
+        if (localStorage && localStorage.getItem('searchItems')) {
+            const cachedSearchResults = localStorage.getItem('searchItems')
+            if (cachedSearchResults) {
+                const parsedCachedResults = JSON.parse(cachedSearchResults)
+                if (providerId) {
+                    if (!parsedCachedResults.hasOwnProperty(providerId)) {
+                        fetchData(
+                            `${apiUrl}/client/v2/search`,
+                            'POST',
+                            searchPayload
+                        )
+                    }
+                }
+            }
+        } else {
             if (providerId) {
                 fetchData(`${apiUrl}/client/v2/search`, 'POST', searchPayload)
             }
         }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [providerId])
 
@@ -78,7 +103,10 @@ const Search = () => {
             const cachedSearchResults = localStorage.getItem('searchItems')
             if (cachedSearchResults) {
                 const parsedCachedResults = JSON.parse(cachedSearchResults)
-                setItems(parsedCachedResults)
+                const parsedCachedResultsArray =
+                    Object.keys(parsedCachedResults)
+                const firstKey = parsedCachedResultsArray[0]
+                setItems(parsedCachedResults[firstKey])
             }
         }
     }, [])
@@ -118,7 +146,10 @@ const Search = () => {
                 }
                 return []
             })
-            localStorage.setItem('searchItems', JSON.stringify(allItems))
+            localStorage.setItem(
+                'searchItems',
+                JSON.stringify({ [providerId]: allItems })
+            )
             setItems(allItems)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -137,10 +168,11 @@ const Search = () => {
                 mt={'-20px'}
             >
                 <SearchBar
-                    searchString={''}
+                    searchString={searchString}
                     handleChange={(text: string) => {
                         localStorage.removeItem('searchItems')
-                        fetchDataForSearch()
+                        setSearchString(text)
+                        fetchDataForSearch(text)
                     }}
                 />
             </Box>
