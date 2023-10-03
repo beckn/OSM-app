@@ -59,6 +59,7 @@ const OrderDetails = () => {
     const { orderId } = router.query
 
     const { t } = useLanguage()
+    const bppUrl = 'https://retail-osm-prod.becknprotocol.io/'
 
     useEffect(() => {
         if (
@@ -162,8 +163,6 @@ const OrderDetails = () => {
         }
     }, [statusRequest.data])
 
-    console.log('confirmData', confirmData)
-
     if (!confirmData.length) {
         return <></>
     }
@@ -203,8 +202,7 @@ const OrderDetails = () => {
     }
 
     const gotWasteHandler = () => {
-        console.log("Got Waste Clicked")
-        
+        window.location.href = bppUrl
     }
 
     return (
