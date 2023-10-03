@@ -366,5 +366,7 @@ const en: { [key: string]: string } = {
     addCommentsHere: 'Add your comments here',
     writeExperience: 'Write about your experience..',
     completed: 'Completed',
+    gotWaste: 'Sell Waste',
+    wasteGenerated: 'Waste Generated'
 }
 export default en

@@ -10,6 +10,7 @@ import {
     Card,
     useDisclosure,
 } from '@chakra-ui/react'
+import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import Accordion from '../components/accordion/Accordion'
 import CallphoneIcon from '../public/images/CallphoneIcon.svg'
@@ -40,6 +41,7 @@ import {
     RenderOrderStatusList,
 } from '../components/orderDetails/RenderOrderStatusTree'
 import { useRouter } from 'next/router'
+import Button from '../components/button/Button'
 
 const OrderDetails = () => {
     const [allOrderDelivered, setAllOrderDelivered] = useState(false)
@@ -198,6 +200,11 @@ const OrderDetails = () => {
         name: getExtractedName(orderFromConfirmData.billing.name),
         address: orderFromConfirmData.billing.address.state,
         phone: orderFromConfirmData.billing.phone,
+    }
+
+    const gotWasteHandler = () => {
+        console.log("Got Waste Clicked")
+        
     }
 
     return (
@@ -496,6 +503,37 @@ const OrderDetails = () => {
                         <Text>{t.paymentMethod}</Text>
                         <Text>{t.cashOnDelivery}</Text>
                     </Flex>
+                </CardBody>
+            </Accordion>
+            <Accordion accordionHeader={t.wasteGenerated}>
+                <CardBody
+                    pt={'unset'}
+                    pb={'unset'}
+                >
+                    <Flex
+                        pb={'15px'}
+                        justifyContent={'space-between'}
+                        alignItems={'center'}
+                    >
+                        <Text>Fiber: 20g</Text>
+                        <Text>Plastic: 10g</Text>
+                        <Text>Sugar: 2g</Text>
+                    </Flex>
+                    <Divider />
+                    <Button
+                        buttonText={
+                            <Flex
+                                justifyContent={'center'}
+                                alignItems={'center'}
+                            >
+                                {t.gotWaste}
+                            </Flex>
+                        }
+                        background={'rgba(var(--color-primary))'}
+                        color={'rgba(var(--text-color))'}
+                        isDisabled={false}
+                        handleOnClick={gotWasteHandler}
+                    />
                 </CardBody>
             </Accordion>
         </>
