@@ -19,6 +19,7 @@ import {
     getItemsForCart,
     getPayloadForQuoteRequest,
 } from '../utilities/cart-utils'
+import EmptyCart from '../components/cart/EmptyCart'
 
 const Cart = () => {
     const [itemsForCart, setItemsForCart] = useState<CartRetailItem[]>([])
@@ -91,13 +92,7 @@ const Cart = () => {
     }
 
     if (!itemsForCart.length) {
-        return (
-            <>
-                <p className="mt-20 text-center text-palette-mute font-normal">
-                    {t.cartIsEmpty}
-                </p>
-            </>
-        )
+        return <EmptyCart />
     }
 
     return (
