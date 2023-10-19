@@ -366,5 +366,7 @@ const en: { [key: string]: string } = {
     addCommentsHere: 'Add your comments here',
     writeExperience: 'Write about your experience..',
     completed: 'Completed',
+    cartEmpty:"The Cart is Empty",
+    cartEmptySpan:'Look like you haven’t made your choice yet',
 }
 export default en
