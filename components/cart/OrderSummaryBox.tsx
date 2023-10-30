@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { useLanguage } from '../../hooks/useLanguage'
 import { ICartRootState } from '../../lib/types/cart'
 import ProductPrice from '../UI/ProductPrice'
+import EmptyCart from './EmptyCart'
 
 interface OrderSummaryBoxPropsModel {
     onOrderClick: () => void
@@ -39,7 +40,7 @@ const OrderSummaryBox: React.FC<OrderSummaryBoxPropsModel> = (props) => {
                             <p className="text-sm sm:text-base text-palette-mute md:text-palette-base">
                                 {t.totalQuantity}
                             </p>
-                            <p className="rtl:ml-1 ltr:mr-1 font-bold">
+                            <p className="font-bold rtl:ml-1 ltr:mr-1">
                                 {totalQuantity}
                             </p>
                         </div>
@@ -53,15 +54,13 @@ const OrderSummaryBox: React.FC<OrderSummaryBoxPropsModel> = (props) => {
                     <a
                         style={{ marginTop: '15px' }}
                         onClick={() => props.onOrderClick()}
-                        className="block bg-palette-primary md:mt-8 py-3 border_radius_all text-palette-side text-center shadow-lg"
+                        className="block py-3 text-center shadow-lg bg-palette-primary md:mt-8 border_radius_all text-palette-side"
                     >
                         {t.proceedToCheckout}
                     </a>
                 </div>
             ) : (
-                <p className="text-palette-mute text-lg mx-auto mt-12">
-                    {t.cartIsEmpty}
-                </p>
+                <EmptyCart/>
             )}
         </>
     )

@@ -111,7 +111,7 @@ export const getSubTotalAndDeliveryCharges = (
 
             const subTotalAmount = parseFloat(
                 data.message.catalogs.responses[0].message.order.quote
-                    .breakup[0].price.value
+                    .breakup[0].price.listed_value
             ).toFixed(2)
 
             subTotal += parseFloat(parseFloat(subTotalAmount).toFixed(2))
