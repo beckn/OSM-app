@@ -214,7 +214,10 @@ const CheckoutPage = () => {
                                     title={item.descriptor.name}
                                     description={item.descriptor.short_desc}
                                     quantity={item.quantity}
-                                    price={`${t.currencySymbol}${item.totalPrice}`}
+                                    price={`${t.currencySymbol}${
+                                        parseFloat(item.price.value) *
+                                        item.quantity
+                                    }`}
                                 />
                             </>
                         )
@@ -361,9 +364,7 @@ const CheckoutPage = () => {
                             totalText={t.totalText}
                             totalValue={`${
                                 getSubTotalAndDeliveryCharges(initRequest.data)
-                                    .subTotal +
-                                getSubTotalAndDeliveryCharges(initRequest.data)
-                                    .totalDeliveryCharge
+                                    .totalOrderPrice
                             }`}
                         />
                     </DetailsCard>
