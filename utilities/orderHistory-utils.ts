@@ -31,13 +31,13 @@ export const getSubTotalAndDeliveryChargesForOrder = (
         confirmData.forEach((data) => {
             const deliveryAmount = parseFloat(
                 data.message.responses[0].message.order.quote.breakup[1].price
-                    .value
+                    .listed_value
             )
             totalDeliveryCharge += parseFloat(deliveryAmount.toFixed(2))
 
             const subTotalAmount = parseFloat(
                 data.message.responses[0].message.order.quote.breakup[0].price
-                    .value
+                    .listed_value
             )
 
             subTotal += parseFloat(subTotalAmount.toFixed(2))
