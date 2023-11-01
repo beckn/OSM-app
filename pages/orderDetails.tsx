@@ -340,15 +340,17 @@ const OrderDetails = () => {
                                                 .descriptor.name
                                         }
                                     </Text>
-                                    <Text
-                                        pl={'5px'}
-                                        color={'rgba(var(--color-primary))'}
-                                        fontSize={'12px'}
-                                        fontWeight={'600'}
-                                        onClick={onOpen}
-                                    >
-                                        +{totalQuantityOfOrder(res) - 1}
-                                    </Text>
+                                    {totalQuantityOfOrder(res) !== 1 && (
+                                        <Text
+                                            pl={'5px'}
+                                            color={'rgba(var(--color-primary))'}
+                                            fontSize={'12px'}
+                                            fontWeight={'600'}
+                                            onClick={onOpen}
+                                        >
+                                            +{totalQuantityOfOrder(res) - 1}
+                                        </Text>
+                                    )}
                                 </Flex>
 
                                 <Text
