@@ -100,25 +100,27 @@ export const getSubTotalAndDeliveryCharges = (
 ) => {
     let subTotal = 0
     let totalDeliveryCharge = 0
+    let totalOrderPrice = 0
 
     if (initData) {
         initData.forEach((data) => {
             const deliveryAmount = parseFloat(
                 data.message.catalogs.responses[0].message.order.quote
-                    .breakup[1].price.value
+                    .breakup[1].price.listed_value
             ).toFixed(2)
             totalDeliveryCharge += parseFloat(deliveryAmount)
 
             const subTotalAmount = parseFloat(
                 data.message.catalogs.responses[0].message.order.quote
-                    .breakup[0].price.value
+                    .breakup[0].price.listed_value
             ).toFixed(2)
 
             subTotal += parseFloat(parseFloat(subTotalAmount).toFixed(2))
         })
     }
+    totalOrderPrice = subTotal + totalDeliveryCharge
 
-    return { subTotal, totalDeliveryCharge }
+    return { subTotal, totalDeliveryCharge, totalOrderPrice }
 }
 
 export const getTotalCartItems = (cartItems: CartRetailItem[]) => {
