@@ -46,10 +46,7 @@ const Cart = () => {
     )
 
     useEffect(() => {
-        if (
-            (localStorage && !localStorage.getItem('quoteResponse')) ||
-            localStorage.getItem('quoteResponse')
-        ) {
+        if (localStorage && !localStorage.getItem('quoteResponse')) {
             quoteRequest.fetchData(
                 `${apiUrl}/client/v2/get_quote`,
                 'POST',
