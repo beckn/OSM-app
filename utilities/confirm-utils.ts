@@ -78,7 +78,10 @@ export const getPayloadForConfirmRequest = (
                         },
                         id: initMetaDataPerBpp[bppId].fulfillment.id,
                     },
-                    payment: initMetaDataPerBpp[bppId].payment,
+                    payment: {
+                        ...initMetaDataPerBpp[bppId].payment,
+                        status: 'NOT-PAID',
+                    },
                     items: [],
                 },
             },

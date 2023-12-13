@@ -65,16 +65,18 @@ const DetailsSection: React.FC<Props> = ({ product }) => {
             <hr className="mt-1 hidden md:block" />
             <div className="flex items-start flex-wrap relative">
                 <div className="flex-grow">
-                    <div className="flex items-center self-center">
-                        <StarRatingComponent
-                            name="product_rate"
-                            starCount={5}
-                            value={parseFloat(product.tags.rating)}
-                        />
-                        <p className="text-sm text-palette-mute rtl:mr-2 ltr:ml-2 pl-1">
-                            {parseFloat(product.tags.rating)} {t.stars}
-                        </p>
-                    </div>
+                    {product?.tags?.rating && (
+                        <div className="flex items-center self-center">
+                            <StarRatingComponent
+                                name="product_rate"
+                                starCount={5}
+                                value={parseFloat(product.tags.rating)}
+                            />
+                            <p className="text-sm text-palette-mute rtl:mr-2 ltr:ml-2 pl-1">
+                                {parseFloat(product.tags.rating)} {t.stars}
+                            </p>
+                        </div>
+                    )}
 
                     <div
                         dangerouslySetInnerHTML={{

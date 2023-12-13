@@ -334,21 +334,10 @@ const CheckoutPage = () => {
                     </Flex>
                     <DetailsCard>
                         <PaymentDetails
-                            subtotalText={t.subtotalText}
-                            subtotalValue={`${t.currencySymbol} ${
-                                getSubTotalAndDeliveryCharges(initRequest.data)
-                                    .subTotal
-                            }`}
-                            deliveryChargesText={t.deliveryChargesText}
-                            deliveryChargesValue={`${t.currencySymbol} ${
-                                getSubTotalAndDeliveryCharges(initRequest.data)
-                                    .totalDeliveryCharge
-                            }`}
-                            totalText={t.totalText}
-                            totalValue={`${
-                                getSubTotalAndDeliveryCharges(initRequest.data)
-                                    .totalOrderPrice
-                            }`}
+                            qoute={
+                                initRequest.data[0].message.catalogs
+                                    .responses[0].message.order.quote
+                            }
                         />
                     </DetailsCard>
                 </Box>

@@ -57,44 +57,58 @@ const OrderHistory = () => {
         return <p>No orders placed</p>
     }
 
+    if (error) {
+        return <></>
+    }
+
     return orderHistoryList.map((orderInHistory: any, index: number) => {
-        const createdAt = getOrderPlacementTimeline(
-            orderInHistory.orders.length > 0
-                ? orderInHistory.orders[0].message.responses[0].message.order
-                      .created_at
-                : ''
-        )
+        if (
+            orderInHistory.orders.length > 0 &&
+            orderInHistory.orders[0].message.responses.length > 0
+        ) {
+            const createdAt = getOrderPlacementTimeline(
+                orderInHistory.orders.length > 0
+                    ? orderInHistory.orders[0].message.responses?.[0]?.message
+                          ?.order?.created_at
+                    : ''
+            )
 
-        const totalQuantityOfSingleOrder = getTotalQuantityOfSingleOrder(
-            orderInHistory.orders
-        )
-        const totalPriceOfSingleOrder = getTotalPriceOfSingleOrder(
-            orderInHistory.orders
-        )
-        const orderState =
-            orderInHistory.orders[0].message.responses[0].message.order.state
+            const totalQuantityOfSingleOrder = getTotalQuantityOfSingleOrder(
+                orderInHistory.orders
+            )
+            const totalPriceOfSingleOrder = getTotalPriceOfSingleOrder(
+                orderInHistory.orders
+            )
+            const orderState =
+                orderInHistory?.orders?.[0]?.message?.responses[0]?.message
+                    ?.order?.state
 
-        return (
-            <Link
-                key={index}
-                href={{
-                    pathname: '/orderDetails',
-                    query: { orderId: orderInHistory.parentOrderId },
-                }}
-            >
-                <Box pt={'20px'}>
-                    <DetailsCard>
-                        <OrderHistoryDetails
-                            createdAt={createdAt}
-                            orderId={orderInHistory.parentOrderId}
-                            quantity={totalQuantityOfSingleOrder}
-                            totalAmount={totalPriceOfSingleOrder}
-                            orderState={t[`${orderStatusMap[orderState]}`]}
-                        />
-                    </DetailsCard>
-                </Box>
-            </Link>
-        )
+            return (
+                <Link
+                    key={index}
+                    href={{
+                        pathname: '/orderDetails',
+                        query: { orderId: orderInHistory.parentOrderId },
+                    }}
+                >
+                    <Box
+                        key={index}
+                        pt={'20px'}
+                    >
+                        <DetailsCard>
+                            <OrderHistoryDetails
+                                createdAt={createdAt}
+                                orderId={orderInHistory.parentOrderId}
+                                quantity={totalQuantityOfSingleOrder}
+                                totalAmount={totalPriceOfSingleOrder}
+                                orderState={t[`${orderStatusMap[orderState]}`]}
+                            />
+                        </DetailsCard>
+                    </Box>
+                </Link>
+            )
+        }
+        return <></>
     })
 }
 

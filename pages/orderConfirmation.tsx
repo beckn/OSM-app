@@ -92,6 +92,10 @@ const OrderConfirmation = () => {
         return <Loader loadingText={t.confirmingOrderLoader} />
     }
 
+    if (confirmRequest.error) {
+        return <></>
+    }
+
     return (
         <Box position={'relative'}>
             {/* eslint-disable-next-line jsx-a11y/alt-text */}
