@@ -33,7 +33,11 @@ const OptionCard: React.FC<OptionCardProps> = ({
         <div
             className="text-center"
             onClick={(e) => {
-                if (tagValue !== 'Books' && tagValue !== 'restaurant') {
+                if (
+                    tagValue !== 'Books' &&
+                    tagValue !== 'restaurant' &&
+                    tagValue !== 'Shopping'
+                ) {
                     toast.info(`${t.comingSoon}`, {
                         theme: 'light',
                         position: 'top-center',

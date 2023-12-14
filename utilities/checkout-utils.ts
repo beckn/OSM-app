@@ -56,22 +56,22 @@ export const getPayloadForInitRequest = (
                                     .locations[0].gps,
                                 address: {
                                     door: '',
-                                    building: customerAddress.address,
-                                    street: customerAddress.address,
-                                    city: customerAddress.address,
-                                    state: customerAddress.address,
+                                    building: billingFormData.address,
+                                    street: billingFormData.address,
+                                    city: billingFormData.address,
+                                    state: billingFormData.address,
                                     country: 'IND',
                                     area_code: '560076',
                                 },
                             },
                             contact: {
-                                phone: '9191223433',
+                                phone: billingFormData.mobileNumber,
                                 email: 'testemail1@mailinator.com',
                             },
                         },
                         customer: {
                             person: {
-                                name: customerAddress.name,
+                                name: billingFormData.name,
                             },
                         },
                         id: cartItemsPerBppPerProvider[bppId][0].providerId,

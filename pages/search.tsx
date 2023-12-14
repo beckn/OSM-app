@@ -26,6 +26,7 @@ const Search = () => {
     const categoryMap = {
         Books: { en: 'BookEnglish', fa: 'BookFrench' },
         restaurant: { en: 'FoodEnglish', fa: 'FoodFrench' },
+        Shopping: { en: 'retail', fa: 'retail' },
     }
 
     useEffect(() => {
