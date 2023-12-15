@@ -301,7 +301,7 @@ const en: { [key: string]: string } = {
     orderConfirm: 'Order Confirmed!',
     confirmOrderMessage:
         'Thank you! Our delivery agent will deliver your order',
-    currencySymbol: '€',
+    currencySymbol: '₹',
     saveShippingDetails: 'Save Shipping Details',
     saveBillingDetails: 'Save Billing Details',
     addBillingDetails: 'Add Billing Details',
@@ -366,7 +366,7 @@ const en: { [key: string]: string } = {
     addCommentsHere: 'Add your comments here',
     writeExperience: 'Write about your experience..',
     completed: 'Completed',
-    cartEmpty:"The Cart is Empty",
-    cartEmptySpan:'Look like you haven’t made your choice yet',
+    cartEmpty: 'The Cart is Empty',
+    cartEmptySpan: 'Look like you haven’t made your choice yet',
 }
 export default en
