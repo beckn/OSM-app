@@ -169,8 +169,8 @@ const OrderDetails = () => {
     const orderFromConfirmData =
         confirmData[0].message.responses[0].message.order
 
-    const { subTotal, totalDeliveryCharge } =
-        getSubTotalAndDeliveryChargesForOrder(confirmData)
+    const quoteBreakup = orderFromConfirmData.quote.breakup
+    const totalPrice = orderFromConfirmData.quote.price.value
 
     const orderState = orderFromConfirmData.payment.status
 
@@ -437,28 +437,21 @@ const OrderDetails = () => {
                     pt={'unset'}
                     pb={'unset'}
                 >
-                    <Flex
-                        pb={'15px'}
-                        justifyContent={'space-between'}
-                        alignItems={'center'}
-                    >
-                        <Text>{t.subTotal}</Text>
-                        <Text>
-                            {t.currencySymbol}
-                            {subTotal}
-                        </Text>
-                    </Flex>
-                    <Flex
-                        justifyContent={'space-between'}
-                        alignItems={'center'}
-                        pb={'20px'}
-                    >
-                        <Text>{t.deliveryCharge}</Text>
-                        <Text>
-                            {t.currencySymbol}
-                            {totalDeliveryCharge}
-                        </Text>
-                    </Flex>
+                    {quoteBreakup.map((breakUp: any) => {
+                        return (
+                            <Flex
+                                pb={'15px'}
+                                justifyContent={'space-between'}
+                                alignItems={'center'}
+                            >
+                                <Text maxWidth={'75%'}>{breakUp.title}</Text>
+                                <Text>
+                                    {t.currencySymbol} {breakUp.price.value}
+                                </Text>
+                            </Flex>
+                        )
+                    })}
+
                     <Divider />
                 </CardBody>
                 <CardBody
@@ -474,8 +467,7 @@ const OrderDetails = () => {
                     >
                         <Text>{t.total}</Text>
                         <Text>
-                            {t.currencySymbol}
-                            {subTotal + totalDeliveryCharge}
+                            {t.currencySymbol} {totalPrice}
                         </Text>
                     </Flex>
                     <Flex
