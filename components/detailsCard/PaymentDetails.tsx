@@ -23,7 +23,10 @@ const PaymentDetails: React.FC<PaymentDetailsProps> = (props) => {
                         fontSize={'15px'}
                     >
                         <Text>{item.title}</Text>
-                        <Text>{item.price.value}</Text>
+                        <Text>
+                            {t.currencySymbol}
+                            {item.price.value}
+                        </Text>
                     </Flex>
                 )
             })}
