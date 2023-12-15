@@ -437,9 +437,10 @@ const OrderDetails = () => {
                     pt={'unset'}
                     pb={'unset'}
                 >
-                    {quoteBreakup.map((breakUp: any) => {
+                    {quoteBreakup.map((breakUp: any, idx: number) => {
                         return (
                             <Flex
+                                key={idx}
                                 pb={'15px'}
                                 justifyContent={'space-between'}
                                 alignItems={'center'}
