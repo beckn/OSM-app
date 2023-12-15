@@ -24,8 +24,7 @@ const PaymentDetails: React.FC<PaymentDetailsProps> = (props) => {
                     >
                         <Text>{item.title}</Text>
                         <Text>
-                            {t.currencySymbol}
-                            {item.price.value}
+                            {t.currencySymbol} {item.price.value}
                         </Text>
                     </Flex>
                 )
@@ -40,7 +39,9 @@ const PaymentDetails: React.FC<PaymentDetailsProps> = (props) => {
             >
                 <Text>{t.totalText}</Text>
                 <div className="flex">
-                    <Text>{`${t.currencySymbol} ${qoute.price.value}`}</Text>
+                    <Text>
+                        {t.currencySymbol} ${qoute.price.value}
+                    </Text>
                 </div>
             </Flex>
         </Box>
