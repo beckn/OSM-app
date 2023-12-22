@@ -23,13 +23,7 @@ import {
     getPayloadForStatusRequest,
     getPayloadForTrackRequest,
 } from '../utilities/confirm-utils'
-import {
-    generateAlphanumericID,
-    getDataPerBpp,
-    storeOrderDetails,
-} from '../utilities/orderDetails-utils'
-import { getSubTotalAndDeliveryChargesForOrder } from '../utilities/orderHistory-utils'
-import lineBlack from '../public/images/lineBlack.svg'
+import { getDataPerBpp } from '../utilities/orderDetails-utils'
 import TrackIcon from '../public/images/TrackIcon.svg'
 import ViewMoreOrderModal from '../components/orderDetails/ViewMoreOrderModal'
 import { useSelector } from 'react-redux'
