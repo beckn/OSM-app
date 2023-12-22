@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Box, Flex, Text, Image } from '@chakra-ui/react'
 import pendingIcon from '../../public/images/pending.svg'
 import completedIcon from '../../public/images/completed.svg'
+import { useLanguage } from '../../hooks/useLanguage'
 
 interface OrderHistoryDetailsPropsModel {
     createdAt: string
@@ -14,6 +15,8 @@ interface OrderHistoryDetailsPropsModel {
 const OrderHistoryDetails: React.FC<OrderHistoryDetailsPropsModel> = (
     props
 ) => {
+    const { t } = useLanguage()
+
     return (
         <Box>
             <Text
@@ -42,7 +45,7 @@ const OrderHistoryDetails: React.FC<OrderHistoryDetailsPropsModel> = (
                 pb={'5px'}
                 fontSize={'12px'}
             >
-                € {props.totalAmount}
+                {t.currencySymbol} {props.totalAmount}
             </Text>
             <Flex
                 fontSize={'10px'}
