@@ -190,22 +190,10 @@ const CheckoutPage = () => {
 
     return (
         <>
-            {/* <AppHeader appHeaderText={t.checkout} /> */}
-            {/* start Item Details */}
             <Box>
                 <Box pb={'10px'}>
                     <Text fontSize={'17px'}>{t.items}</Text>
                 </Box>
-                {/* {cartItems.map((item) => (
-          <DetailsCard key={item.id}>
-            <ItemDetails
-              title={item.descriptor.name}
-              description={item.descriptor.short_desc}
-              quantity={item.quantity}
-              price={`${t.currencySymbol}${item.totalPrice}`}
-            />
-          </DetailsCard>
-        ))} */}
                 <DetailsCard>
                     {cartItems.map((item) => {
                         return (
@@ -214,18 +202,13 @@ const CheckoutPage = () => {
                                     title={item.descriptor.name}
                                     description={item.descriptor.short_desc}
                                     quantity={item.quantity}
-                                    price={`${t.currencySymbol}${
-                                        parseFloat(item.price.value) *
-                                        item.quantity
-                                    }`}
+                                    price={`${t.currencySymbol}${(parseFloat(item.price.value) * item.quantity).toFixed(2)}`}
                                 />
                             </>
                         )
                     })}
                 </DetailsCard>
             </Box>
-            {/* end item details */}
-            {/* start shipping detals */}
             {!isInitResultPresent() ? (
                 <Box>
                     <Flex
@@ -351,21 +334,10 @@ const CheckoutPage = () => {
                     </Flex>
                     <DetailsCard>
                         <PaymentDetails
-                            subtotalText={t.subtotalText}
-                            subtotalValue={`${t.currencySymbol} ${
-                                getSubTotalAndDeliveryCharges(initRequest.data)
-                                    .subTotal
-                            }`}
-                            deliveryChargesText={t.deliveryChargesText}
-                            deliveryChargesValue={`${t.currencySymbol} ${
-                                getSubTotalAndDeliveryCharges(initRequest.data)
-                                    .totalDeliveryCharge
-                            }`}
-                            totalText={t.totalText}
-                            totalValue={`${
-                                getSubTotalAndDeliveryCharges(initRequest.data)
-                                    .totalOrderPrice
-                            }`}
+                            qoute={
+                                initRequest.data[0].message.catalogs
+                                    .responses[0].message.order.quote
+                            }
                         />
                     </DetailsCard>
                 </Box>

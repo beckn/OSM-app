@@ -14,11 +14,13 @@ import { toast } from 'react-toastify'
 const tagValuetoApiMap = {
     Books: 'books',
     restaurant: 'bakery',
+    Shopping: 'supermarket',
 }
 
 enum StoreType {
     books = 'Books',
     restaurant = 'restaurant',
+    shopping = 'Shopping',
 }
 
 type Coords = {
@@ -197,7 +199,8 @@ const Homepage = () => {
             !isEmpty(coords) &&
             !isEmpty(option?.tagValue) &&
             (option?.tagValue === StoreType.books ||
-                option?.tagValue === StoreType.restaurant)
+                option?.tagValue === StoreType.restaurant ||
+                option?.tagValue === StoreType.shopping)
         ) {
             fetchStoresByLocation(
                 coords.lat,

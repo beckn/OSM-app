@@ -23,13 +23,7 @@ import {
     getPayloadForStatusRequest,
     getPayloadForTrackRequest,
 } from '../utilities/confirm-utils'
-import {
-    generateAlphanumericID,
-    getDataPerBpp,
-    storeOrderDetails,
-} from '../utilities/orderDetails-utils'
-import { getSubTotalAndDeliveryChargesForOrder } from '../utilities/orderHistory-utils'
-import lineBlack from '../public/images/lineBlack.svg'
+import { getDataPerBpp } from '../utilities/orderDetails-utils'
 import TrackIcon from '../public/images/TrackIcon.svg'
 import ViewMoreOrderModal from '../components/orderDetails/ViewMoreOrderModal'
 import { useSelector } from 'react-redux'
@@ -160,8 +154,6 @@ const OrderDetails = () => {
         }
     }, [statusRequest.data])
 
-    console.log('confirmData', confirmData)
-
     if (!confirmData.length) {
         return <></>
     }
@@ -171,8 +163,8 @@ const OrderDetails = () => {
     const orderFromConfirmData =
         confirmData[0].message.responses[0].message.order
 
-    const { subTotal, totalDeliveryCharge } =
-        getSubTotalAndDeliveryChargesForOrder(confirmData)
+    const quoteBreakup = orderFromConfirmData.quote.breakup
+    const totalPrice = orderFromConfirmData.quote.price.value
 
     const orderState = orderFromConfirmData.payment.status
 
@@ -439,28 +431,22 @@ const OrderDetails = () => {
                     pt={'unset'}
                     pb={'unset'}
                 >
-                    <Flex
-                        pb={'15px'}
-                        justifyContent={'space-between'}
-                        alignItems={'center'}
-                    >
-                        <Text>{t.subTotal}</Text>
-                        <Text>
-                            {t.currencySymbol}
-                            {subTotal}
-                        </Text>
-                    </Flex>
-                    <Flex
-                        justifyContent={'space-between'}
-                        alignItems={'center'}
-                        pb={'20px'}
-                    >
-                        <Text>{t.deliveryCharge}</Text>
-                        <Text>
-                            {t.currencySymbol}
-                            {totalDeliveryCharge}
-                        </Text>
-                    </Flex>
+                    {quoteBreakup.map((breakUp: any, idx: number) => {
+                        return (
+                            <Flex
+                                key={idx}
+                                pb={'15px'}
+                                justifyContent={'space-between'}
+                                alignItems={'center'}
+                            >
+                                <Text maxWidth={'75%'}>{breakUp.title}</Text>
+                                <Text>
+                                    {t.currencySymbol} {breakUp.price.value}
+                                </Text>
+                            </Flex>
+                        )
+                    })}
+
                     <Divider />
                 </CardBody>
                 <CardBody
@@ -476,8 +462,7 @@ const OrderDetails = () => {
                     >
                         <Text>{t.total}</Text>
                         <Text>
-                            {t.currencySymbol}
-                            {subTotal + totalDeliveryCharge}
+                            {t.currencySymbol} {totalPrice}
                         </Text>
                     </Flex>
                     <Flex
