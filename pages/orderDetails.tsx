@@ -164,7 +164,7 @@ const OrderDetails = () => {
         confirmData[0].message.responses[0].message.order
 
     const quoteBreakup = orderFromConfirmData.quote.breakup
-    const totalPrice = orderFromConfirmData.quote.price.listed_value
+    const totalPrice = orderFromConfirmData.quote.price.value
 
     const orderState = orderFromConfirmData.payment.status
 
@@ -441,7 +441,7 @@ const OrderDetails = () => {
                             >
                                 <Text maxWidth={'75%'}>{breakUp.title}</Text>
                                 <Text>
-                                    {t.currencySymbol} {breakUp.price.value}
+                                    {t.currencySymbol} {breakUp.price.listed_value}
                                 </Text>
                             </Flex>
                         )
