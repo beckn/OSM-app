@@ -24,8 +24,7 @@ const PaymentDetails: React.FC<PaymentDetailsProps> = (props) => {
                     >
                         <Text maxWidth={'75%'}>{item.title}</Text>
                         <Text>
-                            {t.currencySymbol} {item.price.listed_value}
-                        </Text>
+                        {t.currencySymbol} {Number(item.price.listed_value).toFixed(2)}                        </Text>
                     </Flex>
                 )
             })}
@@ -40,7 +39,7 @@ const PaymentDetails: React.FC<PaymentDetailsProps> = (props) => {
                 <Text maxWidth={'75%'}>{t.totalText}</Text>
                 <Box className="flex">
                     <Text>
-                        {t.currencySymbol} {qoute.price.value}
+                        {t.currencySymbol} {Number(qoute.price.value).toFixed(2)}
                     </Text>
                 </Box>
             </Flex>
