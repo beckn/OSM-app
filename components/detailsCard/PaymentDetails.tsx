@@ -14,7 +14,6 @@ const PaymentDetails: React.FC<PaymentDetailsProps> = (props) => {
     return (
         <Box>
             {breakup.map((item: any, idx: number) => {
-                console.log(item)
                 return (
                     <Flex
                         key={idx}
