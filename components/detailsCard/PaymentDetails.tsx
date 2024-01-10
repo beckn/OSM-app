@@ -14,6 +14,7 @@ const PaymentDetails: React.FC<PaymentDetailsProps> = (props) => {
     return (
         <Box>
             {breakup.map((item: any, idx: number) => {
+                console.log(item)
                 return (
                     <Flex
                         key={idx}
@@ -24,7 +25,7 @@ const PaymentDetails: React.FC<PaymentDetailsProps> = (props) => {
                     >
                         <Text maxWidth={'75%'}>{item.title}</Text>
                         <Text>
-                            {t.currencySymbol} {item.price.value}
+                            {t.currencySymbol} {item.price.listed_value}
                         </Text>
                     </Flex>
                 )
