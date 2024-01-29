@@ -361,5 +361,6 @@ const fa: { [key: string]: string } = {
     addCommentsHere: 'Ajoutez vos commentaires ici',
     writeExperience: 'Décrivez votre expérience..',
     completed: 'Complété',
+    calcAmount: 'Calculer le montant,',
 }
 export default fa

@@ -81,8 +81,7 @@ const MobileLogin = () => {
 
             <Button
                 buttonText={t.sendOtpButton}
-                background={'rgba(var(--color-primary))'}
-                color={'rgba(var(--text-color))'}
+                type={'solid'}
                 isDisabled={
                     phoneNumber.length === 0 || phoneNumberError.length !== 0
                 }

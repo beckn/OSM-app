@@ -63,8 +63,7 @@ const Feedback = () => {
             </Box>
             <Button
                 buttonText={t.submitReview}
-                background={'rgba(var(--color-primary))'}
-                color={'rgba(var(--text-color))'}
+                type={'solid'}
                 handleOnClick={() => {
                     let user = localStorage.getItem('userPhone') as string
                     localStorage.clear()
@@ -75,8 +74,7 @@ const Feedback = () => {
             />
             <Button
                 buttonText={t.skipForNow}
-                background={'rgba(var(--text-color))'}
-                color={'rgba(var(--color-primary))'}
+                type={'solid'}
                 handleOnClick={() => {
                     let user = localStorage.getItem('userPhone') as string
                     localStorage.clear()

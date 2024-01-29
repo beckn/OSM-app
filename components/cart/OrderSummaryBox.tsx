@@ -19,6 +19,8 @@ const OrderSummaryBox: React.FC<OrderSummaryBoxPropsModel> = (props) => {
         (state: ICartRootState) => state.cart.totalQuantity
     )
 
+    const currency = useSelector((state: ICartRootState) => state.cart.currency)
+
     return (
         <>
             {totalQuantity > 0 ? (
@@ -48,11 +50,14 @@ const OrderSummaryBox: React.FC<OrderSummaryBoxPropsModel> = (props) => {
                             <p className="text-sm sm:text-base text-palette-mute md:text-palette-base">
                                 {t.totalAmount}
                             </p>
-                            <ProductPrice price={totalAmount} />
+                            <ProductPrice
+                                currency={currency}
+                                price={totalAmount}
+                            />
                         </div>
                     </div>
                     <a
-                        style={{ marginTop: '15px' }}
+                        style={{ marginTop: '15px', cursor: 'pointer' }}
                         onClick={() => props.onOrderClick()}
                         className="block py-3 text-center shadow-lg bg-palette-primary md:mt-8 border_radius_all text-palette-side"
                     >
@@ -60,7 +65,7 @@ const OrderSummaryBox: React.FC<OrderSummaryBoxPropsModel> = (props) => {
                     </a>
                 </div>
             ) : (
-                <EmptyCart/>
+                <EmptyCart />
             )}
         </>
     )

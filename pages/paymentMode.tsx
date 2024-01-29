@@ -65,8 +65,7 @@ function PaymentMode() {
             >
                 <Button
                     buttonText={t.confirmOrder}
-                    background={'rgba(var(--color-primary))'}
-                    color={'rgba(var(--text-color))'}
+                    type={'solid'}
                     isDisabled={!checked}
                     handleOnClick={() => {
                         dispatch(cartActions.clearCart())

@@ -16,6 +16,7 @@ interface Props {
 
 const Card: React.FC<Props> = ({ product }) => {
     const encodedProduct = window.btoa(toBinary(JSON.stringify(product)))
+    console.log('product in', product)
 
     return (
         <Box
@@ -86,7 +87,7 @@ const Card: React.FC<Props> = ({ product }) => {
                             ) : null}
                         </Flex>
 
-                        {!product.tags.foodType ? (
+                        {/* {!product.tags.foodType ? (
                             <Flex
                                 fontSize={'12px'}
                                 alignItems={'center'}
@@ -104,7 +105,7 @@ const Card: React.FC<Props> = ({ product }) => {
                                     {product.tags.authorName}
                                 </Text>
                             </Flex>
-                        ) : null}
+                        ) : null} */}
 
                         <Flex
                             fontSize={'12px'}
@@ -122,6 +123,7 @@ const Card: React.FC<Props> = ({ product }) => {
                             width={'calc(100% - 30px)'}
                         >
                             <ProductPrice
+                                currency={product.price.currency}
                                 price={parseFloat(product.price.value)}
                             />
                             <Flex alignItems={'center'}>

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState, useCallback } from 'react'
 import { Transition } from 'react-transition-group'
 import dynamic from 'next/dynamic'
 import BottomModal from '../components/BottomModal'
@@ -59,8 +59,6 @@ const getProperImages = (selectedStore: any) => {
     } else return ''
 }
 
-const staticTagsList = ['inStoreShopping', 'delivery', 'clickAndCollect']
-
 const getStaticTags = (tag: string) => {
     if (tag === StoreType.books)
         return ['inStoreShopping', 'delivery', 'clickAndCollect']
@@ -69,6 +67,7 @@ const getStaticTags = (tag: string) => {
 
 import MapSearch from '../components/Map/MapSearch'
 import { isEmpty } from 'lodash'
+import { getUserLocation } from '../utilities/common-utils'
 
 const Homepage = () => {
     const MapWithNoSSR = dynamic(() => import('../components/Map'), {
@@ -87,8 +86,8 @@ const Homepage = () => {
     //   long: 2.346078,
     // });
     const [coords, setCoords] = useState<Coords>({
-        lat: 48.800345,
-        long: 2.346078,
+        lat: 0,
+        long: 0,
     })
 
     const [isOptionModalOpen, setIsOptionModalOpen] = useState<boolean>(true)
@@ -120,6 +119,19 @@ const Homepage = () => {
         fetchData: fetchStores,
     } = useRequest()
     const router = useRouter()
+
+    useEffect(() => {
+        getUserLocation()
+            .then((position) => {
+                setCoords({
+                    lat: position.coords.latitude,
+                    long: position.coords.longitude,
+                })
+            })
+            .catch((error) => {
+                console.error(`Error getting user location: ${error.message}`)
+            })
+    }, [])
 
     useEffect(() => {
         setOption(JSON.parse(localStorage.getItem('selectedOption') as string))

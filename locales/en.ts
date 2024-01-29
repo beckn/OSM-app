@@ -350,7 +350,8 @@ const en: { [key: string]: string } = {
     errorOtp2: 'OTP must have 6 digits',
     catalogLoader: 'Please Wait!',
     catalogSubLoader: 'Fetching store catalog from the network',
-    quoteRequestLoader: 'Please wait! Your order is getting processed',
+    quoteRequestLoaderText: 'Please wait!',
+    quoteRequestLoaderSubText: 'Your order is getting processed',
     estimatedDelivery: 'Estimated delivery time',
     orderId: 'Order ID',
     pending: 'Pending',
@@ -368,5 +369,6 @@ const en: { [key: string]: string } = {
     completed: 'Completed',
     cartEmpty: 'The Cart is Empty',
     cartEmptySpan: 'Look like you haven’t made your choice yet',
+    calcAmount: 'Calculate Amount',
 }
 export default en

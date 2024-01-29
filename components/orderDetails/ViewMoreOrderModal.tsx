@@ -93,8 +93,7 @@ const ViewMoreOrderModal: React.FC<ViewMoreOrderModalProps> = (props) => {
 
                         <ButtonComp
                             buttonText={'Close'}
-                            background={'rgba(var(--color-primary))'}
-                            color={'rgba(var(--text-color))'}
+                            type={'solid'}
                             isDisabled={false}
                             handleOnClick={props.onClose}
                         />

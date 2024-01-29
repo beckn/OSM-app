@@ -16,6 +16,7 @@ const nextConfig = {
             'retail-osm-stage.becknprotocol.io',
             'retail-osm-prod.becknprotocol.io',
             'cdn.shopify.com',
+            'retail-bpp-infra2.becknprotocol.io',
         ],
     },
     webpack: function (config) {

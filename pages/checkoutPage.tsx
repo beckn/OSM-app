@@ -20,12 +20,11 @@ import { responseDataActions } from '../store/responseData-slice'
 import {
     areShippingAndBillingDetailsSame,
     getPayloadForInitRequest,
-    getSubTotalAndDeliveryCharges,
-    getTotalCartItems,
 } from '../utilities/checkout-utils'
 import Loader from '../components/loader/Loader'
 import AddBillingButton from '../components/detailsCard/AddBillingButton'
 import { useRouter } from 'next/router'
+import { formatCurrency } from '../utilities/currencyFormat'
 
 export type ShippingFormData = {
     name: string
@@ -37,11 +36,11 @@ export type ShippingFormData = {
 
 const CheckoutPage = () => {
     const [formData, setFormData] = useState<ShippingFormData>({
-        name: 'Antoine Dubois',
-        mobileNumber: '0612345678',
-        email: 'antoine.dubois@gmail.com',
-        address: '15 Rue du Soleil, Paris, France',
-        zipCode: '75001',
+        name: '',
+        mobileNumber: '',
+        email: '',
+        address: '',
+        zipCode: '',
     })
 
     const [
@@ -50,12 +49,13 @@ const CheckoutPage = () => {
     ] = useState(true)
 
     const [billingFormData, setBillingFormData] = useState<ShippingFormData>({
-        name: 'Antoine Dubois',
-        mobileNumber: '0612345678',
-        email: 'antoine.dubois@gmail.com',
-        address: '15 Rue du Soleil, Paris, France',
-        zipCode: '75001',
+        name: '',
+        mobileNumber: '',
+        email: '',
+        address: '',
+        zipCode: '',
     })
+    const [quoteResponse, setQuoteResponse] = useState<any>(null)
 
     const router = useRouter()
     const initRequest = useRequest()
@@ -67,26 +67,6 @@ const CheckoutPage = () => {
         (state: { transactionId: TransactionIdRootState }) =>
             state.transactionId
     )
-
-    useEffect(() => {
-        if (localStorage) {
-            if (localStorage.getItem('userPhone')) {
-                const copiedFormData = structuredClone(formData)
-                const copiedBillingFormData = structuredClone(billingFormData)
-
-                copiedFormData.mobileNumber = localStorage.getItem(
-                    'userPhone'
-                ) as string
-                copiedBillingFormData.mobileNumber = localStorage.getItem(
-                    'userPhone'
-                ) as string
-
-                setFormData(copiedFormData)
-                setBillingFormData(copiedBillingFormData)
-            }
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -147,6 +127,14 @@ const CheckoutPage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [billingFormData])
 
+    useEffect(() => {
+        if (localStorage && localStorage.getItem('quoteResponse')) {
+            const stringifiedQuoteResponse =
+                localStorage.getItem('quoteResponse')
+            setQuoteResponse(JSON.parse(stringifiedQuoteResponse as string))
+        }
+    }, [])
+
     const formSubmitHandler = () => {
         if (formData) {
             // TODO :_ To check this again
@@ -188,6 +176,8 @@ const CheckoutPage = () => {
         return !!initRequest.data
     }
 
+    console.log('quoteresp', quoteResponse)
+
     return (
         <>
             <Box>
@@ -202,7 +192,10 @@ const CheckoutPage = () => {
                                     title={item.descriptor.name}
                                     description={item.descriptor.short_desc}
                                     quantity={item.quantity}
-                                    price={`${t.currencySymbol}${(parseFloat(item.price.value) * item.quantity).toFixed(2)}`}
+                                    price={formatCurrency(
+                                        parseFloat(item.price.value),
+                                        item.price.currency
+                                    )}
                                 />
                             </>
                         )
@@ -323,7 +316,7 @@ const CheckoutPage = () => {
 
             {/* end payment method */}
             {/* start payment details */}
-            {initRequest.data && (
+            {quoteResponse?.length > 0 && (
                 <Box>
                     <Flex
                         pb={'10px'}
@@ -335,38 +328,32 @@ const CheckoutPage = () => {
                     <DetailsCard>
                         <PaymentDetails
                             qoute={
-                                initRequest.data[0].message.catalogs
-                                    .responses[0].message.order.quote
+                                initRequest.data
+                                    ? initRequest.data[0].message.catalogs
+                                          .responses[0].message.order.quote
+                                    : quoteResponse[0].message.catalogs.order
+                                          .quote
                             }
                         />
                     </DetailsCard>
                 </Box>
             )}
+
             {/* end payment details */}
-            {!isInitResultPresent() ? (
-                <Box
-                    position={'absolute'}
-                    left={'5%'}
-                    width={'90%'}
-                    bottom={'0'}
-                >
-                    <ButtonComp
-                        buttonText={t.proceedToPay}
-                        background={'rgba(var(--color-primary))'}
-                        color={'rgba(var(--text-color))'}
-                        handleOnClick={() => {}}
-                        isDisabled={true}
-                    />
-                </Box>
-            ) : (
-                <ButtonComp
-                    buttonText={t.proceedToCheckout}
-                    background={'rgba(var(--color-primary))'}
-                    color={'rgba(var(--text-color))'}
-                    handleOnClick={() => router.push('/paymentMode')}
-                    isDisabled={false}
-                />
-            )}
+
+            <ButtonComp
+                buttonText={t.calcAmount}
+                handleOnClick={() => router.push('/paymentMode')}
+                isDisabled={true}
+                type={'outline'}
+            />
+
+            <ButtonComp
+                buttonText={t.proceedToCheckout}
+                handleOnClick={() => router.push('/paymentMode')}
+                isDisabled={!isInitResultPresent()}
+                type={'solid'}
+            />
         </>
     )
 }
