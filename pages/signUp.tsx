@@ -1,56 +1,190 @@
-import type { NextPage } from "next";
-import { useDispatch, useSelector } from "react-redux";
-import { userInfoActions } from "../store/user-slice";
-import jsCookie from "js-cookie";
-import EnteringBox from "../components/entering/EnteringBox";
-import { IUser } from "../lib/types/user";
-import axios from "axios";
-import { getError } from "../utilities/error";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { IUserInfoRootState } from "../lib/types/user";
-const SignUp: NextPage = () => {
-  const dispatch = useDispatch();
-  const router = useRouter();
-  const [errorMessage, setErrorMessage] = useState("");
-  const { redirect } = router.query;
-  const userInfo = useSelector(
-    (state: IUserInfoRootState) => state.userInfo.userInformation
-  );
-  useEffect(() => {
-    if (userInfo) {
-      router.push((redirect as string) || "/");
-    }
-  }, [userInfo, redirect, router]);
-  async function signUpHandler(user: IUser) {
-    const { name, email, password } = user;
-    try {
-      const { data } = await axios.post("/api/users/register", {
-        name,
-        email,
-        password,
-      });
-      dispatch(userInfoActions.userLogin(data));
-      jsCookie.set("userInfo", JSON.stringify(data));
-      router.push("/");
-    } catch (err: any) {
-      /* sanity.io is boycott for the people from Iran so I set cookies for whom don't use VPN in Iran*/
-      if (err.response.data.status == 500) {
-        dispatch(userInfoActions.userLogin(user));
-        jsCookie.set("userInfo", JSON.stringify(user));
-      }
-      setErrorMessage(getError(err));
-      console.log(getError(err));
-      // router.push("/");
-    }
-  }
-  return (
-    <EnteringBox
-      title="signUp"
-      submitHandler={signUpHandler}
-      errorMessage={errorMessage}
-    />
-  );
-};
+import React, { useState } from 'react'
+import { useLanguage } from '../hooks/useLanguage'
+import { FormErrors, signUpValidateForm } from '../utilities/detailsForm-utils'
+import style from '../components/detailsCard/ShippingForm.module.css'
+import Styles from '../components/signIn/SignIn.module.css'
+import { Box, Flex, Image, useToast } from '@chakra-ui/react'
 
-export default SignUp;
+import Button from '../components/button/Button'
+import Router from 'next/router'
+import { SignUpPropsModel } from '../components/signIn/Signin.types'
+import Cookies from 'js-cookie'
+const SignUp = () => {
+    const { t } = useLanguage()
+    const toast = useToast()
+    const [formData, setFormData] = useState<SignUpPropsModel>({
+        name: '',
+        email: '',
+        password: '',
+        mobileNumber: '',
+    })
+    const [formErrors, setFormErrors] = useState<FormErrors>({
+        name: '',
+        email: '',
+        password: '',
+        mobileNumber: '',
+    })
+    const [isFormFilled, setIsFormFilled] = useState(false)
+    const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target
+
+        setFormData((prevFormData: SignUpPropsModel) => ({
+            ...prevFormData,
+            [name]: value,
+        }))
+
+        const updatedFormData = {
+            ...formData,
+            [name]: value,
+        }
+
+        const errors = signUpValidateForm(updatedFormData) as any
+        setFormErrors((prevErrors) => ({
+            ...prevErrors,
+            [name]: errors[name] || '',
+        }))
+        setIsFormFilled(
+            updatedFormData.name.trim() !== '' &&
+                updatedFormData.email.trim() !== '' &&
+                updatedFormData.password.trim() !== ''
+        )
+    }
+
+    const handleRegister = async () => {
+        const errors = signUpValidateForm(formData)
+
+        const isFormValid = Object.values(errors).every((error) => error === '')
+
+        if (isFormValid) {
+            const registrationData = {
+                username: formData.name,
+                email: formData.email,
+                password: formData.password,
+            }
+
+            try {
+                const response = await fetch(`${baseUrl}/auth/local/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(registrationData),
+                })
+
+                if (response.ok) {
+                    const data = await response.json()
+                    const token = data.jwt
+
+                    Cookies.set('authToken', token)
+                    Router.push('/homePage')
+                } else {
+                    const errorData = await response.json()
+                    toast({
+                        title: 'Error!.',
+                        description: errorData.error.message,
+                        status: 'error',
+                        duration: 3000,
+                        isClosable: true,
+                    })
+                    console.error('Registration failed')
+                }
+            } catch (error) {
+                console.error('An error occurred:', error)
+            }
+        } else {
+            setFormErrors(errors)
+        }
+    }
+
+    return (
+        <>
+            <Box className={Styles.main_container}>
+                <Box className={Styles.signin_container}>
+                    <div className={style.container}>
+                        <div className={style.did_floating_label_content}>
+                            <input
+                                className={style.did_floating_input}
+                                type="text"
+                                placeholder=" "
+                                name="name"
+                                value={formData.name}
+                                onChange={handleInputChange}
+                            />
+                            <label className={style.did_floating_label}>
+                                {t.formName}
+                            </label>
+                            {formErrors.name && (
+                                <div className={style.error}>
+                                    {formErrors.name}
+                                </div>
+                            )}
+                        </div>
+                        <div className={style.did_floating_label_content}>
+                            <input
+                                className={style.did_floating_input}
+                                type="text"
+                                placeholder=" "
+                                name="email"
+                                value={formData.email}
+                                onChange={handleInputChange}
+                            />
+                            <label className={style.did_floating_label}>
+                                {t.formEmail}
+                            </label>
+                            {formErrors.email && (
+                                <div className={style.error}>
+                                    {formErrors.email}
+                                </div>
+                            )}
+                        </div>
+                        <div className={style.did_floating_label_content}>
+                            <input
+                                className={style.did_floating_input}
+                                type="password"
+                                placeholder=" "
+                                name="password"
+                                value={formData.password}
+                                onChange={handleInputChange}
+                            />
+                            <label className={style.did_floating_label}>
+                                {t.password}
+                            </label>
+                            {formErrors.password && (
+                                <div className={style.error}>
+                                    {formErrors.password}
+                                </div>
+                            )}
+                        </div>
+                        <div className={style.did_floating_label_content}>
+                            <input
+                                className={style.did_floating_input}
+                                type="text"
+                                placeholder=" "
+                                name="mobileNumber"
+                                value={formData.mobileNumber}
+                                onChange={handleInputChange}
+                            />
+                            <label className={style.did_floating_label}>
+                                {t.enterPhoneNumber}
+                            </label>
+                            {formErrors.mobileNumber && (
+                                <span className={style.error}>
+                                    {t[`${formErrors.mobileNumber}`]}
+                                </span>
+                            )}
+                        </div>
+                    </div>
+                </Box>
+                <Button
+                    buttonText={t.signUp}
+                    handleOnClick={handleRegister}
+                    isDisabled={!isFormFilled}
+                    type={'solid'}
+                />
+            </Box>
+        </>
+    )
+}
+export default SignUp

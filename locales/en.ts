@@ -328,6 +328,7 @@ const en: { [key: string]: string } = {
     bookstore: 'Bookstore',
     formName: 'Name',
     formNumber: 'Mobile Number',
+    enterPhoneNumber: 'Enter Mobile Number',
     formEmail: 'Email ID',
     formAddress: 'Complete Address',
     formCity: 'City',

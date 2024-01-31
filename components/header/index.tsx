@@ -14,7 +14,7 @@ const cartIconBlackList = [
     '/feedback',
     '/orderHistory',
     '/',
-    '/mobileOtp',
+    '/signUp',
     '/cart',
     '/checkoutPage',
     '/paymentMode',
@@ -22,7 +22,7 @@ const cartIconBlackList = [
 
 const backIconList = ['/', '/orderDetails']
 
-const homeIconBlackList = ['/orderHistory', '/', '/homePage', '/mobileOtp']
+const homeIconBlackList = ['/orderHistory', '/', '/homePage', '/signUp']
 
 const storeHeaderBlackList = [
     '/checkoutPage',
@@ -33,15 +33,15 @@ const storeHeaderBlackList = [
     '/orderConfirmation',
     'feedback',
     '/',
-    '/mobileOtp',
     '/paymentMode',
+    '/signUp',
 ]
 const headerValues = {
     '/checkoutPage': 'Billing & Shipping',
     '/orderHistory': 'Order History',
     '/orderDetails': 'Order Details',
     '/': 'Sign In',
-    '/mobileOtp': 'Sign In',
+    '/signUp': 'Sign Up',
     '/cart': 'Cart',
     '/paymentMode': 'Select Payment Method',
     feedback: 'Feedback',
@@ -52,7 +52,7 @@ const headerValuesFrench = {
     '/orderHistory': 'Historique des Commandes',
     '/orderDetails': 'Détails de la Commande',
     '/': 'Se Connecter',
-    '/mobileOtp': 'Se Connecter',
+    '/signUp': 'Sign Up',
     '/cart': 'Panier',
     '/paymentMode': 'Sélectionner la Méthode de Paiement',
     feedback: "Retour d'Information",
@@ -64,7 +64,7 @@ const bottomHeaderBlackList = ['/homePage', '/orderConfirmation']
 
 const menuIconWhiteList = ['/homePage']
 
-const languageIconWhiteList = ['/homePage', '/', '/mobileOtp']
+const languageIconWhiteList = ['/homePage', '/']
 
 const getHeaderTitleForPage = (
     name: string,
@@ -116,7 +116,7 @@ const TopHeader: React.FC<TopHeaderProps> = ({ handleMenuClick }) => {
                 <div className="px-5 h-full flex items-center">
                     <div>
                         <Image
-                            src="/images/CommerceLogo.svg"
+                            src="/images/appLogo_text.svg"
                             alt="App logo"
                         />
                     </div>
