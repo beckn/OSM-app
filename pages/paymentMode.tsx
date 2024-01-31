@@ -3,7 +3,7 @@ import { Box, Flex, Text, Image, Card, CardBody } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useDispatch } from 'react-redux'
 import Button from '../components/button/Button'
-import CardWithCheckBox from '../components/card/Card'
+import CardWithCheckBox, { PaymentMethodsInfo } from '../components/card/Card'
 import { useLanguage } from '../hooks/useLanguage'
 import creditCardImg from '../public/images/creditCardImg.svg'
 import { cartActions } from '../store/cart-slice'
@@ -14,6 +14,19 @@ function PaymentMode() {
     const { t } = useLanguage()
     const router = useRouter()
     const dispatch = useDispatch()
+
+    const PaymentMethods: PaymentMethodsInfo[] = [
+        {
+            id: 'direct_pay',
+            isDisabled: false,
+            paymentMethod: t.directPay,
+        },
+        {
+            id: 'pay_at_store',
+            isDisabled: true,
+            paymentMethod: t.payAtStore,
+        },
+    ]
 
     return (
         <>
@@ -55,7 +68,7 @@ function PaymentMode() {
                 </Text>
                 <CardWithCheckBox
                     setChecked={setChecked}
-                    paymentMethod={t.cashOnDelivery}
+                    paymentMethods={PaymentMethods}
                 />
             </Box>
             <Box

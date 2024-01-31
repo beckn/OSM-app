@@ -58,8 +58,7 @@ const Search = () => {
             criteria: {
                 dropLocation: '48.85041854,2.343660801',
                 categoryName: categoryName(),
-                providerId:
-                    './retail.kirana/ind.blr/33@retail-bpp-infra2.becknprotocol.io.provider',
+                providerId: providerId,
             },
         },
     }

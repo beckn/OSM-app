@@ -13,6 +13,29 @@ export const getPayloadForInitRequest = (
         initRequestDto: [],
     }
 
+    const {
+        address,
+        city,
+        country,
+        email,
+        mobileNumber,
+        name,
+        zipCode,
+        state,
+    } = billingFormData
+    const {
+        address: shippingAddress,
+        city: shippingCity,
+        country: shippingCountry,
+        email: shippingEmail,
+        mobileNumber: shippingMob,
+        name: shippingName,
+        zipCode: shippingZipCode,
+        state: shippingState,
+    } = customerAddress
+
+    console.log({ billingFormData, customerAddress })
+
     Object.keys(cartItemsPerBppPerProvider).forEach((bppId) => {
         const cartItem: any = {
             context: {
@@ -35,57 +58,43 @@ export const getPayloadForInitRequest = (
                     },
                     addOns: [],
                     offers: [],
-                    // billing: {
-                    //     name: billingFormData.name,
-                    //     phone: billingFormData.mobileNumber,
-                    //     address: {
-                    //         door: billingFormData.address,
-                    //         building: '',
-                    //         city: '',
-                    //         state: '',
-                    //         country: '',
-                    //         area_code: billingFormData.zipCode,
-                    //     },
-                    //     email: billingFormData.email,
-                    // },
+
                     billing: {
-                        name: 'shinu',
-                        phone: '8447876950',
+                        name,
+                        phone: mobileNumber,
                         address: {
-                            door: 'left door, ghaziabad',
+                            door: address,
                             building: '',
-                            city: '',
-                            state: '',
-                            country: '',
-                            area_code: '201016',
+                            city: city,
+                            state: state,
+                            country: country,
+                            area_code: zipCode,
                         },
-                        email: 'sinu.singh204@gmail.com',
+                        email: email,
                     },
                     fulfillment: {
                         type: 'HOME-DELIVERY',
                         end: {
                             location: {
-                                gps: cartItemsPerBppPerProvider[bppId][0]
-                                    .locations[0].gps,
+                                gps: '48.85041854,2.343660801',
                                 address: {
-                                    // door: billingFormData.address,
-                                    door: customerAddress.address,
+                                    door: shippingAddress,
                                     building: '',
                                     street: '',
-                                    city: '',
-                                    state: '',
-                                    country: '',
-                                    area_code: customerAddress.zipCode,
+                                    city: shippingCity,
+                                    state: shippingState,
+                                    country: shippingCountry,
+                                    area_code: shippingZipCode,
                                 },
                             },
                             contact: {
-                                phone: customerAddress.mobileNumber,
-                                email: customerAddress.email,
+                                phone: shippingMob,
+                                email: shippingEmail,
                             },
                         },
                         customer: {
                             person: {
-                                name: customerAddress.name,
+                                name: shippingName,
                             },
                         },
                         id: cartItemsPerBppPerProvider[bppId][0].providerId,

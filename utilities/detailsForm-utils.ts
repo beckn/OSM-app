@@ -6,6 +6,9 @@ export interface FormErrors {
     email?: string
     address?: string
     zipCode?: string
+    city?: string
+    country?: string
+    state?: string
 }
 
 export const validateForm = (formData: ShippingFormData): FormErrors => {
@@ -16,9 +19,9 @@ export const validateForm = (formData: ShippingFormData): FormErrors => {
     }
 
     if (formData.mobileNumber.trim() === '') {
-        errors.mobileNumber = 'errorNumber'
-    } else if (!/^\d{10}$/.test(formData.mobileNumber)) {
-        errors.mobileNumber = 'errorNumber2'
+        errors.mobileNumber = 'errorEmpty' // Indicate the field is empty
+    } else if (!/^\d+$/.test(formData.mobileNumber)) {
+        errors.mobileNumber = 'errorNumber2' // Indicate the field contains non-numeric characters
     }
 
     if (formData.email.trim() === '') {
@@ -33,6 +36,14 @@ export const validateForm = (formData: ShippingFormData): FormErrors => {
 
     if (formData.zipCode.trim() === '') {
         errors.zipCode = 'errorZipcode'
+    }
+
+    if (formData.city.trim() === '') {
+        errors.city = 'errorCity'
+    }
+
+    if (formData.city.trim() === '') {
+        errors.country = 'errorCountry'
     }
 
     return errors

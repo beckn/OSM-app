@@ -21,16 +21,20 @@ import {
     areShippingAndBillingDetailsSame,
     getPayloadForInitRequest,
 } from '../utilities/checkout-utils'
-import Loader from '../components/loader/Loader'
 import AddBillingButton from '../components/detailsCard/AddBillingButton'
 import { useRouter } from 'next/router'
 import { formatCurrency } from '../utilities/currencyFormat'
+import LoaderWithMessage from '../components/loader/LoaderWithMessage'
+import { toast } from 'react-toastify'
 
 export type ShippingFormData = {
     name: string
     mobileNumber: string
     email: string
     address: string
+    city: string
+    country: string
+    state: string
     zipCode: string
 }
 
@@ -41,21 +45,27 @@ const CheckoutPage = () => {
         email: '',
         address: '',
         zipCode: '',
+        city: '',
+        country: '',
+        state: '',
     })
-
+    const [isShippingFormFilled, setIsShippingFormFilled] = useState(false)
+    const [isBillingFormFilled, setIsBillingFormFilled] = useState(false)
     const [
         isBillingAddressSameAsShippingAddress,
         setIsBillingAddressSameAsShippingAddress,
     ] = useState(true)
-
-    const [billingFormData, setBillingFormData] = useState<ShippingFormData>({
-        name: '',
-        mobileNumber: '',
-        email: '',
-        address: '',
-        zipCode: '',
-    })
+    const [billingFormData, setBillingFormData] =
+        useState<ShippingFormData>(formData)
     const [quoteResponse, setQuoteResponse] = useState<any>(null)
+    const [
+        isBillingAddressCheckboxChecked,
+        setIsBillingAddressCheckboxChecked,
+    ] = useState(true)
+    const [isFormSubmitted, setIsFormSubmitted] = useState({
+        shippingForm: false,
+        billingForm: false,
+    })
 
     const router = useRouter()
     const initRequest = useRequest()
@@ -74,11 +84,19 @@ const CheckoutPage = () => {
                 setFormData(
                     JSON.parse(localStorage.getItem('shippingAdress') as string)
                 )
+                setIsFormSubmitted((prevState) => {
+                    return { ...prevState, shippingForm: true }
+                })
+                setIsShippingFormFilled(true)
             }
             if (localStorage.getItem('billingAddress')) {
                 setBillingFormData(
                     JSON.parse(localStorage.getItem('billingAddress') as string)
                 )
+                setIsFormSubmitted((prevState) => {
+                    return { ...prevState, billingForm: true }
+                })
+                setIsBillingFormFilled(true)
             }
         }
     }, [])
@@ -135,35 +153,40 @@ const CheckoutPage = () => {
         }
     }, [])
 
-    const formSubmitHandler = () => {
-        if (formData) {
-            // TODO :_ To check this again
-
-            // if (isBillingAddressSameAsShippingAddress) {
-            //   const copiedFormData = structuredClone(formData);
-            //   setBillingFormData(copiedFormData);
-            // }
-
-            const cartItemsPerBppPerProvider: DataPerBpp = getCartItemsPerBpp(
-                cartItems as CartItemForRequest[]
-            )
-
-            const payLoadForInitRequest = getPayloadForInitRequest(
-                cartItemsPerBppPerProvider,
-                transactionId,
-                formData,
-                billingFormData
-            )
-            initRequest.fetchData(
-                `${apiUrl}/client/v2/initialize_order`,
-                'POST',
-                payLoadForInitRequest
-            )
+    useEffect(() => {
+        if (isBillingAddressCheckboxChecked) {
+            setBillingFormData(formData)
         }
+
+        if (Object.keys(formData).every((key) => formData[key].trim().length)) {
+            setIsShippingFormFilled(true)
+            setIsBillingFormFilled(true)
+        }
+    }, [isBillingAddressCheckboxChecked, formData])
+
+    const formSubmitHandlerForShippingForm = () => {
+        setIsShippingFormFilled(true)
+        setIsFormSubmitted((prevState) => {
+            return { ...prevState, shippingForm: true }
+        })
+        return
+    }
+
+    const formSubmitHandlerForBillingForm = () => {
+        setIsBillingFormFilled(true)
+        setIsFormSubmitted((prevState) => {
+            return { ...prevState, billingForm: true }
+        })
+        return
     }
 
     if (initRequest.loading) {
-        return <Loader loadingText={t['initializingOrderLoader']} />
+        return (
+            <LoaderWithMessage
+                loadingText={t.initializingOrderLoaderText}
+                loadingSubText={t.initializingOrderLoaderSubText}
+            />
+        )
     }
 
     const isInitResultPresent = () => {
@@ -176,7 +199,18 @@ const CheckoutPage = () => {
         return !!initRequest.data
     }
 
-    console.log('quoteresp', quoteResponse)
+    if (
+        initRequest.data &&
+        initRequest.data[0].message.catalogs.responses[0].error
+    ) {
+        toast.error('Something went wrong', {
+            position: 'top-center',
+        })
+
+        return <></>
+    }
+
+    console.log('isBillingchcked', isBillingAddressCheckboxChecked)
 
     return (
         <>
@@ -202,7 +236,7 @@ const CheckoutPage = () => {
                     })}
                 </DetailsCard>
             </Box>
-            {!isInitResultPresent() ? (
+            {!isFormSubmitted.shippingForm ? (
                 <Box>
                     <Flex
                         pb={'10px'}
@@ -213,13 +247,13 @@ const CheckoutPage = () => {
                     </Flex>
                     <DetailsCard>
                         <AddShippingButton
-                            imgFlag={!initRequest.data}
+                            imgFlag={!isFormSubmitted.shippingForm}
                             formData={formData}
                             setFormData={setFormData}
                             addShippingdetailsBtnText={
                                 t.addShippingdetailsBtnText
                             }
-                            formSubmitHandler={formSubmitHandler}
+                            formSubmitHandler={formSubmitHandlerForShippingForm}
                         />
                     </DetailsCard>
                 </Box>
@@ -232,11 +266,11 @@ const CheckoutPage = () => {
                     >
                         <Text fontSize={'17px'}>{t.shipping}</Text>
                         <AddShippingButton
-                            imgFlag={!isInitResultPresent()}
+                            imgFlag={!isShippingFormFilled}
                             formData={formData}
                             setFormData={setFormData}
                             addShippingdetailsBtnText={t.changeText}
-                            formSubmitHandler={formSubmitHandler}
+                            formSubmitHandler={formSubmitHandlerForShippingForm}
                         />
                     </Flex>
 
@@ -261,8 +295,14 @@ const CheckoutPage = () => {
                         <AddBillingButton
                             billingFormData={billingFormData}
                             setBillingFormData={setBillingFormData}
-                            addBillingdetailsBtnText={t.changeText}
-                            billingFormSubmitHandler={formSubmitHandler}
+                            addBillingdetailsBtnText={
+                                !isBillingAddressCheckboxChecked
+                                    ? t.changeText
+                                    : ''
+                            }
+                            billingFormSubmitHandler={
+                                formSubmitHandlerForBillingForm
+                            }
                         />
                         {/* TODO :- Will enable this button after demo */}
                         {/* <Text
@@ -283,6 +323,11 @@ const CheckoutPage = () => {
                                 pr={'12px'}
                                 fontSize={'17px'}
                                 defaultChecked
+                                onChange={() =>
+                                    setIsBillingAddressCheckboxChecked(
+                                        (prevValue) => !prevValue
+                                    )
+                                }
                             >
                                 {t.orderDetailsCheckboxText}
                             </Checkbox>
@@ -301,7 +346,9 @@ const CheckoutPage = () => {
                             billingFormData={billingFormData}
                             setBillingFormData={setBillingFormData}
                             addBillingdetailsBtnText={t.changeText}
-                            billingFormSubmitHandler={formSubmitHandler}
+                            billingFormSubmitHandler={
+                                formSubmitHandlerForBillingForm
+                            }
                         />
                     </Flex>
 
@@ -343,8 +390,31 @@ const CheckoutPage = () => {
 
             <ButtonComp
                 buttonText={t.calcAmount}
-                handleOnClick={() => router.push('/paymentMode')}
-                isDisabled={true}
+                handleOnClick={() => {
+                    // TODO :_ To check this again
+
+                    // if (isBillingAddressSameAsShippingAddress) {
+                    //   const copiedFormData = structuredClone(formData);
+                    //   setBillingFormData(copiedFormData);
+                    // }
+
+                    const cartItemsPerBppPerProvider: DataPerBpp =
+                        getCartItemsPerBpp(cartItems as CartItemForRequest[])
+
+                    const payLoadForInitRequest = getPayloadForInitRequest(
+                        cartItemsPerBppPerProvider,
+                        transactionId,
+                        formData,
+                        billingFormData
+                    )
+
+                    initRequest.fetchData(
+                        `${apiUrl}/client/v2/initialize_order`,
+                        'POST',
+                        payLoadForInitRequest
+                    )
+                }}
+                isDisabled={!(isShippingFormFilled && isBillingFormFilled)}
                 type={'outline'}
             />
 

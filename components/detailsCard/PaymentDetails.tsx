@@ -8,8 +8,6 @@ const PaymentDetails: React.FC<PaymentDetailsProps> = (props) => {
     const { qoute } = props
     const { breakup } = qoute
 
-    console.log('quoteee', qoute)
-
     const { t } = useLanguage()
     return (
         <Box>
@@ -25,7 +23,7 @@ const PaymentDetails: React.FC<PaymentDetailsProps> = (props) => {
                         <Text maxWidth={'75%'}>{item.title}</Text>
                         <Text>
                             {formatCurrency(
-                                parseFloat(item.price.listed_value),
+                                parseFloat(item.price.value),
                                 item.price.currency
                             )}
                         </Text>
