@@ -9,7 +9,6 @@ import useRequest from '../hooks/useRequest'
 import cs from 'classnames'
 import { Image } from '@chakra-ui/react'
 import { useLanguage } from '../hooks/useLanguage'
-import { toast } from 'react-toastify'
 
 const tagValuetoApiMap = {
     Books: 'books',
@@ -70,18 +69,9 @@ import { isEmpty } from 'lodash'
 import { getUserLocation } from '../utilities/common-utils'
 
 const Homepage = () => {
-    const errorLoading = (err: any) => {
-        toast.error(
-            'An error has occured. Please refresh the page. Otherwise, it will refresh automatically in 10 seconds.'
-        )
-        setTimeout(() => window.location.reload(), 5000)
-    }
-    const MapWithNoSSR = dynamic(
-        () => import('../components/Map').catch(errorLoading as any),
-        {
-            ssr: false,
-        }
-    )
+    const MapWithNoSSR = dynamic(() => import('../components/Map'), {
+        ssr: false,
+    })
 
     const nodeRef = useRef(null)
     const [showSuggestions, setShowSuggestions] = useState(false)
