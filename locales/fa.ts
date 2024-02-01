@@ -290,8 +290,8 @@ const fa: { [key: string]: string } = {
     initializingOrderLoaderText: `S'il vous plaît, attendez!`,
     initializingOrderLoaderSubText:
         'pendant que nous préparons les choses pour vous',
-    confirmingOrderLoader:
-        'Veuillez patienter pendant que nous confirmons votre commande',
+    confirmingOrderLoaderText: `S'il vous plaît, attendez!`,
+    confirmingOrderLoaderSubText: 'pendant que nous confirmons votre commande',
     orderConfirm: 'Commande confirmée!',
     confirmOrderMessage:
         'Merci ! Notre agent de livraison vous livrera votre commande.',

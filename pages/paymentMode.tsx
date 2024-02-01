@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, Flex, Text, Image, Card, CardBody } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useDispatch } from 'react-redux'
@@ -9,13 +9,8 @@ import creditCardImg from '../public/images/creditCardImg.svg'
 import { cartActions } from '../store/cart-slice'
 
 function PaymentMode() {
-    const [checked, setChecked] = useState(false)
-
     const { t } = useLanguage()
-    const router = useRouter()
-    const dispatch = useDispatch()
-
-    const PaymentMethods: PaymentMethodsInfo[] = [
+    const [filterMethods, setFilterMethods] = useState<PaymentMethodsInfo[]>([
         {
             id: 'direct_pay',
             isDisabled: false,
@@ -23,10 +18,41 @@ function PaymentMode() {
         },
         {
             id: 'pay_at_store',
-            isDisabled: true,
+            isDisabled: false,
             paymentMethod: t.payAtStore,
         },
-    ]
+    ])
+    const [initResult, setInitResult] = useState<any>(null)
+    const [paymentLink, setPaymentLink] = useState('')
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
+        string | null
+    >(null)
+
+    const router = useRouter()
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (localStorage && localStorage.getItem('initResult')) {
+            const parsedInitResult = JSON.parse(
+                localStorage.getItem('initResult') as string
+            )
+            const paymentLink =
+                parsedInitResult[0].message.catalogs.responses[0].message.order
+                    .payment.uri
+            if (!paymentLink) {
+                setFilterMethods(
+                    filterMethods.filter((_, index) => index === 1)
+                )
+            }
+            setPaymentLink(paymentLink)
+            setInitResult(parsedInitResult)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    if (!initResult) {
+        return <></>
+    }
 
     return (
         <>
@@ -67,8 +93,9 @@ function PaymentMode() {
                     Other
                 </Text>
                 <CardWithCheckBox
-                    setChecked={setChecked}
-                    paymentMethods={PaymentMethods}
+                    paymentMethods={filterMethods}
+                    selectedPaymentMethod={selectedPaymentMethod}
+                    setSelectedPaymentMethod={setSelectedPaymentMethod}
                 />
             </Box>
             <Box
@@ -79,10 +106,19 @@ function PaymentMode() {
                 <Button
                     buttonText={t.confirmOrder}
                     type={'solid'}
-                    isDisabled={!checked}
+                    isDisabled={!selectedPaymentMethod}
                     handleOnClick={() => {
-                        dispatch(cartActions.clearCart())
-                        router.push('/orderConfirmation')
+                        if (
+                            selectedPaymentMethod === 'direct_pay' &&
+                            paymentLink.trim().length
+                        ) {
+                            window.open(paymentLink, '_blank', 'popup')
+                            dispatch(cartActions.clearCart())
+                            router.push('/orderConfirmation')
+                        } else {
+                            dispatch(cartActions.clearCart())
+                            router.push('/orderConfirmation')
+                        }
                     }}
                 />
             </Box>

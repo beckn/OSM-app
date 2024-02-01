@@ -210,8 +210,6 @@ const CheckoutPage = () => {
         return <></>
     }
 
-    console.log('isBillingchcked', isBillingAddressCheckboxChecked)
-
     return (
         <>
             <Box>

@@ -16,7 +16,6 @@ interface Props {
 
 const Card: React.FC<Props> = ({ product }) => {
     const encodedProduct = window.btoa(toBinary(JSON.stringify(product)))
-    console.log('product in', product)
 
     return (
         <Box

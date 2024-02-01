@@ -34,8 +34,6 @@ export const getPayloadForInitRequest = (
         state: shippingState,
     } = customerAddress
 
-    console.log({ billingFormData, customerAddress })
-
     Object.keys(cartItemsPerBppPerProvider).forEach((bppId) => {
         const cartItem: any = {
             context: {

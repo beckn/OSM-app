@@ -9,8 +9,8 @@ import {
     getInitMetaDataPerBpp,
     getPayloadForConfirmRequest,
 } from '../utilities/confirm-utils'
-import Loader from '../components/loader/Loader'
 import { TransactionIdRootState } from '../lib/types/cart'
+import LoaderWithMessage from '../components/loader/LoaderWithMessage'
 
 const OrderConfirmation = () => {
     const { t } = useLanguage()
@@ -89,7 +89,12 @@ const OrderConfirmation = () => {
     }, [confirmRequest.data])
 
     if (confirmRequest.loading) {
-        return <Loader loadingText={t.confirmingOrderLoader} />
+        return (
+            <LoaderWithMessage
+                loadingText={t.confirmingOrderLoaderText}
+                loadingSubText={t.confirmingOrderLoaderSubText}
+            />
+        )
     }
 
     if (confirmRequest.error) {

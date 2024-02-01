@@ -298,7 +298,8 @@ const en: { [key: string]: string } = {
     cartLoader: 'Getting Quotes',
     initializingOrderLoaderText: 'Please wait!',
     initializingOrderLoaderSubText: 'while we set things up for you',
-    confirmingOrderLoader: 'Please wait while we confirm your order',
+    confirmingOrderLoaderText: 'Please wait!',
+    confirmingOrderLoaderSubText: 'while we confirm your order',
     orderConfirm: 'Order Confirmed!',
     confirmOrderMessage:
         'Thank you! Our delivery agent will deliver your order',

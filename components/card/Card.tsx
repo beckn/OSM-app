@@ -9,17 +9,21 @@ export type PaymentMethodsInfo = {
     isDisabled: boolean
     id: string
 }
-
 export interface CardWithCheckBoxPropsModel {
     paymentMethods: PaymentMethodsInfo[]
-    setChecked: React.Dispatch<React.SetStateAction<boolean>>
+    setSelectedPaymentMethod: React.Dispatch<
+        React.SetStateAction<string | null>
+    >
+    selectedPaymentMethod: string | null
 }
 
 const CardWithCheckBox: React.FC<CardWithCheckBoxPropsModel> = (props) => {
     const { t } = useLanguage()
 
-    const handleChange = () => {
-        props.setChecked((prevValue) => !prevValue)
+    const handleChange = (id: string) => {
+        props.setSelectedPaymentMethod(
+            id === props.selectedPaymentMethod ? null : id
+        )
     }
 
     return (
@@ -38,7 +42,10 @@ const CardWithCheckBox: React.FC<CardWithCheckBoxPropsModel> = (props) => {
                             <input
                                 type="checkbox"
                                 id={method.id}
-                                onChange={handleChange}
+                                onChange={() => handleChange(method.id)}
+                                checked={
+                                    method.id === props.selectedPaymentMethod
+                                }
                             />
                             <label htmlFor={method.id}>
                                 <Text
