@@ -154,7 +154,7 @@ const OrderDetails = () => {
         }
     }, [statusRequest.data])
 
-    if (!confirmData.length) {
+    if (!confirmData.length || !statusResponse.length) {
         return <></>
     }
 

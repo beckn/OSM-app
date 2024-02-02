@@ -10,6 +10,7 @@ import PaymentDetails from '../components/detailsCard/PaymentDetails'
 import AddShippingButton from '../components/detailsCard/AddShippingButton'
 import {
     CartItemForRequest,
+    CartRetailItem,
     DataPerBpp,
     ICartRootState,
     TransactionIdRootState,
@@ -78,6 +79,31 @@ const CheckoutPage = () => {
             state.transactionId
     )
 
+    const fetchInit = (
+        cartItems: CartRetailItem[],
+        transactionId: TransactionIdRootState,
+        formData: ShippingFormData,
+        billingFormData: ShippingFormData,
+        apiUrl: string
+    ) => {
+        const cartItemsPerBppPerProvider: DataPerBpp = getCartItemsPerBpp(
+            cartItems as CartItemForRequest[]
+        )
+
+        const payLoadForInitRequest = getPayloadForInitRequest(
+            cartItemsPerBppPerProvider,
+            transactionId,
+            formData,
+            billingFormData
+        )
+
+        return initRequest.fetchData(
+            `${apiUrl}/client/v2/initialize_order`,
+            'POST',
+            payLoadForInitRequest
+        )
+    }
+
     useEffect(() => {
         if (typeof window !== 'undefined') {
             if (localStorage.getItem('shippingAdress')) {
@@ -97,6 +123,19 @@ const CheckoutPage = () => {
                     return { ...prevState, billingForm: true }
                 })
                 setIsBillingFormFilled(true)
+            }
+
+            if (
+                localStorage.getItem('shippingAdress') &&
+                localStorage.getItem('billingAddress')
+            ) {
+                fetchInit(
+                    cartItems,
+                    transactionId,
+                    formData,
+                    billingFormData,
+                    apiUrl as string
+                )
             }
         }
     }, [])
@@ -199,15 +238,21 @@ const CheckoutPage = () => {
         return !!initRequest.data
     }
 
-    if (
+    const hasError = initRequest.error
+
+    const hasNoResponses =
+        initRequest.data &&
+        initRequest.data[0].message.catalogs.responses.length === 0
+    const responseHasError =
         initRequest.data &&
         initRequest.data[0].message.catalogs.responses[0].error
-    ) {
-        toast.error('Something went wrong', {
+
+    if (hasError || hasNoResponses || responseHasError) {
+        toast.error('Something went wrong! Please try again', {
             position: 'top-center',
         })
 
-        return <></>
+        return <></> // or return null; to render nothing
     }
 
     return (
@@ -396,20 +441,12 @@ const CheckoutPage = () => {
                     //   setBillingFormData(copiedFormData);
                     // }
 
-                    const cartItemsPerBppPerProvider: DataPerBpp =
-                        getCartItemsPerBpp(cartItems as CartItemForRequest[])
-
-                    const payLoadForInitRequest = getPayloadForInitRequest(
-                        cartItemsPerBppPerProvider,
+                    fetchInit(
+                        cartItems,
                         transactionId,
                         formData,
-                        billingFormData
-                    )
-
-                    initRequest.fetchData(
-                        `${apiUrl}/client/v2/initialize_order`,
-                        'POST',
-                        payLoadForInitRequest
+                        billingFormData,
+                        apiUrl as string
                     )
                 }}
                 isDisabled={!(isShippingFormFilled && isBillingFormFilled)}

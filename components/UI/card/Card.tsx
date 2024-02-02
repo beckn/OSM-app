@@ -125,16 +125,18 @@ const Card: React.FC<Props> = ({ product }) => {
                                 currency={product.price.currency}
                                 price={parseFloat(product.price.value)}
                             />
-                            <Flex alignItems={'center'}>
-                                {/* eslint-disable-next-line jsx-a11y/alt-text */}
-                                <Image src={StarIcon} />
-                                <Text
-                                    fontSize={'12px'}
-                                    pl={'5px'}
-                                >
-                                    {product.tags.rating}
-                                </Text>
-                            </Flex>
+                            {product?.tags?.rating && (
+                                <Flex alignItems={'center'}>
+                                    {/* eslint-disable-next-line jsx-a11y/alt-text */}
+                                    <Image src={StarIcon} />
+                                    <Text
+                                        fontSize={'12px'}
+                                        pl={'5px'}
+                                    >
+                                        {product.tags.rating}
+                                    </Text>
+                                </Flex>
+                            )}
                         </Flex>
                     </Box>
                 </a>
