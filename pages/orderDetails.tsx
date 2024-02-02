@@ -19,31 +19,31 @@ import { useLanguage } from '../hooks/useLanguage'
 import { ResponseModel } from '../lib/types/responseModel'
 import {
     getConfirmMetaDataForBpp,
-    getOrderPlacementTimeline,
+    formatTimestamp,
     getPayloadForStatusRequest,
     getPayloadForTrackRequest,
 } from '../utilities/confirm-utils'
 import { getDataPerBpp } from '../utilities/orderDetails-utils'
 import TrackIcon from '../public/images/TrackIcon.svg'
 import ViewMoreOrderModal from '../components/orderDetails/ViewMoreOrderModal'
-import { useSelector } from 'react-redux'
-import { TransactionIdRootState } from '../lib/types/cart'
 import useRequest from '../hooks/useRequest'
 import {
     orderCardStatusMap,
     RenderOrderStatusList,
 } from '../components/orderDetails/RenderOrderStatusTree'
 import { useRouter } from 'next/router'
+import { StatusResponseModel } from '../lib/types/order-details.types'
+import PaymentDetails from '../components/detailsCard/PaymentDetails'
+import { QuoteModel } from '../components/detailsCard/PaymentDetails.types'
 
 const OrderDetails = () => {
     const [allOrderDelivered, setAllOrderDelivered] = useState(false)
     const [confirmData, setConfirmData] = useState<ResponseModel[]>([])
-    const [statusResponse, setStatusResponse] = useState([])
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const transactionId = useSelector(
-        (state: { transactionId: TransactionIdRootState }) =>
-            state.transactionId
+    const [statusResponse, setStatusResponse] = useState<StatusResponseModel[]>(
+        []
     )
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
     const statusRequest = useRequest()
     const trackRequest = useRequest()
@@ -51,6 +51,11 @@ const OrderDetails = () => {
     const { orderId } = router.query
 
     const { t } = useLanguage()
+
+    const paymentMethods = {
+        'PRE-FULFILLMENT': t.directPay,
+        POST_FULFILLMENT: t.payAtStore,
+    }
 
     useEffect(() => {
         if (
@@ -65,6 +70,10 @@ const OrderDetails = () => {
             const relatedOrder = parsedOrderHistoryArray.find(
                 (parsedOrder: any) => parsedOrder.parentOrderId === orderId
             )
+
+            const transactionId = localStorage.getItem(
+                'transactionId'
+            ) as string
 
             setConfirmData(relatedOrder.orders)
 
@@ -86,17 +95,11 @@ const OrderDetails = () => {
                 payloadForTrackRequest
             )
 
-            const intervalId = setInterval(() => {
-                statusRequest.fetchData(
-                    `${apiUrl}/client/v2/status`,
-                    'POST',
-                    payloadForStatusRequest
-                )
-            }, 2000)
-
-            return () => {
-                clearInterval(intervalId)
-            }
+            statusRequest.fetchData(
+                `${apiUrl}/client/v2/status`,
+                'POST',
+                payloadForStatusRequest
+            )
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -110,6 +113,9 @@ const OrderDetails = () => {
 
                 const confirmOrderMetaDataPerBpp =
                     getConfirmMetaDataForBpp(parsedConfirmedData)
+                const transactionId = localStorage.getItem(
+                    'transactionId'
+                ) as string
                 const payloadForStatusRequest = getPayloadForStatusRequest(
                     confirmOrderMetaDataPerBpp,
                     transactionId
@@ -125,17 +131,11 @@ const OrderDetails = () => {
                     payloadForTrackRequest
                 )
 
-                const intervalId = setInterval(() => {
-                    statusRequest.fetchData(
-                        `${apiUrl}/client/v2/status`,
-                        'POST',
-                        payloadForStatusRequest
-                    )
-                }, 2000)
-
-                return () => {
-                    clearInterval(intervalId)
-                }
+                statusRequest.fetchData(
+                    `${apiUrl}/client/v2/status`,
+                    'POST',
+                    payloadForStatusRequest
+                )
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -143,7 +143,7 @@ const OrderDetails = () => {
 
     useEffect(() => {
         if (statusRequest.data) {
-            setStatusResponse(statusRequest.data as any)
+            setStatusResponse(statusRequest.data as StatusResponseModel[])
             if (
                 statusRequest.data.every(
                     (res) => res.message.order.state === 'DELIVERED'
@@ -158,15 +158,13 @@ const OrderDetails = () => {
         return <></>
     }
 
-    const confirmDataPerBpp = getDataPerBpp(confirmData)
+    const statusDataPerBpp = getDataPerBpp(statusResponse)
 
-    const orderFromConfirmData =
-        confirmData[0].message.responses[0].message.order
+    const orderFromStatusResponse = statusResponse[0].message.order
+    const paymentObject = orderFromStatusResponse.payment
 
-    const quoteBreakup = orderFromConfirmData.quote.breakup
-    const totalPrice = orderFromConfirmData.quote.price.value
-
-    const orderState = orderFromConfirmData.payment.status
+    const orderState = paymentObject.status
+    const paymentType = paymentObject.type
 
     const totalQuantityOfOrder = (res: any) => {
         let count = 0
@@ -187,9 +185,9 @@ const OrderDetails = () => {
     }
 
     const shippingDetails = {
-        name: getExtractedName(orderFromConfirmData.billing.name),
-        address: orderFromConfirmData.billing.address.state,
-        phone: orderFromConfirmData.billing.phone,
+        name: getExtractedName(orderFromStatusResponse.billing.name),
+        address: `${orderFromStatusResponse.billing.address.door} ${orderFromStatusResponse.billing.address.state}`,
+        phone: orderFromStatusResponse.billing.phone,
     }
 
     return (
@@ -255,13 +253,13 @@ const OrderDetails = () => {
                     >
                         <Text>{t.orderPlacedAt}</Text>
                         <Text>
-                            {getOrderPlacementTimeline(
-                                orderFromConfirmData.created_at
+                            {formatTimestamp(
+                                orderFromStatusResponse.created_at
                             )}
                         </Text>
                     </Flex>
-                    {Object.keys(confirmDataPerBpp).map((key) => (
-                        <Box key={confirmDataPerBpp[key].id}>
+                    {Object.keys(statusDataPerBpp).map((key) => (
+                        <Box key={statusDataPerBpp[key].id}>
                             <Flex
                                 pt={4}
                                 justifyContent={'space-between'}
@@ -431,40 +429,14 @@ const OrderDetails = () => {
                     pt={'unset'}
                     pb={'unset'}
                 >
-                    {quoteBreakup.map((breakUp: any, idx: number) => {
-                        return (
-                            <Flex
-                                key={idx}
-                                pb={'15px'}
-                                justifyContent={'space-between'}
-                                alignItems={'center'}
-                            >
-                                <Text maxWidth={'75%'}>{breakUp.title}</Text>
-                                <Text>
-                                    {t.currencySymbol} {breakUp.price.listed_value}
-                                </Text>
-                            </Flex>
-                        )
-                    })}
-
-                    <Divider />
+                    <PaymentDetails
+                        qoute={orderFromStatusResponse.quote as QuoteModel}
+                    />
                 </CardBody>
                 <CardBody
                     pb={'unset'}
                     pt={'15px'}
                 >
-                    <Flex
-                        pb={'15px'}
-                        justifyContent={'space-between'}
-                        alignItems={'center'}
-                        fontSize={'17px'}
-                        fontWeight={'600'}
-                    >
-                        <Text>{t.total}</Text>
-                        <Text>
-                            {t.currencySymbol} {totalPrice}
-                        </Text>
-                    </Flex>
                     <Flex
                         fontSize={'15px'}
                         justifyContent={'space-between'}
@@ -481,7 +453,7 @@ const OrderDetails = () => {
                         pb={'15px'}
                     >
                         <Text>{t.paymentMethod}</Text>
-                        <Text>{t.cashOnDelivery}</Text>
+                        <Text>{paymentMethods[paymentType] ?? ''}</Text>
                     </Flex>
                 </CardBody>
             </Accordion>

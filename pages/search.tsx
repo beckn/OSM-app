@@ -119,6 +119,7 @@ const Search = () => {
                     data.context.transaction_id
                 )
             )
+            localStorage.setItem('transactionId', data.context.transaction_id)
             const allItems = data.message.catalogs.flatMap((catalog: any) => {
                 if (
                     catalog.message &&
