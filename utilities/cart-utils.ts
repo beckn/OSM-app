@@ -43,8 +43,9 @@ export const getPayloadForQuoteRequest = (
                     provider: {
                         id: cartItemsPerBppPerProvider[bppId][0].providerId,
                     },
-                    locations:
+                    locations: [
                         cartItemsPerBppPerProvider[bppId][0].locations[0],
+                    ],
                 },
             },
         }
