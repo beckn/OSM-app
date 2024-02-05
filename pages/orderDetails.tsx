@@ -9,6 +9,7 @@ import {
     StackDivider,
     Card,
     useDisclosure,
+    Link,
 } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import Accordion from '../components/accordion/Accordion'
@@ -31,10 +32,12 @@ import {
     orderCardStatusMap,
     RenderOrderStatusList,
 } from '../components/orderDetails/RenderOrderStatusTree'
-import { useRouter } from 'next/router'
+import Router, { useRouter } from 'next/router'
 import { StatusResponseModel } from '../lib/types/order-details.types'
 import PaymentDetails from '../components/detailsCard/PaymentDetails'
 import { QuoteModel } from '../components/detailsCard/PaymentDetails.types'
+import Button from '../components/button/Button'
+import BottomModal from '../components/BottomModal'
 
 const OrderDetails = () => {
     const [allOrderDelivered, setAllOrderDelivered] = useState(false)
@@ -42,6 +45,7 @@ const OrderDetails = () => {
     const [statusResponse, setStatusResponse] = useState<StatusResponseModel[]>(
         []
     )
+    const [cancelOrderModalOpen, setCancelOrderModalOpen] = useState(false)
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
@@ -190,6 +194,8 @@ const OrderDetails = () => {
         phone: orderFromStatusResponse.billing.phone,
     }
 
+    const cancelOrderModalClose = () => {}
+
     return (
         <>
             {/* <AppHeader appHeaderText={t.selectPaymentMethod} /> */}
@@ -204,7 +210,6 @@ const OrderDetails = () => {
                             alignItems={'center'}
                             pb={'3px'}
                         >
-                            {/* eslint-disable-next-line jsx-a11y/alt-text */}
                             <Image
                                 width={'12px'}
                                 height={'13px'}
@@ -391,7 +396,6 @@ const OrderDetails = () => {
                             spacing="4"
                         >
                             <Flex alignItems={'center'}>
-                                {/* eslint-disable-next-line jsx-a11y/alt-text */}
                                 <Image
                                     src={nameIcon}
                                     pr={'12px'}
@@ -401,7 +405,6 @@ const OrderDetails = () => {
                                 </Text>
                             </Flex>
                             <Flex alignItems={'center'}>
-                                {/* eslint-disable-next-line jsx-a11y/alt-text */}
                                 <Image
                                     src={locationIcon}
                                     pr={'12px'}
@@ -411,7 +414,6 @@ const OrderDetails = () => {
                                 </Text>
                             </Flex>
                             <Flex alignItems={'center'}>
-                                {/* eslint-disable-next-line jsx-a11y/alt-text */}
                                 <Image
                                     src={CallphoneIcon}
                                     pr={'12px'}
@@ -424,7 +426,18 @@ const OrderDetails = () => {
                     </Box>
                 </CardBody>
             </Accordion>
-            <Accordion accordionHeader={t.paymentText}>
+            <Accordion
+                accordionHeader={
+                    <Flex>
+                        <Text>{t.paymentText}</Text>
+                        <Image
+                            pl="12px"
+                            src="./images/error.svg"
+                            alt=""
+                        />
+                    </Flex>
+                }
+            >
                 <CardBody
                     pt={'unset'}
                     pb={'unset'}
@@ -443,8 +456,31 @@ const OrderDetails = () => {
                         alignItems={'center'}
                         pb={'15px'}
                     >
-                        <Text>{t.status}</Text>
-                        <Text>{orderState}</Text>
+                        <Flex
+                            justifyContent={'space-between'}
+                            alignItems="center"
+                            width={'100%'}
+                        >
+                            <Text>{t.status}</Text>
+                            <Box fontSize={'12px'}>
+                                <Text
+                                    as="span"
+                                    pr="12px"
+                                    color={'rgba(var(--color-primary))'}
+                                >
+                                    Payment Pending
+                                </Text>
+
+                                <Link
+                                    href="www.google.com"
+                                    color={'#4D930D'}
+                                    textDecoration="underline"
+                                >
+                                    Pay Here
+                                </Link>
+                            </Box>
+                        </Flex>
+                        {/* <Text>{orderState}</Text> */}
                     </Flex>
                     <Flex
                         fontSize={'15px'}
@@ -457,6 +493,26 @@ const OrderDetails = () => {
                     </Flex>
                 </CardBody>
             </Accordion>
+            <Button
+                buttonText={t.goBackHome}
+                isDisabled={false}
+                type={'solid'}
+                handleOnClick={() => {
+                    Router.push('/homePage')
+                }}
+            />
+            <Button
+                buttonText={t.cancelOrder}
+                isDisabled={false}
+                type={'outline'}
+                handleOnClick={() => setCancelOrderModalOpen(true)}
+            />
+            <BottomModal
+                isOpen={cancelOrderModalOpen}
+                onClose={cancelOrderModalClose}
+            >
+                <></>
+            </BottomModal>
         </>
     )
 }

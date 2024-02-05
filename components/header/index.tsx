@@ -20,7 +20,7 @@ const cartIconBlackList = [
     '/paymentMode',
 ]
 
-const backIconList = ['/', '/orderDetails']
+const backIconList = ['/']
 
 const homeIconBlackList = ['/orderHistory', '/', '/homePage', '/signUp']
 
@@ -65,6 +65,7 @@ const bottomHeaderBlackList = ['/homePage', '/orderConfirmation']
 const menuIconWhiteList = ['/homePage']
 
 const languageIconWhiteList = ['/homePage', '/']
+const helplineIcon = ['/orderDetails']
 
 const getHeaderTitleForPage = (
     name: string,
@@ -180,42 +181,94 @@ const TopHeader: React.FC<TopHeaderProps> = ({ handleMenuClick }) => {
 const BottomHeader = () => {
     const [optionTags, setOptionTags] = useState<any>()
     const { t, locale } = useLanguage()
+    const [helplineModalOpen, setHelplineModalOpen] = useState(false)
 
     useEffect(() => {
         setOptionTags(JSON.parse(localStorage.getItem('optionTags') as string))
     }, [])
 
+    const helplineModalClose = () => {
+        setHelplineModalOpen(false)
+    }
+    const handleEmailCustomer = () => {
+        const subject = 'Regarding Your Order'
+        const body = 'Dear Customer,\n\n'
+
+        const mailtoLink = `mailto:${'email'}?subject=${encodeURIComponent(
+            subject
+        )}&body=${encodeURIComponent(body)}`
+
+        window.open(mailtoLink, '_blank')
+    }
+    const handleCallCustomer = () => {
+        const telLink = `tel:${'mobile number'}`
+        window.open(telLink, '_blank')
+    }
     const router = useRouter()
 
     return (
-        <header className="md:fixed left-0 right-0 mb-4 top-0 md:bg-palette-fill shadow-sm pt-4 z-[1000] app_header_b fixed mt-7 z-[99] bg-[#fff]">
-            <div className="flex flex-col md:px-4">
-                <div className="flex items-center justify-between md:order-2 md:mt-2 py-4  relative">
-                    <div className="flex gap-4 items-center">
-                        {!backIconList.includes(router.pathname) && (
-                            <div onClick={() => router.back()}>
-                                <Image
-                                    src="/images/Back.svg"
-                                    alt="Back icon"
-                                />
-                            </div>
-                        )}
-                    </div>
+        <>
+            <header className="md:fixed left-0 right-0 mb-4 top-0 md:bg-palette-fill shadow-sm pt-4 z-[1000] app_header_b fixed mt-7 z-[99] bg-[#fff]">
+                <div className="flex flex-col md:px-4">
+                    <div className="flex items-center justify-between md:order-2 md:mt-2 py-4  relative">
+                        <div className="flex gap-4 items-center">
+                            {!backIconList.includes(router.pathname) && (
+                                <div onClick={() => router.back()}>
+                                    <Image
+                                        src="/images/Back.svg"
+                                        alt="Back icon"
+                                    />
+                                </div>
+                            )}
+                        </div>
 
-                    {getHeaderTitleForPage(
-                        optionTags?.name,
-                        optionTags?.logo,
-                        router.pathname,
-                        locale
-                    )}
-                    <div className="flex gap-4">
-                        {!cartIconBlackList.includes(router.pathname) && (
-                            <CartIcon />
+                        {getHeaderTitleForPage(
+                            optionTags?.name,
+                            optionTags?.logo,
+                            router.pathname,
+                            locale
                         )}
+                        <div className="flex gap-4">
+                            {!cartIconBlackList.includes(router.pathname) && (
+                                <CartIcon />
+                            )}
+                            {helplineIcon.includes(router.pathname) && (
+                                <Image
+                                    onClick={() => setHelplineModalOpen(true)}
+                                    src="/images/helpline_img.svg"
+                                    alt="helpline_img icon"
+                                />
+                            )}
+                        </div>
                     </div>
                 </div>
-            </div>
-        </header>
+            </header>
+            <BottomModal
+                isOpen={helplineModalOpen}
+                onClose={helplineModalClose}
+            >
+                <div
+                    onClick={handleCallCustomer}
+                    className="flex gap-2 py-4"
+                >
+                    <Image
+                        src="/images/helpline_img.svg"
+                        alt="Call Customer Service"
+                    />
+                    {t['callCustomerService']}
+                </div>
+                <div
+                    onClick={handleEmailCustomer}
+                    className="flex gap-2 py-4"
+                >
+                    <Image
+                        src="/images/emailCustomerService.svg"
+                        alt="Email Customer Service"
+                    />
+                    {t['emailCustomerService']}
+                </div>
+            </BottomModal>
+        </>
     )
 }
 
