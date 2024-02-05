@@ -9,6 +9,7 @@ import Button from '../components/button/Button'
 import Router from 'next/router'
 import { SignUpPropsModel } from '../components/signIn/Signin.types'
 import Cookies from 'js-cookie'
+import { CustomToast } from '../components/signIn/SignIn'
 const SignUp = () => {
     const { t } = useLanguage()
     const toast = useToast()
@@ -82,11 +83,15 @@ const SignUp = () => {
                 } else {
                     const errorData = await response.json()
                     toast({
-                        title: 'Error!.',
-                        description: errorData.error.message,
-                        status: 'error',
-                        duration: 3000,
-                        isClosable: true,
+                      render: () => (
+                        <CustomToast
+                          title="Error!"
+                          message={errorData.error.message}
+                        />
+                      ),
+                      position: 'top',
+                      duration: 2000,
+                      isClosable: true
                     })
                     console.error('Registration failed')
                 }
