@@ -10,6 +10,7 @@ import {
     Card,
     useDisclosure,
     Link,
+    Textarea,
 } from '@chakra-ui/react'
 import axios from 'axios'
 import Cookies from 'js-cookie'
@@ -44,6 +45,7 @@ import { QuoteModel } from '../components/detailsCard/PaymentDetails.types'
 import Button from '../components/button/Button'
 import BottomModal from '../components/BottomModal'
 import LoaderWithMessage from '../components/loader/LoaderWithMessage'
+import styles from '../components/card/Card.module.css'
 
 const OrderDetails = () => {
     const [allOrderDelivered, setAllOrderDelivered] = useState(false)
@@ -59,13 +61,46 @@ const OrderDetails = () => {
     const trackRequest = useRequest()
     const router = useRouter()
     const { orderId } = router.query
-
+    const [selectedTypeMethod, setSelectedTypeMethod] = useState<string | null>(
+        null
+    )
     const { t } = useLanguage()
 
     const paymentMethods = {
         'PRE-FULFILLMENT': t.directPay,
         POST_FULFILLMENT: t.payAtStore,
     }
+
+    interface CancellationType {
+        id: string
+        cancellationTypeText: string
+        checked?: boolean
+    }
+
+    const [cancellationType, setCancellationType] = useState<
+        CancellationType[]
+    >([
+        {
+            id: '1',
+            cancellationTypeText: 'Merchant is taking too long',
+            checked: false,
+        },
+        {
+            id: '2',
+            cancellationTypeText: 'Ordered by mistake',
+            checked: false,
+        },
+        {
+            id: '3',
+            cancellationTypeText: 'I’ve changed my mind',
+            checked: false,
+        },
+        {
+            id: '4',
+            cancellationTypeText: 'Other :',
+            checked: false,
+        },
+    ])
 
     const paymentStatus = {
         'NOT-PAID': t.paymentPending,
@@ -238,7 +273,17 @@ const OrderDetails = () => {
         phone: orderFromStatusResponse.billing.phone,
     }
 
-    const cancelOrderModalClose = () => {}
+    const cancelOrderModalClose = () => {
+        setCancelOrderModalOpen(false)
+    }
+    const handleCheckboxChange = (id: string) => {
+        setCancellationType((prevTypes) =>
+            prevTypes.map((type) => ({
+                ...type,
+                checked: type.id === id ? !type.checked : false,
+            }))
+        )
+    }
 
     return (
         <>
@@ -561,12 +606,90 @@ const OrderDetails = () => {
                 type={'outline'}
                 handleOnClick={() => setCancelOrderModalOpen(true)}
             />
-            <BottomModal
-                isOpen={cancelOrderModalOpen}
-                onClose={cancelOrderModalClose}
-            >
-                <></>
-            </BottomModal>
+            <Box className={styles.cancellationBtn}>
+                <BottomModal
+                    isOpen={cancelOrderModalOpen}
+                    onClose={() => {}}
+                >
+                    <Box padding={'8px'}>
+                        <Flex
+                            justifyContent={'space-between'}
+                            alignItems="center"
+                            pb={'20px'}
+                            pt="6px"
+                        >
+                            <Text
+                                fontSize={'17px'}
+                                fontWeight="600"
+                            >
+                                {t.orderCancellation}
+                            </Text>
+                            <Image
+                                onClick={cancelOrderModalClose}
+                                src="./images/crossIcon.svg"
+                                alt="cross img"
+                            />
+                        </Flex>
+                        <Divider />
+
+                        <Text
+                            pt={'20px'}
+                            pb="15px"
+                            fontWeight={'500'}
+                            fontSize={'15px'}
+                        >
+                            {t.cancellationType}
+                        </Text>
+
+                        {cancellationType.map((Type, ind) => {
+                            return (
+                                <Box
+                                    key={Type.id}
+                                    className={styles.checkbox}
+                                    mb={'15px'}
+                                    fontSize={'15px'}
+                                >
+                                    <input
+                                        type="checkbox"
+                                        id={Type.id}
+                                        checked={Type.checked || false}
+                                        onChange={() =>
+                                            handleCheckboxChange(Type.id)
+                                        }
+                                    />
+                                    <label
+                                        htmlFor={Type.id}
+                                        style={{ left: '24px' }}
+                                    >
+                                        <Text
+                                            mt={'-3px'}
+                                            position={'absolute'}
+                                            width={'50vw'}
+                                            marginLeft="40px"
+                                        >
+                                            {Type.cancellationTypeText}
+                                        </Text>
+                                    </label>
+                                </Box>
+                            )
+                        })}
+                        <Textarea
+                            w="332px"
+                            height="124px"
+                            resize="none"
+                            placeholder="Please specify the reason"
+                            boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -2px rgba(0, 0, 0, 0.1)"
+                            mb={'15px'}
+                        />
+                    </Box>
+                    <Button
+                        buttonText={t.proceedToPay}
+                        isDisabled={true}
+                        type={'solid'}
+                        handleOnClick={() => {}}
+                    />
+                </BottomModal>
+            </Box>
         </>
     )
 }

@@ -390,5 +390,7 @@ const en: { [key: string]: string } = {
     payHere: 'Pay Here',
     supportLoaderText: 'Please wait!',
     supportLoaderSubText: `We’re fetching support details for you`,
+    orderCancellation: 'Order Cancellation',
+    cancellationType: 'Please select the reason for cancellation',
 }
 export default en

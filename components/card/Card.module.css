@@ -42,3 +42,6 @@
 .checkbox input[type='checkbox']:checked + .label:after {
     opacity: 1;
 }
+.cancellationBtn img[alt='indicator'] {
+    display: none;
+}
