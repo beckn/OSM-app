@@ -374,5 +374,7 @@ const fa: { [key: string]: string } = {
     paymentPending: 'Paiement en attente',
     paid: 'Payé',
     payHere: 'Payez ici',
+    supportLoaderText: `S'il vous plaît, attendez!`,
+    supportLoaderSubText: `Nous récupérons les détails de l'assistance pour vous`,
 }
 export default fa

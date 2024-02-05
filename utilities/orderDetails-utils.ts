@@ -64,3 +64,49 @@ export const generateAlphanumericID = (function () {
         return id
     }
 })()
+
+export const getPayloadForOrderHistoryPost = (
+    statusData: StatusResponseModel[]
+) => {
+    const { bpp_id, bpp_uri, transaction_id } = statusData[0].context
+    const {
+        order: {
+            id,
+            items,
+            quote,
+            payment,
+            provider: {
+                id: providerId,
+                descriptor: { name, short_desc },
+            },
+        },
+    } = statusData[0].message
+
+    const ordersPayload = {
+        context: {
+            bpp_id,
+            bpp_uri,
+            transaction_id,
+        },
+        message: {
+            order: {
+                id,
+                provider: {
+                    id: providerId,
+                    descriptor: {
+                        name,
+                        short_desc,
+                    },
+                },
+                items,
+                quote,
+                payments: payment,
+            },
+        },
+        category: {
+            set: [6],
+        },
+    }
+
+    return ordersPayload
+}

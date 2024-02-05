@@ -6,6 +6,10 @@ import CartIcon from '../cart/CartIcon'
 import { useRouter } from 'next/router'
 
 import { useLanguage } from '../../hooks/useLanguage'
+import useRequest from '../../hooks/useRequest'
+import axios from 'axios'
+import { StatusResponseModel } from '../../lib/types/order-details.types'
+import LoaderWithMessage from '../loader/LoaderWithMessage'
 
 const cartIconBlackList = [
     '/orderConfirmation',
@@ -20,7 +24,7 @@ const cartIconBlackList = [
     '/paymentMode',
 ]
 
-const backIconList = ['/']
+const backIconList = ['/', '/orderDetails']
 
 const homeIconBlackList = ['/orderHistory', '/', '/homePage', '/signUp']
 
@@ -182,6 +186,14 @@ const BottomHeader = () => {
     const [optionTags, setOptionTags] = useState<any>()
     const { t, locale } = useLanguage()
     const [helplineModalOpen, setHelplineModalOpen] = useState(false)
+    const [isLoadingForSupport, setIsLoadingForSupport] = useState(true)
+    const [supporDetails, setSupportDetails] = useState({
+        email: '',
+        mobile: '',
+    })
+
+    const router = useRouter()
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
     useEffect(() => {
         setOptionTags(JSON.parse(localStorage.getItem('optionTags') as string))
@@ -194,17 +206,66 @@ const BottomHeader = () => {
         const subject = 'Regarding Your Order'
         const body = 'Dear Customer,\n\n'
 
-        const mailtoLink = `mailto:${'email'}?subject=${encodeURIComponent(
-            subject
-        )}&body=${encodeURIComponent(body)}`
+        const mailtoLink = `mailto:${
+            supporDetails.email
+        }?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+            body
+        )}`
 
         window.open(mailtoLink, '_blank')
     }
     const handleCallCustomer = () => {
-        const telLink = `tel:${'mobile number'}`
+        const telLink = `tel:${supporDetails.mobile}`
         window.open(telLink, '_blank')
     }
-    const router = useRouter()
+
+    const handleSupportIconClick = () => {
+        setIsLoadingForSupport(true)
+        setHelplineModalOpen(true)
+        if (localStorage && localStorage.getItem('statusResponse')) {
+            const parsedStatusResponse: StatusResponseModel[] = JSON.parse(
+                localStorage.getItem('statusResponse') as string
+            )
+
+            const {
+                context: { bpp_id, bpp_uri, transaction_id },
+                message: {
+                    order: { id },
+                },
+            } = parsedStatusResponse[0]
+
+            const supportPayload = {
+                supportRequestDto: [
+                    {
+                        context: {
+                            bpp_id,
+                            bpp_uri,
+                            transaction_id,
+                            domain: 'retail',
+                        },
+                        message: {
+                            ref_id: id,
+                        },
+                    },
+                ],
+            }
+
+            axios
+                .post(`${apiUrl}/client/v2/support`, supportPayload)
+                .then((res) => {
+                    const supportdata = res.data[0].message
+                    setSupportDetails({
+                        email: supportdata.email,
+                        mobile: supportdata.phone,
+                    })
+                    setIsLoadingForSupport(false)
+                })
+                .catch((err) => {
+                    console.error(err)
+                    setIsLoadingForSupport(false)
+                })
+        }
+    }
 
     return (
         <>
@@ -234,7 +295,7 @@ const BottomHeader = () => {
                             )}
                             {helplineIcon.includes(router.pathname) && (
                                 <Image
-                                    onClick={() => setHelplineModalOpen(true)}
+                                    onClick={handleSupportIconClick}
                                     src="/images/helpline_img.svg"
                                     alt="helpline_img icon"
                                 />
@@ -247,26 +308,35 @@ const BottomHeader = () => {
                 isOpen={helplineModalOpen}
                 onClose={helplineModalClose}
             >
-                <div
-                    onClick={handleCallCustomer}
-                    className="flex gap-2 py-4"
-                >
-                    <Image
-                        src="/images/helpline_img.svg"
-                        alt="Call Customer Service"
+                {isLoadingForSupport ? (
+                    <LoaderWithMessage
+                        loadingText={t.supportLoaderText}
+                        loadingSubText={t.supportLoaderSubText}
                     />
-                    {t['callCustomerService']}
-                </div>
-                <div
-                    onClick={handleEmailCustomer}
-                    className="flex gap-2 py-4"
-                >
-                    <Image
-                        src="/images/emailCustomerService.svg"
-                        alt="Email Customer Service"
-                    />
-                    {t['emailCustomerService']}
-                </div>
+                ) : (
+                    <>
+                        <div
+                            onClick={handleCallCustomer}
+                            className="flex gap-2 py-4"
+                        >
+                            <Image
+                                src="/images/helpline_img.svg"
+                                alt="Call Customer Service"
+                            />
+                            {t['callCustomerService']}
+                        </div>
+                        <div
+                            onClick={handleEmailCustomer}
+                            className="flex gap-2 py-4"
+                        >
+                            <Image
+                                src="/images/emailCustomerService.svg"
+                                alt="Email Customer Service"
+                            />
+                            {t['emailCustomerService']}
+                        </div>
+                    </>
+                )}
             </BottomModal>
         </>
     )

@@ -11,6 +11,8 @@ import {
     useDisclosure,
     Link,
 } from '@chakra-ui/react'
+import axios from 'axios'
+import Cookies from 'js-cookie'
 import React, { useEffect, useState } from 'react'
 import Accordion from '../components/accordion/Accordion'
 import CallphoneIcon from '../public/images/CallphoneIcon.svg'
@@ -24,7 +26,10 @@ import {
     getPayloadForStatusRequest,
     getPayloadForTrackRequest,
 } from '../utilities/confirm-utils'
-import { getDataPerBpp } from '../utilities/orderDetails-utils'
+import {
+    getDataPerBpp,
+    getPayloadForOrderHistoryPost,
+} from '../utilities/orderDetails-utils'
 import TrackIcon from '../public/images/TrackIcon.svg'
 import ViewMoreOrderModal from '../components/orderDetails/ViewMoreOrderModal'
 import useRequest from '../hooks/useRequest'
@@ -65,6 +70,16 @@ const OrderDetails = () => {
     const paymentStatus = {
         'NOT-PAID': t.paymentPending,
         PAID: t.paid,
+    }
+
+    const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL
+
+    const bearerToken = Cookies.get('authToken')
+    const axiosConfig = {
+        headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            'Content-Type': 'application/json', // You can set the content type as needed
+        },
     }
 
     useEffect(() => {
@@ -153,6 +168,10 @@ const OrderDetails = () => {
 
     useEffect(() => {
         if (statusRequest.data) {
+            localStorage.setItem(
+                'statusResponse',
+                JSON.stringify(statusRequest.data)
+            )
             setStatusResponse(statusRequest.data as StatusResponseModel[])
             if (
                 statusRequest.data.every(
@@ -161,6 +180,15 @@ const OrderDetails = () => {
             ) {
                 setAllOrderDelivered(true)
             }
+            const ordersPayload = getPayloadForOrderHistoryPost(
+                statusRequest.data as StatusResponseModel[]
+            )
+            axios
+                .post(`${strapiUrl}/orders`, ordersPayload, axiosConfig)
+                .then((res) => {
+                    return res
+                })
+                .catch((err) => console.error(err))
         }
     }, [statusRequest.data])
 
@@ -446,11 +474,13 @@ const OrderDetails = () => {
                 accordionHeader={
                     <Flex>
                         <Text>{t.paymentText}</Text>
-                        <Image
-                            pl="12px"
-                            src="./images/error.svg"
-                            alt=""
-                        />
+                        {paymentState !== 'PAID' && (
+                            <Image
+                                pl="12px"
+                                src="./images/error.svg"
+                                alt="payment-pending-logo"
+                            />
+                        )}
                     </Flex>
                 }
             >

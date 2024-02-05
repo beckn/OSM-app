@@ -384,9 +384,12 @@ const en: { [key: string]: string } = {
     goBackHome: 'Go Back Home',
     cancelOrder: 'Cancel Order',
     statusLoaderText: 'Please Wait!',
-    stausLoaderSubText: 'While we process your request',
+    stausLoaderSubText:
+        'pendant que nous mettons à jour le statut actuel de votre commande.',
     paymentPending: 'Payment Pending',
     paid: 'Paid',
     payHere: 'Pay Here',
+    supportLoaderText: 'Please wait!',
+    supportLoaderSubText: `We’re fetching support details for you`,
 }
 export default en
