@@ -6,7 +6,6 @@ import CartIcon from '../cart/CartIcon'
 import { useRouter } from 'next/router'
 
 import { useLanguage } from '../../hooks/useLanguage'
-import useRequest from '../../hooks/useRequest'
 import axios from 'axios'
 import { StatusResponseModel } from '../../lib/types/order-details.types'
 import LoaderWithMessage from '../loader/LoaderWithMessage'
