@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Flex, Text, Image } from '@chakra-ui/react'
+import { Box, Flex, Text, Image, useToast } from '@chakra-ui/react'
 import Styles from './SignIn.module.css'
 import style from '../detailsCard/ShippingForm.module.css'
 import { useLanguage } from '../../hooks/useLanguage'
@@ -15,6 +15,7 @@ import Button from '../button/Button'
 
 const SignIn = () => {
     const { t } = useLanguage()
+    const toast = useToast()
     const [formData, setFormData] = useState<SignInPropsModel>({
         email: '',
         password: '',
@@ -75,6 +76,19 @@ const SignIn = () => {
                 Cookies.set('userEmail', email)
                 Router.push('/homePage')
             } else {
+                const errorData = await response.json()
+                toast({
+                    render: () => (
+                        <CustomToast
+                            title="Error!"
+                            message={errorData.error.message}
+                        />
+                    ),
+                    position: 'top',
+                    duration: 2000,
+                    isClosable: true,
+                })
+                console.error('Registration failed')
                 console.error('Sign In failed')
             }
         } catch (error) {
@@ -151,3 +165,31 @@ const SignIn = () => {
 }
 
 export default SignIn
+
+export const CustomToast: React.FC<{ title: string; message: string }> = ({ title, message }) => (
+    <Box
+      mt="2rem"
+      p={4}
+      bg="red.500"
+      color="white"
+      borderRadius="md"
+      boxShadow="md"
+    >
+      <Text
+        fontWeight={700}
+        fontSize={'15px'}
+        color={'white'}
+        textAlign={'center'}
+      >
+        {title}
+      </Text>
+      <Text
+        fontWeight={500}
+        fontSize={'15px'}
+        color={'white'}
+        textAlign={'center'}
+      >
+        {message}
+      </Text>
+    </Box>
+  )
