@@ -369,5 +369,10 @@ const fa: { [key: string]: string } = {
     writeExperience: 'Décrivez votre expérience..',
     completed: 'Complété',
     calcAmount: 'Calculer le montant,',
+    statusLoaderText: `S'il vous plaît, attendez!`,
+    stausLoaderSubText: 'Pendant que nous traitons votre demande',
+    paymentPending: 'Paiement en attente',
+    paid: 'Payé',
+    payHere: 'Payez ici',
 }
 export default fa

@@ -383,5 +383,10 @@ const en: { [key: string]: string } = {
     emailCustomerService: 'Email Customer Service',
     goBackHome: 'Go Back Home',
     cancelOrder: 'Cancel Order',
+    statusLoaderText: 'Please Wait!',
+    stausLoaderSubText: 'While we process your request',
+    paymentPending: 'Payment Pending',
+    paid: 'Paid',
+    payHere: 'Pay Here',
 }
 export default en

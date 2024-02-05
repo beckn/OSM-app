@@ -38,6 +38,7 @@ import PaymentDetails from '../components/detailsCard/PaymentDetails'
 import { QuoteModel } from '../components/detailsCard/PaymentDetails.types'
 import Button from '../components/button/Button'
 import BottomModal from '../components/BottomModal'
+import LoaderWithMessage from '../components/loader/LoaderWithMessage'
 
 const OrderDetails = () => {
     const [allOrderDelivered, setAllOrderDelivered] = useState(false)
@@ -59,6 +60,11 @@ const OrderDetails = () => {
     const paymentMethods = {
         'PRE-FULFILLMENT': t.directPay,
         POST_FULFILLMENT: t.payAtStore,
+    }
+
+    const paymentStatus = {
+        'NOT-PAID': t.paymentPending,
+        PAID: t.paid,
     }
 
     useEffect(() => {
@@ -158,6 +164,15 @@ const OrderDetails = () => {
         }
     }, [statusRequest.data])
 
+    if (statusRequest.loading) {
+        return (
+            <LoaderWithMessage
+                loadingText={t.statusLoaderText}
+                loadingSubText={t.stausLoaderSubText}
+            />
+        )
+    }
+
     if (!confirmData.length || !statusResponse.length) {
         return <></>
     }
@@ -167,7 +182,8 @@ const OrderDetails = () => {
     const orderFromStatusResponse = statusResponse[0].message.order
     const paymentObject = orderFromStatusResponse.payment
 
-    const orderState = paymentObject.status
+    const paymentState = paymentObject.status
+    const paymentLink = paymentObject.uri
     const paymentType = paymentObject.type
 
     const totalQuantityOfOrder = (res: any) => {
@@ -468,16 +484,24 @@ const OrderDetails = () => {
                                     pr="12px"
                                     color={'rgba(var(--color-primary))'}
                                 >
-                                    Payment Pending
+                                    {paymentStatus[paymentState] ?? ''}
                                 </Text>
 
-                                <Link
-                                    href="www.google.com"
-                                    color={'#4D930D'}
-                                    textDecoration="underline"
-                                >
-                                    Pay Here
-                                </Link>
+                                {paymentState !== 'PAID' && (
+                                    <Link
+                                        onClick={() =>
+                                            window.open(
+                                                paymentLink,
+                                                '_blank',
+                                                'popup'
+                                            )
+                                        }
+                                        color={'#4D930D'}
+                                        textDecoration="underline"
+                                    >
+                                        {t.payHere}
+                                    </Link>
+                                )}
                             </Box>
                         </Flex>
                         {/* <Text>{orderState}</Text> */}
