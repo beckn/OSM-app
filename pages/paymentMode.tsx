@@ -5,10 +5,14 @@ import { useDispatch } from 'react-redux'
 import Button from '../components/button/Button'
 import CardWithCheckBox, { PaymentMethodsInfo } from '../components/card/Card'
 import { useLanguage } from '../hooks/useLanguage'
-import creditCardImg from '../public/images/creditCardImg.svg'
+// import creditCardImg from '../public/images/creditCardImg.svg'
 import { cartActions } from '../store/cart-slice'
+import styles from '../components/card/Card.module.css'
 
-function PaymentMode() {
+const PaymentMode = () => {
+    const [checked, setChecked] = useState(false)
+    const [selectedCard, setSelectedCard] = useState(null)
+
     const { t } = useLanguage()
     const [filterMethods, setFilterMethods] = useState<PaymentMethodsInfo[]>([
         {
@@ -53,6 +57,9 @@ function PaymentMode() {
     if (!initResult) {
         return <></>
     }
+    const handleChange = (id: any) => {
+        setSelectedCard(id)
+    }
 
     return (
         <>
@@ -80,9 +87,67 @@ function PaymentMode() {
                         className="border_radius_all"
                         mb={'20px'}
                     >
-                        <CardBody padding={'15px 20px'}>
-                            {/* eslint-disable-next-line jsx-a11y/alt-text */}
-                            <Image src={creditCardImg} />
+                        <CardBody
+                            padding={'15px 20px'}
+                            pb="26px"
+                        >
+                            <Flex
+                                className={styles.checkbox}
+                                mb="40px"
+                            >
+                                <input
+                                    type="checkbox"
+                                    id={'visa'}
+                                    onChange={() => handleChange('visa')}
+                                    checked={selectedCard === 'visa'}
+                                />
+                                <label htmlFor={'visa'}>
+                                    <Text
+                                        mt={'-3px'}
+                                        position={'absolute'}
+                                        width={'70vw'}
+                                        marginLeft="40px"
+                                    >
+                                        <Flex
+                                            alignItems={'center'}
+                                            mt="-6px"
+                                        >
+                                            <Image src={'./images/visa.svg'} />
+                                            <Box pl={'20px'}>
+                                                **** **** **** 1234
+                                            </Box>
+                                        </Flex>
+                                    </Text>
+                                </label>
+                            </Flex>
+                            <Flex className={styles.checkbox}>
+                                <input
+                                    type="checkbox"
+                                    id={'master'}
+                                    onChange={() => handleChange('master')}
+                                    checked={selectedCard === 'master'}
+                                />
+                                <label htmlFor={'master'}>
+                                    <Text
+                                        mt={'-3px'}
+                                        position={'absolute'}
+                                        width={'70vw'}
+                                        marginLeft="40px"
+                                    >
+                                        <Flex
+                                            alignItems={'center'}
+                                            mt="-6px"
+                                        >
+                                            <Image
+                                                src={'./images/master.svg'}
+                                            />
+                                            <Box pl={'20px'}>
+                                                **** **** **** 1234
+                                            </Box>
+                                        </Flex>
+                                    </Text>
+                                </label>
+                            </Flex>
                         </CardBody>
                     </Card>
                 </Box>

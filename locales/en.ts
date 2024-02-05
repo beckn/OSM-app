@@ -379,5 +379,9 @@ const en: { [key: string]: string } = {
     cartEmpty: 'The Cart is Empty',
     cartEmptySpan: 'Look like you haven’t made your choice yet',
     calcAmount: 'Calculate Amount',
+    callCustomerService: 'Call Customer Service',
+    emailCustomerService: 'Email Customer Service',
+    goBackHome: 'Go Back Home',
+    cancelOrder: 'Cancel Order',
 }
 export default en
