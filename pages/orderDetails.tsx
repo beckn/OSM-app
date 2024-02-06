@@ -26,6 +26,7 @@ import {
     formatTimestamp,
     getPayloadForStatusRequest,
     getPayloadForTrackRequest,
+    getPayloadForCancelRequest,
 } from '../utilities/confirm-utils'
 import {
     getDataPerBpp,
@@ -61,9 +62,7 @@ const OrderDetails = () => {
     const trackRequest = useRequest()
     const router = useRouter()
     const { orderId } = router.query
-    const [selectedTypeMethod, setSelectedTypeMethod] = useState<string | null>(
-        null
-    )
+    const cancelRequest = useRequest()
     const { t } = useLanguage()
 
     const paymentMethods = {
@@ -227,6 +226,12 @@ const OrderDetails = () => {
         }
     }, [statusRequest.data])
 
+    useEffect(() => {
+        if (cancelRequest.data) {
+            window.location.reload()
+        }
+    }, [cancelRequest.data])
+
     if (statusRequest.loading) {
         return (
             <LoaderWithMessage
@@ -282,6 +287,15 @@ const OrderDetails = () => {
                 ...type,
                 checked: type.id === id ? !type.checked : false,
             }))
+        )
+    }
+
+    const handleCancelButton = () => {
+        const cancelPayload = getPayloadForCancelRequest(statusResponse[0])
+        return cancelRequest.fetchData(
+            `${apiUrl}/client/v2/cancel`,
+            'POST',
+            cancelPayload
         )
     }
 
@@ -611,83 +625,98 @@ const OrderDetails = () => {
                     isOpen={cancelOrderModalOpen}
                     onClose={() => {}}
                 >
-                    <Box padding={'8px'}>
-                        <Flex
-                            justifyContent={'space-between'}
-                            alignItems="center"
-                            pb={'20px'}
-                            pt="6px"
-                        >
-                            <Text
-                                fontSize={'17px'}
-                                fontWeight="600"
-                            >
-                                {t.orderCancellation}
-                            </Text>
-                            <Image
-                                onClick={cancelOrderModalClose}
-                                src="./images/crossIcon.svg"
-                                alt="cross img"
-                            />
-                        </Flex>
-                        <Divider />
+                    {cancelRequest.loading ? (
+                        <LoaderWithMessage
+                            loadingText={t.supportLoaderText}
+                            loadingSubText={t.cancelLoaderSubText}
+                        />
+                    ) : (
+                        <>
+                            <Box padding={'8px'}>
+                                <Flex
+                                    justifyContent={'space-between'}
+                                    alignItems="center"
+                                    pb={'20px'}
+                                    pt="6px"
+                                >
+                                    <Text
+                                        fontSize={'17px'}
+                                        fontWeight="600"
+                                    >
+                                        {t.orderCancellation}
+                                    </Text>
+                                    <Image
+                                        onClick={cancelOrderModalClose}
+                                        src="./images/crossIcon.svg"
+                                        alt="cross img"
+                                    />
+                                </Flex>
+                                <Divider />
 
-                        <Text
-                            pt={'20px'}
-                            pb="15px"
-                            fontWeight={'500'}
-                            fontSize={'15px'}
-                        >
-                            {t.cancellationType}
-                        </Text>
-
-                        {cancellationType.map((Type, ind) => {
-                            return (
-                                <Box
-                                    key={Type.id}
-                                    className={styles.checkbox}
-                                    mb={'15px'}
+                                <Text
+                                    pt={'20px'}
+                                    pb="15px"
+                                    fontWeight={'500'}
                                     fontSize={'15px'}
                                 >
-                                    <input
-                                        type="checkbox"
-                                        id={Type.id}
-                                        checked={Type.checked || false}
-                                        onChange={() =>
-                                            handleCheckboxChange(Type.id)
-                                        }
-                                    />
-                                    <label
-                                        htmlFor={Type.id}
-                                        style={{ left: '24px' }}
-                                    >
-                                        <Text
-                                            mt={'-3px'}
-                                            position={'absolute'}
-                                            width={'50vw'}
-                                            marginLeft="40px"
+                                    {t.cancellationType}
+                                </Text>
+
+                                {cancellationType.map((Type, ind) => {
+                                    return (
+                                        <Box
+                                            key={Type.id}
+                                            className={styles.checkbox}
+                                            mb={'15px'}
+                                            fontSize={'15px'}
                                         >
-                                            {Type.cancellationTypeText}
-                                        </Text>
-                                    </label>
-                                </Box>
-                            )
-                        })}
-                        <Textarea
-                            w="332px"
-                            height="124px"
-                            resize="none"
-                            placeholder="Please specify the reason"
-                            boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -2px rgba(0, 0, 0, 0.1)"
-                            mb={'15px'}
-                        />
-                    </Box>
-                    <Button
-                        buttonText={t.proceedToPay}
-                        isDisabled={true}
-                        type={'solid'}
-                        handleOnClick={() => {}}
-                    />
+                                            <input
+                                                type="checkbox"
+                                                id={Type.id}
+                                                checked={Type.checked || false}
+                                                onChange={() =>
+                                                    handleCheckboxChange(
+                                                        Type.id
+                                                    )
+                                                }
+                                            />
+                                            <label
+                                                htmlFor={Type.id}
+                                                style={{ left: '24px' }}
+                                            >
+                                                <Text
+                                                    mt={'-3px'}
+                                                    position={'absolute'}
+                                                    width={'50vw'}
+                                                    marginLeft="40px"
+                                                >
+                                                    {Type.cancellationTypeText}
+                                                </Text>
+                                            </label>
+                                        </Box>
+                                    )
+                                })}
+                                <Textarea
+                                    w="332px"
+                                    height="124px"
+                                    resize="none"
+                                    placeholder="Please specify the reason"
+                                    boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -2px rgba(0, 0, 0, 0.1)"
+                                    mb={'15px'}
+                                />
+                            </Box>
+                            <Button
+                                buttonText={t.proceedToPay}
+                                isDisabled={
+                                    !cancellationType.some(
+                                        (type) => type.checked
+                                    )
+                                }
+                                type={'solid'}
+                                handleOnClick={handleCancelButton}
+                            />
+                        </>
+                    )}
                 </BottomModal>
             </Box>
         </>

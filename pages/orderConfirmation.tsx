@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
 import { Box, Image, Stack, Text } from '@chakra-ui/react'
 import { useSelector } from 'react-redux'
@@ -13,6 +14,7 @@ import { TransactionIdRootState } from '../lib/types/cart'
 import LoaderWithMessage from '../components/loader/LoaderWithMessage'
 
 const OrderConfirmation = () => {
+    const [paymentType, setPaymentType] = useState('')
     const { t } = useLanguage()
     const confirmRequest = useRequest()
     const router = useRouter()
@@ -28,13 +30,17 @@ const OrderConfirmation = () => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
     useEffect(() => {
-        if (initResponse) {
+        setPaymentType(router?.query?.paymentType as string)
+    }, [router.isReady])
+
+    useEffect(() => {
+        if (initResponse && paymentType.trim().length) {
             const initMetaDataPerBpp = getInitMetaDataPerBpp(initResponse)
 
             const payLoadForConfirmRequest = getPayloadForConfirmRequest(
                 initMetaDataPerBpp,
                 transactionId,
-                localStorage.getItem('userPhone') as string
+                paymentType
             )
             confirmRequest.fetchData(
                 `${apiUrl}/client/v2/confirm`,
@@ -43,13 +49,14 @@ const OrderConfirmation = () => {
             )
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [paymentType])
 
     useEffect(() => {
         if (
             !initResponse &&
             localStorage &&
-            localStorage.getItem('initResult')
+            localStorage.getItem('initResult') &&
+            paymentType.trim().length
         ) {
             const parsedInitResult = JSON.parse(
                 localStorage.getItem('initResult') as string
@@ -59,7 +66,7 @@ const OrderConfirmation = () => {
             const payLoadForConfirmRequest = getPayloadForConfirmRequest(
                 initMetaDataPerBpp,
                 transactionId,
-                localStorage.getItem('userPhone') as string
+                paymentType
             )
             confirmRequest.fetchData(
                 `${apiUrl}/client/v2/confirm`,
@@ -68,7 +75,7 @@ const OrderConfirmation = () => {
             )
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [paymentType, initResponse])
 
     useEffect(() => {
         if (confirmRequest.data) {
@@ -97,7 +104,16 @@ const OrderConfirmation = () => {
         )
     }
 
-    if (confirmRequest.error) {
+    if (
+        confirmRequest.error ||
+        (confirmRequest.data &&
+            (confirmRequest.data[0].message.responses.length === 0 ||
+                confirmRequest.data[0].message.responses?.[0]?.error))
+    ) {
+        toast.error('Something went wrong', {
+            position: 'top-center',
+        })
+
         return <></>
     }
 

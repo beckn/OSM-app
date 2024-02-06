@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Flex, Text, Image, Card, CardBody } from '@chakra-ui/react'
-import { useRouter } from 'next/router'
+import Router from 'next/router'
 import { useDispatch } from 'react-redux'
 import Button from '../components/button/Button'
 import CardWithCheckBox, { PaymentMethodsInfo } from '../components/card/Card'
@@ -26,13 +26,16 @@ const PaymentMode = () => {
             paymentMethod: t.payAtStore,
         },
     ])
+    const paymentTypeMapper = {
+        direct_pay: 'PRE_FULFILLMENT',
+        pay_at_store: 'POST_FULFILLMENT',
+    }
     const [initResult, setInitResult] = useState<any>(null)
     const [paymentLink, setPaymentLink] = useState('')
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
         string | null
     >(null)
 
-    const router = useRouter()
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -179,10 +182,28 @@ const PaymentMode = () => {
                         ) {
                             window.open(paymentLink, '_blank', 'popup')
                             dispatch(cartActions.clearCart())
-                            router.push('/orderConfirmation')
+
+                            Router.push({
+                                pathname: '/orderConfirmation',
+                                query: {
+                                    paymentType:
+                                        paymentTypeMapper[
+                                            selectedPaymentMethod as string
+                                        ],
+                                },
+                            })
                         } else {
                             dispatch(cartActions.clearCart())
-                            router.push('/orderConfirmation')
+
+                            Router.push({
+                                pathname: '/orderConfirmation',
+                                query: {
+                                    paymentType:
+                                        paymentTypeMapper[
+                                            selectedPaymentMethod as string
+                                        ],
+                                },
+                            })
                         }
                     }}
                 />

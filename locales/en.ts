@@ -392,5 +392,6 @@ const en: { [key: string]: string } = {
     supportLoaderSubText: `We’re fetching support details for you`,
     orderCancellation: 'Order Cancellation',
     cancellationType: 'Please select the reason for cancellation',
+    cancelLoaderSubText: 'While we process your request',
 }
 export default en

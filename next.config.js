@@ -18,6 +18,7 @@ const nextConfig = {
             'cdn.shopify.com',
             'retail-bpp-infra2.becknprotocol.io',
             'wordpress.humbhionline.in',
+            'cdnaz.plotch.io',
         ],
     },
     webpack: function (config) {

@@ -11,6 +11,7 @@ const orderStatusMap = {
     PACKED: 'orderPacked',
     SHIPPED: 'outForDelivery',
     DELIVERED: 'orderDelivered',
+    Cancelled: 'Cancelled',
 }
 
 export const orderCardStatusMap = {

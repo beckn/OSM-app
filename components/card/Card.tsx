@@ -18,8 +18,6 @@ export interface CardWithCheckBoxPropsModel {
 }
 
 const CardWithCheckBox: React.FC<CardWithCheckBoxPropsModel> = (props) => {
-    const { t } = useLanguage()
-
     const handleChange = (id: string) => {
         props.setSelectedPaymentMethod(
             id === props.selectedPaymentMethod ? null : id

@@ -238,21 +238,17 @@ const CheckoutPage = () => {
         return !!initRequest.data
     }
 
-    const hasError = initRequest.error
-
-    const hasNoResponses =
-        initRequest.data &&
-        initRequest.data[0].message.catalogs.responses.length === 0
-    const responseHasError =
-        initRequest.data &&
-        initRequest.data[0].message.catalogs.responses[0].error
-
-    if (hasError || hasNoResponses || responseHasError) {
-        toast.error('Something went wrong! Please try again', {
+    if (
+        initRequest.error ||
+        (initRequest.data &&
+            (initRequest.data[0].message.catalogs.responses.length === 0 ||
+                initRequest.data[0].message.catalogs.responses?.[0]?.error))
+    ) {
+        toast.error('Something went wrong', {
             position: 'top-center',
         })
 
-        return <></> // or return null; to render nothing
+        return <></>
     }
 
     return (
@@ -434,13 +430,6 @@ const CheckoutPage = () => {
             <ButtonComp
                 buttonText={t.calcAmount}
                 handleOnClick={() => {
-                    // TODO :_ To check this again
-
-                    // if (isBillingAddressSameAsShippingAddress) {
-                    //   const copiedFormData = structuredClone(formData);
-                    //   setBillingFormData(copiedFormData);
-                    // }
-
                     fetchInit(
                         cartItems,
                         transactionId,

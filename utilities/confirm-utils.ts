@@ -1,3 +1,4 @@
+import { StatusResponseModel } from '../lib/types/order-details.types'
 import { ResponseModel } from '../lib/types/responseModel'
 
 export const getInitMetaDataPerBpp = (initRes: ResponseModel[]) => {
@@ -33,7 +34,7 @@ export const getConfirmMetaDataForBpp = (initRes: ResponseModel[]) => {
 export const getPayloadForConfirmRequest = (
     initMetaDataPerBpp: any,
     transactionId: { transactionId: string },
-    userId: string
+    paymentType: string
 ) => {
     const payload: any = {
         confirmRequestDto: [],
@@ -196,4 +197,36 @@ export function formatTimestamp(timestamp: string) {
     const formattedDate = `${day}${ordinalSuffix} ${month} ${year}, ${hours}.${minutes}${period}`
 
     return formattedDate
+}
+
+export const getPayloadForCancelRequest = (
+    statusResponse: StatusResponseModel
+) => {
+    const {
+        context: { bpp_id, bpp_uri, transaction_id, domain },
+        message: {
+            order: { id },
+        },
+    } = statusResponse
+    const cancelPayload = {
+        cancelRequestDto: [
+            {
+                context: {
+                    bpp_id,
+                    bpp_uri,
+                    transaction_id,
+                    domain: 'retail',
+                },
+                message: {
+                    order_id: id,
+                    cancellation_reason_id: '4',
+                    descriptor: {
+                        short_desc: 'Order delayed',
+                    },
+                },
+            },
+        ],
+    }
+
+    return cancelPayload
 }
