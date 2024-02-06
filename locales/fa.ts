@@ -380,5 +380,15 @@ const fa: { [key: string]: string } = {
     yourOrderHasBeencancel: 'Votre commande a été annulée',
     ifYouPaid: 'Si vous avez déjà payé, vous recevrez ',
     refundedSoon : 'remboursé bientôt',
+    devicelocationisnotenabled : `La localisation de l'appareil n'est pas activée`,
+    accessToProvideLocation :"Veuillez fournir l'autorisation d'accéder à une livraison meilleure et sans tracas",
+    searchForLocation : 'Rechercher un emplacement',
+    yourLocation : 'Votre emplacement',
+    searchForanything:"Rechercher n'importe quoi",
+    localeeOpen:"locale ouvert",
+    homePara:" Un marché mondial pour découvrir et acheter tout ce dont vous avez besoin. Tapez simplement ce que vous souhaitez acheter et nous nous occuperons du reste. ",
+    searchbyLocation : "Rechercher un magasin par emplacement"
+
+
 }
 export default fa

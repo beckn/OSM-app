@@ -21,7 +21,8 @@ const cartIconBlackList = [
     '/cart',
     '/checkoutPage',
     '/paymentMode',
-    '/orderCancellation'
+    '/orderCancellation',
+    '/searchByLocation',
 ]
 
 const backIconList = ['/', '/orderDetails']
@@ -64,7 +65,7 @@ const headerValuesFrench = {
 
 const topHeaderBlackList: string[] = []
 
-const bottomHeaderBlackList = ['/homePage', '/orderConfirmation','/orderCancellation']
+const bottomHeaderBlackList = ['/homePage', '/orderConfirmation','/orderCancellation','/searchByLocation',]
 
 const menuIconWhiteList = ['/homePage']
 
