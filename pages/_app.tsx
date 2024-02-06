@@ -9,7 +9,12 @@ import "react-toastify/dist/ReactToastify.css";
 import {ChakraProvider} from '@chakra-ui/react'
 
 import "../styles/globals.css";
+import { Garuda } from 'garudaa';
 
+Garuda.init({
+	projectId: "65c1eabacbe90cafae918622",
+	host: 'https://garuda-api.becknprotocol.io',
+});
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider>
