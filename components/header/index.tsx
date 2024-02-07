@@ -49,7 +49,8 @@ const headerValues = {
     '/signUp': 'Sign Up',
     '/cart': 'Cart',
     '/paymentMode': 'Select Payment Method',
-    feedback: 'Feedback',
+    "/feedback": 'Feedback',
+    "/orderConfirmation":"Order Confirmation"
 }
 
 const headerValuesFrench = {
@@ -60,12 +61,13 @@ const headerValuesFrench = {
     '/signUp': 'Sign Up',
     '/cart': 'Panier',
     '/paymentMode': 'Sélectionner la Méthode de Paiement',
-    feedback: "Retour d'Information",
+    "/feedback": "Retour d'Information",
+    "/orderConfirmation": "Confirmation de commande"
 }
 
 const topHeaderBlackList: string[] = []
 
-const bottomHeaderBlackList = ['/homePage', '/orderConfirmation','/orderCancellation','/searchByLocation',]
+const bottomHeaderBlackList = ['/homePage','/orderCancellation','/searchByLocation',]
 
 const menuIconWhiteList = ['/homePage']
 
