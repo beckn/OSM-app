@@ -127,7 +127,9 @@ const HomePage = () => {
                 <GeoLocationInput
                     searchInputValue={searchTerm}
                     setSearchInputValue={setSearchTerm}
-                    homeSearchInputButtonHandler={() => {}}
+                    homeSearchInputButtonHandler={() => {
+                        router.push(`/search?searchTerm=${searchTerm}`)
+                    }}
                 />
             </Box>
             <Flex

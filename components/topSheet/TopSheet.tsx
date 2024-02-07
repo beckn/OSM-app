@@ -13,7 +13,6 @@ import {
     Skeleton,
 } from '@chakra-ui/react'
 import { extendTheme } from '@chakra-ui/react'
-import style from './TopSheet.module.css'
 import { useLanguage } from '../../hooks/useLanguage'
 import { IGeoLocationSearchPageRootState } from '../../lib/types/geoLocationSearchPage'
 import { useDispatch, useSelector } from 'react-redux'
@@ -45,7 +44,7 @@ const TopSheet: React.FC<TopSheetPropsModel> = (props) => {
 
     const dispatch = useDispatch()
     const {
-        currentAddress,
+        currentAddress = '',
         currentLocationFetchError,
         loadingForCurrentAddress,
     } = props
@@ -64,10 +63,6 @@ const TopSheet: React.FC<TopSheetPropsModel> = (props) => {
         geoLocationSearchPageSelectedAddress ||
         currentAddress ||
         ''
-
-    if (!props.currentAddress && !geoLocationSearchPageSelectedAddress) {
-        return <></>
-    }
 
     return (
         <ChakraProvider theme={theme}>
@@ -108,7 +103,7 @@ const TopSheet: React.FC<TopSheetPropsModel> = (props) => {
                                             onClick={onOpen}
                                             pt={'4px'}
                                             src="/images/downArrow.svg"
-                                            alt='downArrow icon'
+                                            alt="icon-for-opening-topsheet"
                                         />
                                     </>
                                 )}

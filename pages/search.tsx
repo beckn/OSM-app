@@ -8,6 +8,7 @@ import { responseDataActions } from '../store/responseData-slice'
 import { RetailItem } from '../lib/types/products'
 import Loader from '../components/loader/Loader'
 import { useLanguage } from '../hooks/useLanguage'
+import { useRouter } from 'next/router'
 
 //Mock data for testing search API. Will remove after the resolution of CORS issue
 
@@ -23,11 +24,33 @@ const Search = () => {
 
     const { data, loading, error, fetchData } = useRequest()
 
+    const router = useRouter()
+
     const categoryMap = {
         Books: { en: 'BookEnglish', fa: 'BookFrench' },
         restaurant: { en: 'FoodEnglish', fa: 'FoodFrench' },
         Shopping: { en: 'retail', fa: 'retail' },
     }
+
+    useEffect(() => {
+        if (router.query.searchTerm) {
+            const searchTerm = router.query.searchTerm
+            const searchPayload = {
+                context: {
+                    domain: 'retail',
+                },
+                message: {
+                    criteria: {
+                        dropLocation: '48.85041854,2.343660801',
+                        categoryName: 'Retail',
+                        searchString: searchTerm,
+                    },
+                },
+            }
+
+            fetchData(`${apiUrl}/client/v2/search`, 'POST', searchPayload)
+        }
+    }, [router.isReady])
 
     useEffect(() => {
         if (localStorage) {
@@ -74,43 +97,6 @@ const Search = () => {
                 },
             },
         })
-
-    useEffect(() => {
-        if (localStorage && localStorage.getItem('searchItems')) {
-            const cachedSearchResults = localStorage.getItem('searchItems')
-            if (cachedSearchResults) {
-                const parsedCachedResults = JSON.parse(cachedSearchResults)
-                if (providerId) {
-                    if (!parsedCachedResults.hasOwnProperty(providerId)) {
-                        fetchData(
-                            `${apiUrl}/client/v2/search`,
-                            'POST',
-                            searchPayload
-                        )
-                    }
-                }
-            }
-        } else {
-            if (providerId) {
-                fetchData(`${apiUrl}/client/v2/search`, 'POST', searchPayload)
-            }
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [providerId])
-
-    useEffect(() => {
-        if (localStorage) {
-            const cachedSearchResults = localStorage.getItem('searchItems')
-            if (cachedSearchResults) {
-                const parsedCachedResults = JSON.parse(cachedSearchResults)
-                const parsedCachedResultsArray =
-                    Object.keys(parsedCachedResults)
-                const firstKey = parsedCachedResultsArray[0]
-                setItems(parsedCachedResults[firstKey])
-            }
-        }
-    }, [])
 
     useEffect(() => {
         if (data) {
