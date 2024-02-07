@@ -261,7 +261,7 @@ const OrderDetails = () => {
 
     useEffect(() => {
         if (cancelRequest.data) {
-            window.location.reload()
+            router.push('/orderCancellation')
         }
     }, [cancelRequest.data])
 
