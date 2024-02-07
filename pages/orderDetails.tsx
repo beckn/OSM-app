@@ -47,6 +47,7 @@ import Button from '../components/button/Button'
 import BottomModal from '../components/BottomModal'
 import LoaderWithMessage from '../components/loader/LoaderWithMessage'
 import styles from '../components/card/Card.module.css'
+import CancelOrder from '../components/orderDetails/cancelOrder/cancel-order'
 
 const OrderDetails = () => {
     const [allOrderDelivered, setAllOrderDelivered] = useState(false)
@@ -164,7 +165,39 @@ const OrderDetails = () => {
     }, [])
 
     useEffect(() => {
-        if (localStorage) {
+        if (localStorage && localStorage.getItem('selectedOrderFromHistory')) {
+            const parsedOrderFromHistory = JSON.parse(
+                localStorage.getItem('selectedOrderFromHistory') as string
+            )
+            const { bppId, bppUri, orderId, transaction_id } =
+                parsedOrderFromHistory
+            const payLoadForStatusRequest = {
+                statusRequestDto: [
+                    {
+                        context: {
+                            transaction_id: transaction_id,
+                            bpp_id: bppId,
+                            bpp_uri: bppUri,
+                            domain: 'retail',
+                        },
+
+                        message: {
+                            order_id: orderId,
+                        },
+                    },
+                ],
+            }
+
+            statusRequest.fetchData(
+                `${apiUrl}/client/v2/status`,
+                'POST',
+                payLoadForStatusRequest
+            )
+        }
+    }, [])
+
+    useEffect(() => {
+        if (localStorage && localStorage.getItem('confirmData')) {
             const stringifiedConfirmData = localStorage.getItem('confirmData')
             if (stringifiedConfirmData) {
                 const parsedConfirmedData = JSON.parse(stringifiedConfirmData)
@@ -241,7 +274,7 @@ const OrderDetails = () => {
         )
     }
 
-    if (!confirmData.length || !statusResponse.length) {
+    if (!statusResponse.length) {
         return <></>
     }
 
@@ -631,91 +664,12 @@ const OrderDetails = () => {
                             loadingSubText={t.cancelLoaderSubText}
                         />
                     ) : (
-                        <>
-                            <Box padding={'8px'}>
-                                <Flex
-                                    justifyContent={'space-between'}
-                                    alignItems="center"
-                                    pb={'20px'}
-                                    pt="6px"
-                                >
-                                    <Text
-                                        fontSize={'17px'}
-                                        fontWeight="600"
-                                    >
-                                        {t.orderCancellation}
-                                    </Text>
-                                    <Image
-                                        onClick={cancelOrderModalClose}
-                                        src="./images/crossIcon.svg"
-                                        alt="cross img"
-                                    />
-                                </Flex>
-                                <Divider />
-
-                                <Text
-                                    pt={'20px'}
-                                    pb="15px"
-                                    fontWeight={'500'}
-                                    fontSize={'15px'}
-                                >
-                                    {t.cancellationType}
-                                </Text>
-
-                                {cancellationType.map((Type, ind) => {
-                                    return (
-                                        <Box
-                                            key={Type.id}
-                                            className={styles.checkbox}
-                                            mb={'15px'}
-                                            fontSize={'15px'}
-                                        >
-                                            <input
-                                                type="checkbox"
-                                                id={Type.id}
-                                                checked={Type.checked || false}
-                                                onChange={() =>
-                                                    handleCheckboxChange(
-                                                        Type.id
-                                                    )
-                                                }
-                                            />
-                                            <label
-                                                htmlFor={Type.id}
-                                                style={{ left: '24px' }}
-                                            >
-                                                <Text
-                                                    mt={'-3px'}
-                                                    position={'absolute'}
-                                                    width={'50vw'}
-                                                    marginLeft="40px"
-                                                >
-                                                    {Type.cancellationTypeText}
-                                                </Text>
-                                            </label>
-                                        </Box>
-                                    )
-                                })}
-                                <Textarea
-                                    w="332px"
-                                    height="124px"
-                                    resize="none"
-                                    placeholder="Please specify the reason"
-                                    boxShadow="0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -2px rgba(0, 0, 0, 0.1)"
-                                    mb={'15px'}
-                                />
-                            </Box>
-                            <Button
-                                buttonText={t.proceedToPay}
-                                isDisabled={
-                                    !cancellationType.some(
-                                        (type) => type.checked
-                                    )
-                                }
-                                type={'solid'}
-                                handleOnClick={handleCancelButton}
-                            />
-                        </>
+                        <CancelOrder
+                            cancelOrderModalClose={cancelOrderModalClose}
+                            cancellationType={cancellationType}
+                            handleCancelButtonClick={handleCancelButton}
+                            handleCheckboxChange={handleCheckboxChange}
+                        />
                     )}
                 </BottomModal>
             </Box>

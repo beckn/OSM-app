@@ -1,16 +1,14 @@
-import { Box } from '@chakra-ui/react'
-import Link from 'next/link'
+import { Box, Text } from '@chakra-ui/react'
+import Cookies from 'js-cookie'
+import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import DetailsCard from '../components/detailsCard/DetailsCard'
-import Loader from '../components/loader/Loader'
+import LoaderWithMessage from '../components/loader/LoaderWithMessage'
+import { orderHistoryData } from '../components/orderHistory/order-history.types'
 import OrderHistoryDetails from '../components/orderHistory/OrderHistoryDetails'
 import { useLanguage } from '../hooks/useLanguage'
-import useRequest from '../hooks/useRequest'
-import { getOrderPlacementTimeline } from '../utilities/confirm-utils'
-import {
-    getTotalPriceOfSingleOrder,
-    getTotalQuantityOfSingleOrder,
-} from '../utilities/orderHistory-utils'
+import { formatTimestamp } from '../utilities/confirm-utils'
 
 const orderStatusMap = {
     INITIATED: 'pending',
@@ -21,95 +19,111 @@ const orderStatusMap = {
 }
 
 const OrderHistory = () => {
-    const [orderHistoryList, setOrderHistoryList] = useState<any>([])
-    const { data, fetchData, loading, error } = useRequest()
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL
+    const [orderHistoryList, setOrderHistoryList] = useState<
+        orderHistoryData[]
+    >([])
+    const [isLoading, setIsLoading] = useState(true)
+    const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL
+    const [error, setError] = useState('')
+
     const { t } = useLanguage()
 
+    const bearerToken = Cookies.get('authToken')
+    const router = useRouter()
+
     useEffect(() => {
-        if (localStorage && localStorage.getItem('userPhone')) {
-            fetchData(
-                `${apiUrl}/client/v2/orders?userId=${localStorage.getItem(
-                    'userPhone'
-                )}`,
-                'GET'
-            )
+        let myHeaders = new Headers()
+        myHeaders.append('Authorization', `Bearer ${bearerToken}`)
+
+        let requestOptions: RequestInit = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow',
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        fetch(`${strapiUrl}/orders?filters[category]=6`, requestOptions)
+            .then((response) => response.json())
+            .then((result) => {
+                console.log('resluttt', result)
+                if (result.error) {
+                    return setError(result.error.message)
+                }
+                const data: orderHistoryData[] = result.data
+                setOrderHistoryList(data.reverse())
+                setIsLoading(false)
+            })
+            .catch((error) => {
+                setIsLoading(false)
+            })
+            .finally(() => setIsLoading(false))
     }, [])
 
-    useEffect(() => {
-        if (data) {
-            const ordersArray = (data as any).orders
-            localStorage.setItem(
-                'orderHistoryArray',
-                JSON.stringify(ordersArray)
-            )
-            setOrderHistoryList(ordersArray)
-        }
-    }, [data])
-
-    if (loading) {
-        return <Loader />
+    if (isLoading) {
+        return (
+            <LoaderWithMessage
+                loadingText={t.supportLoaderText}
+                loadingSubText={t.cancelLoaderSubText}
+            />
+        )
     }
 
     if (!orderHistoryList.length) {
-        return <p>No orders placed</p>
+        return <Text>No orders placed</Text>
     }
 
     if (error) {
-        return <></>
+        toast.error('Something went wrong', {
+            position: 'top-center',
+        })
     }
 
-    return orderHistoryList.map((orderInHistory: any, index: number) => {
-        if (
-            orderInHistory.orders.length > 0 &&
-            orderInHistory.orders[0].message.responses.length > 0
-        ) {
-            const createdAt = getOrderPlacementTimeline(
-                orderInHistory.orders.length > 0
-                    ? orderInHistory.orders[0].message.responses?.[0]?.message
-                          ?.order?.created_at
-                    : ''
-            )
+    return (
+        <>
+            {orderHistoryList.map((orderHistory) => {
+                const { attributes, id } = orderHistory
 
-            const totalQuantityOfSingleOrder = getTotalQuantityOfSingleOrder(
-                orderInHistory.orders
-            )
-            const totalPriceOfSingleOrder = getTotalPriceOfSingleOrder(
-                orderInHistory.orders
-            )
-            const orderState =
-                orderInHistory?.orders?.[0]?.message?.responses[0]?.message
-                    ?.order?.state
+                const {
+                    createdAt,
+                    bpp_id,
+                    bpp_uri,
+                    order_id,
+                    items,
+                    payments,
+                    delivery_status,
+                    transaction_id,
+                } = attributes
 
-            return (
-                <Link
-                    key={index}
-                    href={{
-                        pathname: '/orderDetails',
-                        query: { orderId: orderInHistory.parentOrderId },
-                    }}
-                >
+                return (
                     <Box
-                        key={index}
+                        onClick={() => {
+                            const orderObjectForStatusCall = {
+                                bppId: bpp_id,
+                                bppUri: bpp_uri,
+                                orderId: order_id,
+                                transaction_id: transaction_id,
+                            }
+                            localStorage.setItem(
+                                'selectedOrderFromHistory',
+                                JSON.stringify(orderObjectForStatusCall)
+                            )
+                            router.push('/orderDetails')
+                        }}
+                        key={id}
                         pt={'20px'}
                     >
                         <DetailsCard>
                             <OrderHistoryDetails
-                                createdAt={createdAt}
-                                orderId={orderInHistory.parentOrderId}
-                                quantity={totalQuantityOfSingleOrder}
-                                totalAmount={totalPriceOfSingleOrder}
-                                orderState={t[`${orderStatusMap[orderState]}`]}
+                                createdAt={formatTimestamp(createdAt)}
+                                orderId={order_id}
+                                quantity={items.length}
+                                totalAmountWithCurrency={payments.params}
+                                orderState={delivery_status}
                             />
                         </DetailsCard>
                     </Box>
-                </Link>
-            )
-        }
-        return <></>
-    })
+                )
+            })}
+        </>
+    )
 }
 
 export default OrderHistory
