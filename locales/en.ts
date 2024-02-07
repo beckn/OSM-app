@@ -407,4 +407,5 @@ const en: { [key: string]: string } = {
     homePara:" A global marketplace to discover and buy anything you need. Just type what you want to buy and we'll take care of the rest.",
     searchbyLocation:"Search store by location"
 }
+
 export default en
