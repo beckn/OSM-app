@@ -12,6 +12,7 @@ import {
 } from '../utilities/confirm-utils'
 import { TransactionIdRootState } from '../lib/types/cart'
 import LoaderWithMessage from '../components/loader/LoaderWithMessage'
+import Button from '../components/button/Button'
 
 const OrderConfirmation = () => {
     const [paymentType, setPaymentType] = useState('')
@@ -76,24 +77,13 @@ const OrderConfirmation = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [paymentType, initResponse])
-
-    useEffect(() => {
-        if (confirmRequest.data) {
-            localStorage.setItem(
-                'confirmData',
-                JSON.stringify(confirmRequest.data)
-            )
-            const timeout = setTimeout(() => {
-                router.push('/orderDetails')
-            }, 3000)
-
-            // Clean up the timeout on component unmount
-            return () => {
-                clearTimeout(timeout)
-            }
+    
+    const handleOrderDetailsPage=()=>{
+        if (confirmRequest.data){
+            localStorage.setItem('confirmData',  JSON.stringify(confirmRequest.data))
+            router.push("/orderDetails")
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [confirmRequest.data])
+    }
 
     if (confirmRequest.loading) {
         return (
@@ -141,6 +131,23 @@ const OrderConfirmation = () => {
                     {t.confirmMessage1} <br />
                     {t.confirmMessage2}
                 </Text>
+            </Stack>
+            <Stack>
+            <Box mt={"20px"}>
+            <Button
+                    buttonText={'View Order Details'}
+                    isDisabled={false}
+                    type={'solid'}
+                    handleOnClick={handleOrderDetailsPage}
+                />
+                <Button
+                    buttonText={'Go Back Home'}
+                    isDisabled={false}
+                    type={'outline'}
+                    handleOnClick={() => router.push('/homePage')}
+                />
+              
+            </Box>
             </Stack>
         </Box>
     )
