@@ -8,6 +8,7 @@ import { responseDataActions } from '../store/responseData-slice'
 import { RetailItem } from '../lib/types/products'
 import Loader from '../components/loader/Loader'
 import { useLanguage } from '../hooks/useLanguage'
+import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
 
 //Mock data for testing search API. Will remove after the resolution of CORS issue
@@ -31,41 +32,6 @@ const Search = () => {
         restaurant: { en: 'FoodEnglish', fa: 'FoodFrench' },
         Shopping: { en: 'retail', fa: 'retail' },
     }
-
-    useEffect(() => {
-        if (router.query.searchTerm) {
-            const searchTerm = router.query.searchTerm
-            const searchPayload = {
-                context: {
-                    domain: 'retail',
-                },
-                message: {
-                    criteria: {
-                        dropLocation: '48.85041854,2.343660801',
-                        categoryName: 'Retail',
-                        searchString: searchTerm,
-                    },
-                },
-            }
-
-            fetchData(`${apiUrl}/client/v2/search`, 'POST', searchPayload)
-        }
-    }, [router.isReady])
-
-    useEffect(() => {
-        if (localStorage) {
-            const stringifiedOptiontags = localStorage.getItem('optionTags')
-            const stringifiedSelectedOption =
-                localStorage.getItem('selectedOption')
-            if (stringifiedOptiontags) {
-                const providerId = JSON.parse(stringifiedOptiontags).providerId
-                setProviderId(providerId)
-            }
-            if (stringifiedSelectedOption) {
-                setTagValue(JSON.parse(stringifiedSelectedOption).tagValue)
-            }
-        }
-    }, [])
 
     const categoryName = () => {
         if (tagValue && categoryMap[tagValue]) {
@@ -97,6 +63,48 @@ const Search = () => {
                 },
             },
         })
+
+    useEffect(() => {
+        if (router.query.searchTerm) {
+            const searchTerm = router.query.searchTerm
+            const searchPayloadWithSearchQuery = {
+                context: {
+                    domain: 'retail',
+                },
+                message: {
+                    criteria: {
+                        dropLocation: '48.85041854,2.343660801',
+                        categoryName: 'Retail',
+                        searchString: searchTerm,
+                    },
+                },
+            }
+
+            fetchData(
+                `${apiUrl}/client/v2/search`,
+                'POST',
+                searchPayloadWithSearchQuery
+            )
+        }
+        if (providerId) {
+            fetchData(`${apiUrl}/client/v2/search`, 'POST', searchPayload)
+        }
+    }, [router.isReady, providerId])
+
+    useEffect(() => {
+        if (localStorage) {
+            const stringifiedOptiontags = localStorage.getItem('optionTags')
+            const stringifiedSelectedOption =
+                localStorage.getItem('selectedOption')
+            if (stringifiedOptiontags) {
+                const providerId = JSON.parse(stringifiedOptiontags).providerId
+                setProviderId(providerId)
+            }
+            if (stringifiedSelectedOption) {
+                setTagValue(JSON.parse(stringifiedSelectedOption).tagValue)
+            }
+        }
+    }, [])
 
     useEffect(() => {
         if (data) {
@@ -142,6 +150,12 @@ const Search = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data])
+
+    if (error) {
+        toast.error('Something went wrong', {
+            position: 'top-center',
+        })
+    }
 
     return (
         <>

@@ -129,11 +129,17 @@ const CheckoutPage = () => {
                 localStorage.getItem('shippingAdress') &&
                 localStorage.getItem('billingAddress')
             ) {
+                const shippingFormDataFromStorage = JSON.parse(
+                    localStorage.getItem('shippingAdress') as string
+                )
+                const billingFormDataFromStorage = JSON.parse(
+                    localStorage.getItem('billingAddress') as string
+                )
                 fetchInit(
                     cartItems,
                     transactionId,
-                    formData,
-                    billingFormData,
+                    shippingFormDataFromStorage,
+                    billingFormDataFromStorage,
                     apiUrl as string
                 )
             }
