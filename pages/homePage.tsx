@@ -7,7 +7,7 @@ import { Box, Flex, Text } from '@chakra-ui/react'
 import { RiArrowRightSLine } from 'react-icons/ri'
 import { useLanguage } from '../hooks/useLanguage'
 
-const homePage = () => {
+const HomePage = () => {
     const [searchTerm, setSearchTerm] = useState<string>('')
     const [currentAddress, setCurrentAddress] = useState('')
     const [loadingForCurrentAddress, setLoadingForCurrentAddress] =
@@ -147,4 +147,4 @@ const homePage = () => {
     )
 }
 
-export default homePage
+export default HomePage
