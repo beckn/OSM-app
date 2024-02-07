@@ -397,5 +397,15 @@ const en: { [key: string]: string } = {
     yourOrderHasBeencancel: 'Your order has been cancelled,',
     ifYouPaid: 'If you have paid already, it will get ',
     refundedSoon: 'refunded soon',
+    devicelocationisnotenabled: 'Device location is not enabled',
+    accessToProvideLocation:
+        'Please provide the permission to access better & hassle free delivery',
+    searchForLocation: 'Search For Location',
+    yourLocation: 'Your Location',
+    searchForanything:"Search for anything",
+    localeeOpen:"Localee Open",
+    homePara:" A global marketplace to discover and buy anything you need. Just type what you want to buy and we'll take care of the rest.",
+    searchbyLocation:"Search store by location"
 }
+
 export default en
