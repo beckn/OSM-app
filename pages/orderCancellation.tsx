@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import Button from '../components/button/Button'
 
-const orderCancellation = () => {
+const OrderCancellation = () => {
     const { t } = useLanguage()
     const router = useRouter()
     return (
@@ -30,7 +30,7 @@ const orderCancellation = () => {
                     <Text
                         fontSize={'17px'}
                         fontWeight={600}
-                        mb={"10px"}
+                        mb={'10px'}
                     >
                         {t.orderCancel}
                     </Text>
@@ -72,4 +72,4 @@ const orderCancellation = () => {
     )
 }
 
-export default orderCancellation
+export default OrderCancellation
