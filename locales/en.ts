@@ -393,5 +393,9 @@ const en: { [key: string]: string } = {
     orderCancellation: 'Order Cancellation',
     cancellationType: 'Please select the reason for cancellation',
     cancelLoaderSubText: 'While we process your request',
+    orderCancel: 'Order Cancelled!',
+    yourOrderHasBeencancel: 'Your order has been cancelled,',
+    ifYouPaid: 'If you have paid already, it will get ',
+    refundedSoon: 'refunded soon',
 }
 export default en

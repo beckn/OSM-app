@@ -376,5 +376,9 @@ const fa: { [key: string]: string } = {
     payHere: 'Payez ici',
     supportLoaderText: `S'il vous plaît, attendez!`,
     supportLoaderSubText: `Nous récupérons les détails de l'assistance pour vous`,
+    orderCancel: 'Commande annulée !',
+    yourOrderHasBeencancel: 'Votre commande a été annulée',
+    ifYouPaid: 'Si vous avez déjà payé, vous recevrez ',
+    refundedSoon : 'remboursé bientôt',
 }
 export default fa
