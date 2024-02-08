@@ -9,6 +9,7 @@ import { orderHistoryData } from '../components/orderHistory/order-history.types
 import OrderHistoryDetails from '../components/orderHistory/OrderHistoryDetails'
 import { useLanguage } from '../hooks/useLanguage'
 import { formatTimestamp } from '../utilities/confirm-utils'
+import EmptyPage from '../components/emptypage/EmptyPage'
 
 const orderStatusMap = {
     INITIATED: 'pending',
@@ -67,7 +68,7 @@ const OrderHistory = () => {
     }
 
     if (!orderHistoryList.length) {
-        return <Text>No orders placed</Text>
+        return <EmptyPage/>
     }
 
     if (error) {

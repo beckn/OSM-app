@@ -40,6 +40,7 @@ const storeHeaderBlackList = [
     '/',
     '/paymentMode',
     '/signUp',
+    '/search',
 ]
 const headerValues = {
     '/checkoutPage': 'Billing & Shipping',
@@ -49,8 +50,8 @@ const headerValues = {
     '/signUp': 'Sign Up',
     '/cart': 'Cart',
     '/paymentMode': 'Select Payment Method',
-    "/feedback": 'Feedback',
-    "/orderConfirmation":"Order Confirmation"
+    "/orderConfirmation":"Order Confirmation",
+    '/search': 'Search Result',
 }
 
 const headerValuesFrench = {
@@ -61,13 +62,12 @@ const headerValuesFrench = {
     '/signUp': 'Sign Up',
     '/cart': 'Panier',
     '/paymentMode': 'Sélectionner la Méthode de Paiement',
-    "/feedback": "Retour d'Information",
     "/orderConfirmation": "Confirmation de commande"
 }
 
 const topHeaderBlackList: string[] = []
 
-const bottomHeaderBlackList = ['/homePage','/orderCancellation','/searchByLocation',]
+const bottomHeaderBlackList = ['/homePage','/orderCancellation','/searchByLocation','/feedback']
 
 const menuIconWhiteList = ['/homePage']
 
@@ -184,7 +184,13 @@ const TopHeader: React.FC<TopHeaderProps> = ({ handleMenuClick }) => {
         </>
     )
 }
-
+const getLocalStorage = (item: string) => {
+    if (typeof window !== 'undefined' && window.localStorage) {
+        return localStorage.getItem(item)
+    } else {
+        return ''
+    }
+}
 const BottomHeader = () => {
     const [optionTags, setOptionTags] = useState<any>()
     const { t, locale } = useLanguage()
@@ -194,6 +200,7 @@ const BottomHeader = () => {
         email: '',
         mobile: '',
     })
+    const storedHeaderText = getLocalStorage('selectCardHeaderText')
 
     const router = useRouter()
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
@@ -287,7 +294,7 @@ const BottomHeader = () => {
                         </div>
 
                         {getHeaderTitleForPage(
-                            optionTags?.name,
+                            storedHeaderText as string,
                             optionTags?.logo,
                             router.pathname,
                             locale
