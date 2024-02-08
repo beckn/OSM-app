@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
 import { Box, Image, Stack, Text } from '@chakra-ui/react'
 import { useSelector } from 'react-redux'
@@ -9,10 +10,12 @@ import {
     getInitMetaDataPerBpp,
     getPayloadForConfirmRequest,
 } from '../utilities/confirm-utils'
-import Loader from '../components/loader/Loader'
 import { TransactionIdRootState } from '../lib/types/cart'
+import LoaderWithMessage from '../components/loader/LoaderWithMessage'
+import Button from '../components/button/Button'
 
 const OrderConfirmation = () => {
+    const [paymentType, setPaymentType] = useState('')
     const { t } = useLanguage()
     const confirmRequest = useRequest()
     const router = useRouter()
@@ -28,13 +31,17 @@ const OrderConfirmation = () => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
     useEffect(() => {
-        if (initResponse) {
+        setPaymentType(router?.query?.paymentType as string)
+    }, [router.isReady])
+
+    useEffect(() => {
+        if (initResponse && paymentType.trim().length) {
             const initMetaDataPerBpp = getInitMetaDataPerBpp(initResponse)
 
             const payLoadForConfirmRequest = getPayloadForConfirmRequest(
                 initMetaDataPerBpp,
                 transactionId,
-                localStorage.getItem('userPhone') as string
+                paymentType
             )
             confirmRequest.fetchData(
                 `${apiUrl}/client/v2/confirm`,
@@ -43,13 +50,14 @@ const OrderConfirmation = () => {
             )
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [paymentType])
 
     useEffect(() => {
         if (
             !initResponse &&
             localStorage &&
-            localStorage.getItem('initResult')
+            localStorage.getItem('initResult') &&
+            paymentType.trim().length
         ) {
             const parsedInitResult = JSON.parse(
                 localStorage.getItem('initResult') as string
@@ -59,7 +67,7 @@ const OrderConfirmation = () => {
             const payLoadForConfirmRequest = getPayloadForConfirmRequest(
                 initMetaDataPerBpp,
                 transactionId,
-                localStorage.getItem('userPhone') as string
+                paymentType
             )
             confirmRequest.fetchData(
                 `${apiUrl}/client/v2/confirm`,
@@ -68,31 +76,34 @@ const OrderConfirmation = () => {
             )
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    useEffect(() => {
-        if (confirmRequest.data) {
-            localStorage.setItem(
-                'confirmData',
-                JSON.stringify(confirmRequest.data)
-            )
-            const timeout = setTimeout(() => {
-                router.push('/orderDetails')
-            }, 3000)
-
-            // Clean up the timeout on component unmount
-            return () => {
-                clearTimeout(timeout)
-            }
+    }, [paymentType, initResponse])
+    
+    const handleOrderDetailsPage=()=>{
+        if (confirmRequest.data){
+            localStorage.setItem('confirmData',  JSON.stringify(confirmRequest.data))
+            router.push("/orderDetails")
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [confirmRequest.data])
-
-    if (confirmRequest.loading) {
-        return <Loader loadingText={t.confirmingOrderLoader} />
     }
 
-    if (confirmRequest.error) {
+    if (confirmRequest.loading) {
+        return (
+            <LoaderWithMessage
+                loadingText={t.confirmingOrderLoaderText}
+                loadingSubText={t.confirmingOrderLoaderSubText}
+            />
+        )
+    }
+
+    if (
+        confirmRequest.error ||
+        (confirmRequest.data &&
+            (confirmRequest.data[0].message.responses.length === 0 ||
+                confirmRequest.data[0].message.responses?.[0]?.error))
+    ) {
+        toast.error('Something went wrong', {
+            position: 'top-center',
+        })
+
         return <></>
     }
 
@@ -120,6 +131,23 @@ const OrderConfirmation = () => {
                     {t.confirmMessage1} <br />
                     {t.confirmMessage2}
                 </Text>
+            </Stack>
+            <Stack>
+            <Box mt={"20px"}>
+            <Button
+                    buttonText={'View Order Details'}
+                    isDisabled={false}
+                    type={'solid'}
+                    handleOnClick={handleOrderDetailsPage}
+                />
+                <Button
+                    buttonText={'Go Back Home'}
+                    isDisabled={false}
+                    type={'outline'}
+                    handleOnClick={() => router.push('/homePage')}
+                />
+              
+            </Box>
             </Stack>
         </Box>
     )

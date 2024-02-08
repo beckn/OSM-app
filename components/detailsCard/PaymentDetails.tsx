@@ -1,10 +1,8 @@
 import React from 'react'
 import { Box, Divider, Flex, Text } from '@chakra-ui/react'
 import { useLanguage } from '../../hooks/useLanguage'
-
-export interface PaymentDetailsProps {
-    qoute: any
-}
+import { CurrencyType, formatCurrency } from '../../utilities/currencyFormat'
+import { PaymentDetailsProps } from './PaymentDetails.types'
 
 const PaymentDetails: React.FC<PaymentDetailsProps> = (props) => {
     const { qoute } = props
@@ -13,7 +11,7 @@ const PaymentDetails: React.FC<PaymentDetailsProps> = (props) => {
     const { t } = useLanguage()
     return (
         <Box>
-            {breakup.map((item: any, idx: number) => {
+            {breakup.map((item, idx) => {
                 return (
                     <Flex
                         key={idx}
@@ -24,7 +22,11 @@ const PaymentDetails: React.FC<PaymentDetailsProps> = (props) => {
                     >
                         <Text maxWidth={'75%'}>{item.title}</Text>
                         <Text>
-                        {t.currencySymbol} {Number(item.price.listed_value).toFixed(2)}                        </Text>
+                            {formatCurrency(
+                                parseFloat(item.price.value),
+                                item.price.currency
+                            )}
+                        </Text>
                     </Flex>
                 )
             })}
@@ -39,7 +41,10 @@ const PaymentDetails: React.FC<PaymentDetailsProps> = (props) => {
                 <Text maxWidth={'75%'}>{t.totalText}</Text>
                 <Box className="flex">
                     <Text>
-                        {t.currencySymbol} {Number(qoute.price.value).toFixed(2)}
+                        {formatCurrency(
+                            parseFloat(qoute.price.value),
+                            qoute.price.currency
+                        )}
                     </Text>
                 </Box>
             </Flex>

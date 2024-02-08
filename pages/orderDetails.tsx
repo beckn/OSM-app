@@ -9,7 +9,11 @@ import {
     StackDivider,
     Card,
     useDisclosure,
+    Link,
+    Textarea,
 } from '@chakra-ui/react'
+import axios from 'axios'
+import Cookies from 'js-cookie'
 import React, { useEffect, useState } from 'react'
 import Accordion from '../components/accordion/Accordion'
 import CallphoneIcon from '../public/images/CallphoneIcon.svg'
@@ -19,38 +23,99 @@ import { useLanguage } from '../hooks/useLanguage'
 import { ResponseModel } from '../lib/types/responseModel'
 import {
     getConfirmMetaDataForBpp,
-    getOrderPlacementTimeline,
+    formatTimestamp,
     getPayloadForStatusRequest,
     getPayloadForTrackRequest,
+    getPayloadForCancelRequest,
 } from '../utilities/confirm-utils'
-import { getDataPerBpp } from '../utilities/orderDetails-utils'
+import {
+    getDataPerBpp,
+    getPayloadForOrderHistoryPost,
+} from '../utilities/orderDetails-utils'
 import TrackIcon from '../public/images/TrackIcon.svg'
 import ViewMoreOrderModal from '../components/orderDetails/ViewMoreOrderModal'
-import { useSelector } from 'react-redux'
-import { TransactionIdRootState } from '../lib/types/cart'
 import useRequest from '../hooks/useRequest'
 import {
     orderCardStatusMap,
     RenderOrderStatusList,
 } from '../components/orderDetails/RenderOrderStatusTree'
-import { useRouter } from 'next/router'
+import Router, { useRouter } from 'next/router'
+import { StatusResponseModel } from '../lib/types/order-details.types'
+import PaymentDetails from '../components/detailsCard/PaymentDetails'
+import { QuoteModel } from '../components/detailsCard/PaymentDetails.types'
+import Button from '../components/button/Button'
+import BottomModal from '../components/BottomModal'
+import LoaderWithMessage from '../components/loader/LoaderWithMessage'
+import styles from '../components/card/Card.module.css'
+import CancelOrder from '../components/orderDetails/cancelOrder/cancel-order'
 
 const OrderDetails = () => {
     const [allOrderDelivered, setAllOrderDelivered] = useState(false)
     const [confirmData, setConfirmData] = useState<ResponseModel[]>([])
-    const [statusResponse, setStatusResponse] = useState([])
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const transactionId = useSelector(
-        (state: { transactionId: TransactionIdRootState }) =>
-            state.transactionId
+    const [statusResponse, setStatusResponse] = useState<StatusResponseModel[]>(
+        []
     )
+    const [cancelOrderModalOpen, setCancelOrderModalOpen] = useState(false)
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
     const statusRequest = useRequest()
     const trackRequest = useRequest()
     const router = useRouter()
     const { orderId } = router.query
-
+    const cancelRequest = useRequest()
     const { t } = useLanguage()
+
+    const paymentMethods = {
+        'PRE-FULFILLMENT': t.directPay,
+        POST_FULFILLMENT: t.payAtStore,
+    }
+
+    interface CancellationType {
+        id: string
+        cancellationTypeText: string
+        checked?: boolean
+    }
+
+    const [cancellationType, setCancellationType] = useState<
+        CancellationType[]
+    >([
+        {
+            id: '1',
+            cancellationTypeText: 'Merchant is taking too long',
+            checked: false,
+        },
+        {
+            id: '2',
+            cancellationTypeText: 'Ordered by mistake',
+            checked: false,
+        },
+        {
+            id: '3',
+            cancellationTypeText: 'I’ve changed my mind',
+            checked: false,
+        },
+        {
+            id: '4',
+            cancellationTypeText: 'Other :',
+            checked: false,
+        },
+    ])
+
+    const paymentStatus = {
+        'NOT-PAID': t.paymentPending,
+        PAID: t.paid,
+    }
+
+    const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL
+
+    const bearerToken = Cookies.get('authToken')
+    const axiosConfig = {
+        headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            'Content-Type': 'application/json', // You can set the content type as needed
+        },
+    }
 
     useEffect(() => {
         if (
@@ -65,6 +130,10 @@ const OrderDetails = () => {
             const relatedOrder = parsedOrderHistoryArray.find(
                 (parsedOrder: any) => parsedOrder.parentOrderId === orderId
             )
+
+            const transactionId = localStorage.getItem(
+                'transactionId'
+            ) as string
 
             setConfirmData(relatedOrder.orders)
 
@@ -86,23 +155,49 @@ const OrderDetails = () => {
                 payloadForTrackRequest
             )
 
-            const intervalId = setInterval(() => {
-                statusRequest.fetchData(
-                    `${apiUrl}/client/v2/status`,
-                    'POST',
-                    payloadForStatusRequest
-                )
-            }, 2000)
-
-            return () => {
-                clearInterval(intervalId)
-            }
+            statusRequest.fetchData(
+                `${apiUrl}/client/v2/status`,
+                'POST',
+                payloadForStatusRequest
+            )
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
-        if (localStorage) {
+        if (localStorage && localStorage.getItem('selectedOrderFromHistory')) {
+            const parsedOrderFromHistory = JSON.parse(
+                localStorage.getItem('selectedOrderFromHistory') as string
+            )
+            const { bppId, bppUri, orderId, transaction_id } =
+                parsedOrderFromHistory
+            const payLoadForStatusRequest = {
+                statusRequestDto: [
+                    {
+                        context: {
+                            transaction_id: transaction_id,
+                            bpp_id: bppId,
+                            bpp_uri: bppUri,
+                            domain: 'retail',
+                        },
+
+                        message: {
+                            order_id: orderId,
+                        },
+                    },
+                ],
+            }
+
+            statusRequest.fetchData(
+                `${apiUrl}/client/v2/status`,
+                'POST',
+                payLoadForStatusRequest
+            )
+        }
+    }, [])
+
+    useEffect(() => {
+        if (localStorage && localStorage.getItem('confirmData')) {
             const stringifiedConfirmData = localStorage.getItem('confirmData')
             if (stringifiedConfirmData) {
                 const parsedConfirmedData = JSON.parse(stringifiedConfirmData)
@@ -110,6 +205,9 @@ const OrderDetails = () => {
 
                 const confirmOrderMetaDataPerBpp =
                     getConfirmMetaDataForBpp(parsedConfirmedData)
+                const transactionId = localStorage.getItem(
+                    'transactionId'
+                ) as string
                 const payloadForStatusRequest = getPayloadForStatusRequest(
                     confirmOrderMetaDataPerBpp,
                     transactionId
@@ -125,17 +223,11 @@ const OrderDetails = () => {
                     payloadForTrackRequest
                 )
 
-                const intervalId = setInterval(() => {
-                    statusRequest.fetchData(
-                        `${apiUrl}/client/v2/status`,
-                        'POST',
-                        payloadForStatusRequest
-                    )
-                }, 2000)
-
-                return () => {
-                    clearInterval(intervalId)
-                }
+                statusRequest.fetchData(
+                    `${apiUrl}/client/v2/status`,
+                    'POST',
+                    payloadForStatusRequest
+                )
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -143,7 +235,11 @@ const OrderDetails = () => {
 
     useEffect(() => {
         if (statusRequest.data) {
-            setStatusResponse(statusRequest.data as any)
+            localStorage.setItem(
+                'statusResponse',
+                JSON.stringify(statusRequest.data)
+            )
+            setStatusResponse(statusRequest.data as StatusResponseModel[])
             if (
                 statusRequest.data.every(
                     (res) => res.message.order.state === 'DELIVERED'
@@ -151,22 +247,45 @@ const OrderDetails = () => {
             ) {
                 setAllOrderDelivered(true)
             }
+            const ordersPayload = getPayloadForOrderHistoryPost(
+                statusRequest.data as StatusResponseModel[]
+            )
+            axios
+                .post(`${strapiUrl}/orders`, ordersPayload, axiosConfig)
+                .then((res) => {
+                    return res
+                })
+                .catch((err) => console.error(err))
         }
     }, [statusRequest.data])
 
-    if (!confirmData.length) {
+    useEffect(() => {
+        if (cancelRequest.data) {
+            router.push('/orderCancellation')
+        }
+    }, [cancelRequest.data])
+
+    if (statusRequest.loading) {
+        return (
+            <LoaderWithMessage
+                loadingText={t.statusLoaderText}
+                loadingSubText={t.stausLoaderSubText}
+            />
+        )
+    }
+
+    if (!statusResponse.length) {
         return <></>
     }
 
-    const confirmDataPerBpp = getDataPerBpp(confirmData)
+    const statusDataPerBpp = getDataPerBpp(statusResponse)
 
-    const orderFromConfirmData =
-        confirmData[0].message.responses[0].message.order
+    const orderFromStatusResponse = statusResponse[0].message.order
+    const paymentObject = orderFromStatusResponse.payment
 
-    const quoteBreakup = orderFromConfirmData.quote.breakup
-    const totalPrice = orderFromConfirmData.quote.price.value
-
-    const orderState = orderFromConfirmData.payment.status
+    const paymentState = paymentObject.status
+    const paymentLink = paymentObject.uri
+    const paymentType = paymentObject.type
 
     const totalQuantityOfOrder = (res: any) => {
         let count = 0
@@ -187,9 +306,30 @@ const OrderDetails = () => {
     }
 
     const shippingDetails = {
-        name: getExtractedName(orderFromConfirmData.billing.name),
-        address: orderFromConfirmData.billing.address.state,
-        phone: orderFromConfirmData.billing.phone,
+        name: getExtractedName(orderFromStatusResponse.billing.name),
+        address: `${orderFromStatusResponse.billing.address.door} ${orderFromStatusResponse.billing.address.state}`,
+        phone: orderFromStatusResponse.billing.phone,
+    }
+
+    const cancelOrderModalClose = () => {
+        setCancelOrderModalOpen(false)
+    }
+    const handleCheckboxChange = (id: string) => {
+        setCancellationType((prevTypes) =>
+            prevTypes.map((type) => ({
+                ...type,
+                checked: type.id === id ? !type.checked : false,
+            }))
+        )
+    }
+
+    const handleCancelButton = () => {
+        const cancelPayload = getPayloadForCancelRequest(statusResponse[0])
+        return cancelRequest.fetchData(
+            `${apiUrl}/client/v2/cancel`,
+            'POST',
+            cancelPayload
+        )
     }
 
     return (
@@ -206,7 +346,6 @@ const OrderDetails = () => {
                             alignItems={'center'}
                             pb={'3px'}
                         >
-                            {/* eslint-disable-next-line jsx-a11y/alt-text */}
                             <Image
                                 width={'12px'}
                                 height={'13px'}
@@ -255,13 +394,13 @@ const OrderDetails = () => {
                     >
                         <Text>{t.orderPlacedAt}</Text>
                         <Text>
-                            {getOrderPlacementTimeline(
-                                orderFromConfirmData.created_at
+                            {formatTimestamp(
+                                orderFromStatusResponse.created_at
                             )}
                         </Text>
                     </Flex>
-                    {Object.keys(confirmDataPerBpp).map((key) => (
-                        <Box key={confirmDataPerBpp[key].id}>
+                    {Object.keys(statusDataPerBpp).map((key) => (
+                        <Box key={statusDataPerBpp[key].id}>
                             <Flex
                                 pt={4}
                                 justifyContent={'space-between'}
@@ -393,7 +532,6 @@ const OrderDetails = () => {
                             spacing="4"
                         >
                             <Flex alignItems={'center'}>
-                                {/* eslint-disable-next-line jsx-a11y/alt-text */}
                                 <Image
                                     src={nameIcon}
                                     pr={'12px'}
@@ -403,7 +541,6 @@ const OrderDetails = () => {
                                 </Text>
                             </Flex>
                             <Flex alignItems={'center'}>
-                                {/* eslint-disable-next-line jsx-a11y/alt-text */}
                                 <Image
                                     src={locationIcon}
                                     pr={'12px'}
@@ -413,7 +550,6 @@ const OrderDetails = () => {
                                 </Text>
                             </Flex>
                             <Flex alignItems={'center'}>
-                                {/* eslint-disable-next-line jsx-a11y/alt-text */}
                                 <Image
                                     src={CallphoneIcon}
                                     pr={'12px'}
@@ -426,53 +562,71 @@ const OrderDetails = () => {
                     </Box>
                 </CardBody>
             </Accordion>
-            <Accordion accordionHeader={t.paymentText}>
+            <Accordion
+                accordionHeader={
+                    <Flex>
+                        <Text>{t.paymentText}</Text>
+                        {paymentState !== 'PAID' && (
+                            <Image
+                                pl="12px"
+                                src="./images/error.svg"
+                                alt="payment-pending-logo"
+                            />
+                        )}
+                    </Flex>
+                }
+            >
                 <CardBody
                     pt={'unset'}
                     pb={'unset'}
                 >
-                    {quoteBreakup.map((breakUp: any, idx: number) => {
-                        return (
-                            <Flex
-                                key={idx}
-                                pb={'15px'}
-                                justifyContent={'space-between'}
-                                alignItems={'center'}
-                            >
-                                <Text maxWidth={'75%'}>{breakUp.title}</Text>
-                                <Text>
-                                    {t.currencySymbol} {breakUp.price.listed_value}
-                                </Text>
-                            </Flex>
-                        )
-                    })}
-
-                    <Divider />
+                    <PaymentDetails
+                        qoute={orderFromStatusResponse.quote as QuoteModel}
+                    />
                 </CardBody>
                 <CardBody
                     pb={'unset'}
                     pt={'15px'}
                 >
                     <Flex
-                        pb={'15px'}
-                        justifyContent={'space-between'}
-                        alignItems={'center'}
-                        fontSize={'17px'}
-                        fontWeight={'600'}
-                    >
-                        <Text>{t.total}</Text>
-                        <Text>
-                            {t.currencySymbol} {totalPrice}
-                        </Text>
-                    </Flex>
-                    <Flex
                         fontSize={'15px'}
                         justifyContent={'space-between'}
                         alignItems={'center'}
                         pb={'15px'}
                     >
-                        <Text>{t.status}</Text>
-                        <Text>{orderState}</Text>
+                        <Flex
+                            justifyContent={'space-between'}
+                            alignItems="center"
+                            width={'100%'}
+                        >
+                            <Text>{t.status}</Text>
+                            <Box fontSize={'12px'}>
+                                <Text
+                                    as="span"
+                                    pr="12px"
+                                    color={'rgba(var(--color-primary))'}
+                                >
+                                    {paymentStatus[paymentState] ?? ''}
+                                </Text>
+
+                                {paymentState !== 'PAID' && (
+                                    <Link
+                                        onClick={() =>
+                                            window.open(
+                                                paymentLink,
+                                                '_blank',
+                                                'popup'
+                                            )
+                                        }
+                                        color={'#4D930D'}
+                                        textDecoration="underline"
+                                    >
+                                        {t.payHere}
+                                    </Link>
+                                )}
+                            </Box>
+                        </Flex>
+                        {/* <Text>{orderState}</Text> */}
                     </Flex>
                     <Flex
                         fontSize={'15px'}
@@ -481,10 +635,44 @@ const OrderDetails = () => {
                         pb={'15px'}
                     >
                         <Text>{t.paymentMethod}</Text>
-                        <Text>{t.cashOnDelivery}</Text>
+                        <Text>{paymentMethods[paymentType] ?? ''}</Text>
                     </Flex>
                 </CardBody>
             </Accordion>
+            <Button
+                buttonText={t.goBackHome}
+                isDisabled={false}
+                type={'solid'}
+                handleOnClick={() => {
+                    Router.push('/homePage')
+                }}
+            />
+            <Button
+                buttonText={t.cancelOrder}
+                isDisabled={false}
+                type={'outline'}
+                handleOnClick={() => setCancelOrderModalOpen(true)}
+            />
+            <Box className={styles.cancellationBtn}>
+                <BottomModal
+                    isOpen={cancelOrderModalOpen}
+                    onClose={() => {}}
+                >
+                    {cancelRequest.loading ? (
+                        <LoaderWithMessage
+                            loadingText={t.supportLoaderText}
+                            loadingSubText={t.cancelLoaderSubText}
+                        />
+                    ) : (
+                        <CancelOrder
+                            cancelOrderModalClose={cancelOrderModalClose}
+                            cancellationType={cancellationType}
+                            handleCancelButtonClick={handleCancelButton}
+                            handleCheckboxChange={handleCheckboxChange}
+                        />
+                    )}
+                </BottomModal>
+            </Box>
         </>
     )
 }

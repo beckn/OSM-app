@@ -8,6 +8,8 @@ import { responseDataActions } from '../store/responseData-slice'
 import { RetailItem } from '../lib/types/products'
 import Loader from '../components/loader/Loader'
 import { useLanguage } from '../hooks/useLanguage'
+import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
 
 //Mock data for testing search API. Will remove after the resolution of CORS issue
 
@@ -23,26 +25,13 @@ const Search = () => {
 
     const { data, loading, error, fetchData } = useRequest()
 
+    const router = useRouter()
+
     const categoryMap = {
         Books: { en: 'BookEnglish', fa: 'BookFrench' },
         restaurant: { en: 'FoodEnglish', fa: 'FoodFrench' },
         Shopping: { en: 'retail', fa: 'retail' },
     }
-
-    useEffect(() => {
-        if (localStorage) {
-            const stringifiedOptiontags = localStorage.getItem('optionTags')
-            const stringifiedSelectedOption =
-                localStorage.getItem('selectedOption')
-            if (stringifiedOptiontags) {
-                const providerId = JSON.parse(stringifiedOptiontags).providerId
-                setProviderId(providerId)
-            }
-            if (stringifiedSelectedOption) {
-                setTagValue(JSON.parse(stringifiedSelectedOption).tagValue)
-            }
-        }
-    }, [])
 
     const categoryName = () => {
         if (tagValue && categoryMap[tagValue]) {
@@ -76,38 +65,43 @@ const Search = () => {
         })
 
     useEffect(() => {
-        if (localStorage && localStorage.getItem('searchItems')) {
-            const cachedSearchResults = localStorage.getItem('searchItems')
-            if (cachedSearchResults) {
-                const parsedCachedResults = JSON.parse(cachedSearchResults)
-                if (providerId) {
-                    if (!parsedCachedResults.hasOwnProperty(providerId)) {
-                        fetchData(
-                            `${apiUrl}/client/v2/search`,
-                            'POST',
-                            searchPayload
-                        )
-                    }
-                }
+        if (router.query.searchTerm) {
+            const searchTerm = router.query.searchTerm
+            const searchPayloadWithSearchQuery = {
+                context: {
+                    domain: 'retail',
+                },
+                message: {
+                    criteria: {
+                        dropLocation: '48.85041854,2.343660801',
+                        categoryName: 'Retail',
+                        searchString: searchTerm,
+                    },
+                },
             }
-        } else {
-            if (providerId) {
-                fetchData(`${apiUrl}/client/v2/search`, 'POST', searchPayload)
-            }
-        }
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [providerId])
+            fetchData(
+                `${apiUrl}/client/v2/search`,
+                'POST',
+                searchPayloadWithSearchQuery
+            )
+        }
+        if (providerId) {
+            fetchData(`${apiUrl}/client/v2/search`, 'POST', searchPayload)
+        }
+    }, [router.isReady, providerId])
 
     useEffect(() => {
         if (localStorage) {
-            const cachedSearchResults = localStorage.getItem('searchItems')
-            if (cachedSearchResults) {
-                const parsedCachedResults = JSON.parse(cachedSearchResults)
-                const parsedCachedResultsArray =
-                    Object.keys(parsedCachedResults)
-                const firstKey = parsedCachedResultsArray[0]
-                setItems(parsedCachedResults[firstKey])
+            const stringifiedOptiontags = localStorage.getItem('optionTags')
+            const stringifiedSelectedOption =
+                localStorage.getItem('selectedOption')
+            if (stringifiedOptiontags) {
+                const providerId = JSON.parse(stringifiedOptiontags).providerId
+                setProviderId(providerId)
+            }
+            if (stringifiedSelectedOption) {
+                setTagValue(JSON.parse(stringifiedSelectedOption).tagValue)
             }
         }
     }, [])
@@ -119,6 +113,7 @@ const Search = () => {
                     data.context.transaction_id
                 )
             )
+            localStorage.setItem('transactionId', data.context.transaction_id)
             const allItems = data.message.catalogs.flatMap((catalog: any) => {
                 if (
                     catalog.message &&
@@ -155,6 +150,12 @@ const Search = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data])
+
+    if (error) {
+        toast.error('Something went wrong', {
+            position: 'top-center',
+        })
+    }
 
     return (
         <>

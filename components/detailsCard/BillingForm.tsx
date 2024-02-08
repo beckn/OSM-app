@@ -69,6 +69,7 @@ const BillingForm: React.FC<ShippingFormProps> = (props) => {
             )
             props.setBillingFormData(props.billingFormData)
             props.formSubmitHandler()
+            props.onClose()
         } else {
             setFormErrors(errors)
         }
@@ -118,113 +119,186 @@ const BillingForm: React.FC<ShippingFormProps> = (props) => {
                     </Box>
 
                     <ModalBody>
-                        <div className={style.container}>
-                            <div className={style.did_floating_label_content}>
-                                <input
-                                    className={style.did_floating_input}
-                                    type="text"
-                                    placeholder=" "
-                                    name="name"
-                                    value={props.billingFormData.name}
-                                    onChange={handleInputChange}
-                                />
-                                <label className={style.did_floating_label}>
-                                    {t.formName}
-                                </label>
-                                {formErrors.name && (
-                                    <div className={style.error}>
-                                        {t[`${formErrors.name}`]}
-                                    </div>
-                                )}
-                            </div>
-                            <div className={style.did_floating_label_content}>
-                                <input
-                                    className={style.did_floating_input}
-                                    type="text"
-                                    placeholder=" "
-                                    name="mobileNumber"
-                                    value={props.billingFormData.mobileNumber}
-                                    onChange={handleInputChange}
-                                />
-                                <label className={style.did_floating_label}>
-                                    {t.formNumber}
-                                </label>
-                                {formErrors.mobileNumber && (
-                                    <span className={style.error}>
-                                        {t[`${formErrors.mobileNumber}`]}
-                                    </span>
-                                )}
-                            </div>
-                            <div className={style.did_floating_label_content}>
-                                <input
-                                    className={style.did_floating_input}
-                                    type="text"
-                                    placeholder=" "
-                                    name="email"
-                                    value={props.billingFormData.email}
-                                    onChange={handleInputChange}
-                                />
-                                <label className={style.did_floating_label}>
-                                    {t.formEmail}
-                                </label>
-                                {formErrors.email && (
-                                    <span className={style.error}>
-                                        {t[`${formErrors.email}`]}
-                                    </span>
-                                )}
-                            </div>
-                            <div className={style.did_floating_label_content}>
-                                <input
-                                    className={style.did_floating_input}
-                                    type="text"
-                                    placeholder=" "
-                                    name="address"
-                                    value={props.billingFormData.address}
-                                    onChange={handleInputChange}
-                                />
-                                <label className={style.did_floating_label}>
-                                    {t.formAddress}
-                                </label>
-                                {formErrors.address && (
-                                    <span className={style.error}>
-                                        {t[`${formErrors.address}`]}
-                                    </span>
-                                )}
-                            </div>
+                        <div className={style.form_container}>
+                            <div className={style.container}>
+                                <div
+                                    className={style.did_floating_label_content}
+                                >
+                                    <input
+                                        className={style.did_floating_input}
+                                        type="text"
+                                        placeholder=" "
+                                        name="name"
+                                        value={props.billingFormData.name}
+                                        onChange={handleInputChange}
+                                    />
+                                    <label className={style.did_floating_label}>
+                                        {t.formName}
+                                    </label>
+                                    {formErrors.name && (
+                                        <div className={style.error}>
+                                            {t[`${formErrors.name}`]}
+                                        </div>
+                                    )}
+                                </div>
+                                <div
+                                    className={style.did_floating_label_content}
+                                >
+                                    <input
+                                        className={style.did_floating_input}
+                                        type="text"
+                                        placeholder=" "
+                                        name="mobileNumber"
+                                        value={
+                                            props.billingFormData.mobileNumber
+                                        }
+                                        onChange={handleInputChange}
+                                    />
+                                    <label className={style.did_floating_label}>
+                                        {t.formNumber}
+                                    </label>
+                                    {formErrors.mobileNumber && (
+                                        <span className={style.error}>
+                                            {t[`${formErrors.mobileNumber}`]}
+                                        </span>
+                                    )}
+                                </div>
+                                <div
+                                    className={style.did_floating_label_content}
+                                >
+                                    <input
+                                        className={style.did_floating_input}
+                                        type="text"
+                                        placeholder=" "
+                                        name="email"
+                                        value={props.billingFormData.email}
+                                        onChange={handleInputChange}
+                                    />
+                                    <label className={style.did_floating_label}>
+                                        {t.formEmail}
+                                    </label>
+                                    {formErrors.email && (
+                                        <span className={style.error}>
+                                            {t[`${formErrors.email}`]}
+                                        </span>
+                                    )}
+                                </div>
+                                <div
+                                    className={style.did_floating_label_content}
+                                >
+                                    <input
+                                        className={style.did_floating_input}
+                                        type="text"
+                                        placeholder=" "
+                                        name="city"
+                                        value={props.billingFormData.city}
+                                        onChange={handleInputChange}
+                                    />
+                                    <label className={style.did_floating_label}>
+                                        {t.formCity}
+                                    </label>
+                                    {formErrors.city && (
+                                        <span className={style.error}>
+                                            {t[`${formErrors.city}`]}
+                                        </span>
+                                    )}
+                                </div>
+                                <div
+                                    className={style.did_floating_label_content}
+                                >
+                                    <input
+                                        className={style.did_floating_input}
+                                        type="text"
+                                        placeholder=" "
+                                        name="country"
+                                        value={props.billingFormData.country}
+                                        onChange={handleInputChange}
+                                    />
+                                    <label className={style.did_floating_label}>
+                                        {t.formCountry}
+                                    </label>
+                                    {formErrors.country && (
+                                        <span className={style.error}>
+                                            {t[`${formErrors.country}`]}
+                                        </span>
+                                    )}
+                                </div>
+                                <div
+                                    className={style.did_floating_label_content}
+                                >
+                                    <input
+                                        className={style.did_floating_input}
+                                        type="text"
+                                        placeholder=" "
+                                        name="state"
+                                        value={props.billingFormData.state}
+                                        onChange={handleInputChange}
+                                    />
+                                    <label className={style.did_floating_label}>
+                                        {t.formState}
+                                    </label>
+                                    {formErrors.state && (
+                                        <span className={style.error}>
+                                            {t[`${formErrors.state}`]}
+                                        </span>
+                                    )}
+                                </div>
+                                <div
+                                    className={style.did_floating_label_content}
+                                >
+                                    <input
+                                        className={style.did_floating_input}
+                                        type="text"
+                                        placeholder=" "
+                                        name="address"
+                                        value={props.billingFormData.address}
+                                        onChange={handleInputChange}
+                                    />
+                                    <label className={style.did_floating_label}>
+                                        {t.formAddress}
+                                    </label>
+                                    {formErrors.address && (
+                                        <span className={style.error}>
+                                            {t[`${formErrors.address}`]}
+                                        </span>
+                                    )}
+                                </div>
 
-                            <div className={style.did_floating_label_content}>
-                                <input
-                                    className={style.did_floating_input}
-                                    type="text"
-                                    placeholder=" "
-                                    name="zipCode"
-                                    value={props.billingFormData.zipCode}
-                                    onChange={(e) => {
-                                        e.currentTarget.value =
-                                            e.currentTarget.value.replace(
-                                                /[^0-9]/g,
-                                                ''
-                                            )
-                                        handleInputChange(e)
-                                    }}
-                                />
-                                <label className={style.did_floating_label}>
-                                    {t.formZipCode}
-                                </label>
-                                {formErrors.zipCode && (
-                                    <span className={style.error}>
-                                        {t[`${formErrors.zipCode}`]}
-                                    </span>
-                                )}
+                                <div
+                                    className={style.did_floating_label_content}
+                                >
+                                    <input
+                                        className={style.did_floating_input}
+                                        type="text"
+                                        placeholder=" "
+                                        name="zipCode"
+                                        value={props.billingFormData.zipCode}
+                                        onChange={(e) => {
+                                            e.currentTarget.value =
+                                                e.currentTarget.value.replace(
+                                                    /[^0-9]/g,
+                                                    ''
+                                                )
+                                            handleInputChange(e)
+                                        }}
+                                    />
+                                    <label className={style.did_floating_label}>
+                                        {t.formZipCode}
+                                    </label>
+                                    {formErrors.zipCode && (
+                                        <span className={style.error}>
+                                            {t[`${formErrors.zipCode}`]}
+                                        </span>
+                                    )}
+                                </div>
                             </div>
+                            <Button
+                                buttonText={t.saveBillingDetails}
+                                type={'solid'}
+                                handleOnClick={handleButtonClick}
+                                isDisabled={!isFormValid}
+                            />
                         </div>
-                        <Button
-                            buttonText={t.saveBillingDetails}
-                            background={'rgba(var(--color-primary))'}
-                            color={'rgba(var(--text-color))'}
-                            handleOnClick={handleButtonClick}
-                            isDisabled={!isFormValid}
-                        />
                     </ModalBody>
                 </ModalContent>
             </Modal>

@@ -65,6 +65,7 @@ const CallToAction: React.FC<Props> = ({ product }) => {
                 <ProductPrice
                     price={parseFloat(product.price.value)}
                     isLargeSize={true}
+                    currency={product.price.currency}
                 />
             </div>
             <div className="flex items-center justify-between mt-6 cursor-pointer">
@@ -91,19 +92,8 @@ const CallToAction: React.FC<Props> = ({ product }) => {
             </div>
             <br />
             <Button
-                buttonText={
-                    <Flex
-                        justifyContent={'center'}
-                        alignItems={'center'}
-                    >
-                        <BsCartPlus
-                            style={{ fontSize: '1.2rem', margin: '0 0.4rem' }}
-                        />
-                        {t.addToCart}
-                    </Flex>
-                }
-                background={'rgba(var(--color-primary))'}
-                color={'rgba(var(--text-color))'}
+                buttonText={t.addToCart}
+                type={'solid'}
                 isDisabled={false}
                 handleOnClick={addToCartHandler}
             />

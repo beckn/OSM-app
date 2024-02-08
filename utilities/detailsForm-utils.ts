@@ -1,3 +1,7 @@
+import {
+    SignInPropsModel,
+    SignUpPropsModel,
+} from '../components/signIn/Signin.types'
 import { ShippingFormData } from '../pages/checkoutPage'
 
 export interface FormErrors {
@@ -6,6 +10,10 @@ export interface FormErrors {
     email?: string
     address?: string
     zipCode?: string
+    city?: string
+    country?: string
+    state?: string
+    password?: string
 }
 
 export const validateForm = (formData: ShippingFormData): FormErrors => {
@@ -16,9 +24,9 @@ export const validateForm = (formData: ShippingFormData): FormErrors => {
     }
 
     if (formData.mobileNumber.trim() === '') {
-        errors.mobileNumber = 'errorNumber'
-    } else if (!/^\d{10}$/.test(formData.mobileNumber)) {
-        errors.mobileNumber = 'errorNumber2'
+        errors.mobileNumber = 'errorEmpty' // Indicate the field is empty
+    } else if (!/^\d+$/.test(formData.mobileNumber)) {
+        errors.mobileNumber = 'errorNumber2' // Indicate the field contains non-numeric characters
     }
 
     if (formData.email.trim() === '') {
@@ -33,9 +41,71 @@ export const validateForm = (formData: ShippingFormData): FormErrors => {
 
     if (formData.zipCode.trim() === '') {
         errors.zipCode = 'errorZipcode'
-    } else if (!/^\d{5}$/.test(formData.zipCode)) {
-        errors.zipCode = 'errorZipcode2'
     }
 
+    if (formData.city.trim() === '') {
+        errors.city = 'errorCity'
+    }
+
+    if (formData.city.trim() === '') {
+        errors.country = 'errorCountry'
+    }
+
+    return errors
+}
+export const signInValidateForm = (formData: SignInPropsModel): FormErrors => {
+    const errors: FormErrors = {}
+
+    if (formData.email.trim() === '') {
+        errors.email = 'Invalid Email'
+    } else if (
+        !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formData.email)
+    ) {
+        errors.email = 'Invalid Email'
+    }
+    if (formData.password.trim() === '') {
+        errors.password = 'Password is required'
+    } else if (formData.password.length < 8) {
+        errors.password = 'Password must be at least 8 characters long'
+    } else if (!/[A-Z]/.test(formData.password)) {
+        errors.password = 'Password must contain at least one uppercase letter'
+    } else if (!/[$&+,:;=?@#|'<>.^*()%!-]/.test(formData.password)) {
+        errors.password = 'Password must contain at least one special character'
+    }
+
+    return errors
+}
+export const signUpValidateForm = (formData: SignUpPropsModel): FormErrors => {
+    const errors: FormErrors = {}
+
+    if (formData.name.trim() === '') {
+        errors.name = 'Name is required'
+    } else if (!/^[A-Za-z\s]*$/.test(formData.name)) {
+        errors.name = 'Name can only contain letters and spaces'
+    } else if (formData.name.length < 3) {
+        errors.name = 'Name must contain at least 3 characters'
+    }
+
+    if (formData.email.trim() === '') {
+        errors.email = 'Invalid Email'
+    } else if (
+        !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formData.email)
+    ) {
+        errors.email = 'Invalid Email'
+    }
+    if (formData.password.trim() === '') {
+        errors.password = 'Password is required'
+    } else if (formData.password.length < 8) {
+        errors.password = 'Password must be at least 8 characters long'
+    } else if (!/[A-Z]/.test(formData.password)) {
+        errors.password = 'Password must contain at least one uppercase letter'
+    } else if (!/[$&+,:;=?@#|'<>.^*()%!-]/.test(formData.password)) {
+        errors.password = 'Password must contain at least one special character'
+    }
+    if (formData.mobileNumber.trim() === '') {
+        errors.mobileNumber = 'errorNumber'
+    } else if (!/^\d{10}$/.test(formData.mobileNumber)) {
+        errors.mobileNumber = 'errorNumber2'
+    }
     return errors
 }

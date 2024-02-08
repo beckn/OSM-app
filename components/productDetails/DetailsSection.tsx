@@ -34,33 +34,7 @@ const DetailsSection: React.FC<Props> = ({ product }) => {
                 justifyContent={'space-between'}
                 alignItems={'flex-start'}
             >
-                <h2
-                    className="text-palette-mute whitespace-normal border_radius_all"
-                    style={{
-                        fontSize: '20px',
-                        fontWeight: '600',
-                        color: '#000',
-                        marginBottom: '20px',
-                    }}
-                >
-                    {product.descriptor.name}
-                </h2>
-
-                {product.tags.foodType ? (
-                    product.tags.foodType === 'veg' ? (
-                        <Image
-                            pt={'4px'}
-                            src={greenVegIcon}
-                            alt="greenVegIcon"
-                        />
-                    ) : (
-                        <Image
-                            pt={'4px'}
-                            src={redNonVegIcon}
-                            alt="redNonVegIcon"
-                        />
-                    )
-                ) : null}
+               
             </Flex>
             <hr className="mt-1 hidden md:block" />
             <div className="flex items-start flex-wrap relative">

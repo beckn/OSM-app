@@ -7,6 +7,7 @@ const initialState: ICart = {
     items: [],
     totalQuantity: 0,
     totalAmount: 0,
+    currency: 'EUR',
 }
 
 const cartSlice = createSlice({
@@ -24,6 +25,7 @@ const cartSlice = createSlice({
             )
 
             state.totalQuantity = state.totalQuantity + action.payload.quantity
+            state.currency = action.payload.product.price.currency
 
             state.totalAmount =
                 state.totalAmount +

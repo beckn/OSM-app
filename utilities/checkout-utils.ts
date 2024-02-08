@@ -13,6 +13,27 @@ export const getPayloadForInitRequest = (
         initRequestDto: [],
     }
 
+    const {
+        address,
+        city,
+        country,
+        email,
+        mobileNumber,
+        name,
+        zipCode,
+        state,
+    } = billingFormData
+    const {
+        address: shippingAddress,
+        city: shippingCity,
+        country: shippingCountry,
+        email: shippingEmail,
+        mobileNumber: shippingMob,
+        name: shippingName,
+        zipCode: shippingZipCode,
+        state: shippingState,
+    } = customerAddress
+
     Object.keys(cartItemsPerBppPerProvider).forEach((bppId) => {
         const cartItem: any = {
             context: {
@@ -35,43 +56,43 @@ export const getPayloadForInitRequest = (
                     },
                     addOns: [],
                     offers: [],
+
                     billing: {
-                        name: customerAddress.name,
-                        phone: customerAddress.mobileNumber,
+                        name,
+                        phone: mobileNumber,
                         address: {
-                            door: '',
-                            building: customerAddress.address,
-                            city: customerAddress.address,
-                            state: customerAddress.address,
-                            country: 'IND',
-                            area_code: customerAddress.zipCode,
+                            door: address,
+                            building: '',
+                            city: city,
+                            state: state,
+                            country: country,
+                            area_code: zipCode,
                         },
-                        email: 'testemail1@mailinator.com',
+                        email: email,
                     },
                     fulfillment: {
                         type: 'HOME-DELIVERY',
                         end: {
                             location: {
-                                gps: cartItemsPerBppPerProvider[bppId][0]
-                                    .locations[0].gps,
+                                gps: '48.85041854,2.343660801',
                                 address: {
-                                    door: '',
-                                    building: billingFormData.address,
-                                    street: billingFormData.address,
-                                    city: billingFormData.address,
-                                    state: billingFormData.address,
-                                    country: 'IND',
-                                    area_code: '560076',
+                                    door: shippingAddress,
+                                    building: '',
+                                    street: '',
+                                    city: shippingCity,
+                                    state: shippingState,
+                                    country: shippingCountry,
+                                    area_code: shippingZipCode,
                                 },
                             },
                             contact: {
-                                phone: billingFormData.mobileNumber,
-                                email: 'testemail1@mailinator.com',
+                                phone: shippingMob,
+                                email: shippingEmail,
                             },
                         },
                         customer: {
                             person: {
-                                name: billingFormData.name,
+                                name: shippingName,
                             },
                         },
                         id: cartItemsPerBppPerProvider[bppId][0].providerId,

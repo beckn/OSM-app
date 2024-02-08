@@ -22,7 +22,13 @@ const Card: React.FC<Props> = ({ product }) => {
             minH={product.tags.foodType ? '138px' : '168px'}
             maxH={'100%'}
             className="col-span-6 sm:col-span-3 md:col-span-4 lg:col-span-3 2xl:col-span-2 shadow-xl my-1 md:my-4 ltr:mr-2 rtl:ml-1 md:mx-6  bg-[#fff] rounded-xl flex relative"
-        >
+            onClick={() =>
+                localStorage.setItem(
+                    'selectCardHeaderText',
+                    product.descriptor.name
+                )
+            }
+   >
             <Link
                 href={{
                     pathname: '/product',
@@ -86,7 +92,7 @@ const Card: React.FC<Props> = ({ product }) => {
                             ) : null}
                         </Flex>
 
-                        {!product.tags.foodType ? (
+                        {/* {!product.tags.foodType ? (
                             <Flex
                                 fontSize={'12px'}
                                 alignItems={'center'}
@@ -104,7 +110,7 @@ const Card: React.FC<Props> = ({ product }) => {
                                     {product.tags.authorName}
                                 </Text>
                             </Flex>
-                        ) : null}
+                        ) : null} */}
 
                         <Flex
                             fontSize={'12px'}
@@ -122,18 +128,21 @@ const Card: React.FC<Props> = ({ product }) => {
                             width={'calc(100% - 30px)'}
                         >
                             <ProductPrice
+                                currency={product.price.currency}
                                 price={parseFloat(product.price.value)}
                             />
-                            <Flex alignItems={'center'}>
-                                {/* eslint-disable-next-line jsx-a11y/alt-text */}
-                                <Image src={StarIcon} />
-                                <Text
-                                    fontSize={'12px'}
-                                    pl={'5px'}
-                                >
-                                    {product.tags.rating}
-                                </Text>
-                            </Flex>
+                            {product?.tags?.rating && (
+                                <Flex alignItems={'center'}>
+                                    {/* eslint-disable-next-line jsx-a11y/alt-text */}
+                                    <Image src={StarIcon} />
+                                    <Text
+                                        fontSize={'12px'}
+                                        pl={'5px'}
+                                    >
+                                        {product.tags.rating}
+                                    </Text>
+                                </Flex>
+                            )}
                         </Flex>
                     </Box>
                 </a>
