@@ -110,6 +110,7 @@ const Search = () => {
                 )
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [router.isReady, providerId])
 
     useEffect(() => {

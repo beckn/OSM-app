@@ -56,6 +56,8 @@ const OrderHistory = () => {
                 setIsLoading(false)
             })
             .finally(() => setIsLoading(false))
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     if (isLoading) {
@@ -68,7 +70,7 @@ const OrderHistory = () => {
     }
 
     if (!orderHistoryList.length) {
-        return <EmptyPage/>
+        return <EmptyPage />
     }
 
     if (error) {

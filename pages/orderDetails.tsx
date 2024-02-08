@@ -194,6 +194,7 @@ const OrderDetails = () => {
                 payLoadForStatusRequest
             )
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
@@ -257,12 +258,14 @@ const OrderDetails = () => {
                 })
                 .catch((err) => console.error(err))
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [statusRequest.data])
 
     useEffect(() => {
         if (cancelRequest.data) {
             router.push('/orderCancellation')
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [cancelRequest.data])
 
     if (statusRequest.loading) {
@@ -350,6 +353,7 @@ const OrderDetails = () => {
                                 width={'12px'}
                                 height={'13px'}
                                 src={TrackIcon}
+                                alt="track-icon"
                             />
                             <Text
                                 pl={'8px'}
@@ -533,6 +537,7 @@ const OrderDetails = () => {
                         >
                             <Flex alignItems={'center'}>
                                 <Image
+                                    alt="name-icon"
                                     src={nameIcon}
                                     pr={'12px'}
                                 />
@@ -542,6 +547,7 @@ const OrderDetails = () => {
                             </Flex>
                             <Flex alignItems={'center'}>
                                 <Image
+                                    alt="location-icon"
                                     src={locationIcon}
                                     pr={'12px'}
                                 />
@@ -551,6 +557,7 @@ const OrderDetails = () => {
                             </Flex>
                             <Flex alignItems={'center'}>
                                 <Image
+                                    alt="call-icon"
                                     src={CallphoneIcon}
                                     pr={'12px'}
                                 />

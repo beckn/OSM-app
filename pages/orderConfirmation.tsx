@@ -32,6 +32,7 @@ const OrderConfirmation = () => {
 
     useEffect(() => {
         setPaymentType(router?.query?.paymentType as string)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [router.isReady])
 
     useEffect(() => {
@@ -77,11 +78,14 @@ const OrderConfirmation = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [paymentType, initResponse])
-    
-    const handleOrderDetailsPage=()=>{
-        if (confirmRequest.data){
-            localStorage.setItem('confirmData',  JSON.stringify(confirmRequest.data))
-            router.push("/orderDetails")
+
+    const handleOrderDetailsPage = () => {
+        if (confirmRequest.data) {
+            localStorage.setItem(
+                'confirmData',
+                JSON.stringify(confirmRequest.data)
+            )
+            router.push('/orderDetails')
         }
     }
 
@@ -133,21 +137,20 @@ const OrderConfirmation = () => {
                 </Text>
             </Stack>
             <Stack>
-            <Box mt={"20px"}>
-            <Button
-                    buttonText={'View Order Details'}
-                    isDisabled={false}
-                    type={'solid'}
-                    handleOnClick={handleOrderDetailsPage}
-                />
-                <Button
-                    buttonText={'Go Back Home'}
-                    isDisabled={false}
-                    type={'outline'}
-                    handleOnClick={() => router.push('/homePage')}
-                />
-              
-            </Box>
+                <Box mt={'20px'}>
+                    <Button
+                        buttonText={'View Order Details'}
+                        isDisabled={false}
+                        type={'solid'}
+                        handleOnClick={handleOrderDetailsPage}
+                    />
+                    <Button
+                        buttonText={'Go Back Home'}
+                        isDisabled={false}
+                        type={'outline'}
+                        handleOnClick={() => router.push('/homePage')}
+                    />
+                </Box>
             </Stack>
         </Box>
     )
