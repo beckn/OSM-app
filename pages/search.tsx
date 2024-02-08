@@ -65,29 +65,50 @@ const Search = () => {
         })
 
     useEffect(() => {
-        if (router.query.searchTerm) {
-            const searchTerm = router.query.searchTerm
-            const searchPayloadWithSearchQuery = {
-                context: {
-                    domain: 'retail',
-                },
+        if (localStorage && localStorage.getItem('coordinates')) {
+            const parsedCoordinates = JSON.parse(
+                localStorage.getItem('coordinates') as string
+            )
+            const { latitude, longitude } = parsedCoordinates
+            if (router.query.searchTerm) {
+                const searchTerm = router.query.searchTerm
+                const searchPayloadWithSearchQuery = {
+                    context: {
+                        domain: 'retail',
+                    },
+                    message: {
+                        criteria: {
+                            // dropLocation: '12.9063433,77.5856825',
+                            dropLocation: `${latitude},${longitude}`,
+                            categoryName: 'Retail',
+                            searchString: searchTerm,
+                        },
+                    },
+                }
+
+                fetchData(
+                    `${apiUrl}/client/v2/search`,
+                    'POST',
+                    searchPayloadWithSearchQuery
+                )
+            }
+            const searchPayloadWithLocValues = {
+                ...searchPayload,
                 message: {
+                    ...searchPayload.message,
                     criteria: {
-                        dropLocation: '48.85041854,2.343660801',
-                        categoryName: 'Retail',
-                        searchString: searchTerm,
+                        ...searchPayload.message.criteria,
+                        dropLocation: `${latitude},${longitude}`,
                     },
                 },
             }
-
-            fetchData(
-                `${apiUrl}/client/v2/search`,
-                'POST',
-                searchPayloadWithSearchQuery
-            )
-        }
-        if (providerId) {
-            fetchData(`${apiUrl}/client/v2/search`, 'POST', searchPayload)
+            if (providerId) {
+                fetchData(
+                    `${apiUrl}/client/v2/search`,
+                    'POST',
+                    searchPayloadWithLocValues
+                )
+            }
         }
     }, [router.isReady, providerId])
 

@@ -8,12 +8,14 @@ interface HomeSearchInputPropsModel {
     setSearchInputValue: (searchString: string) => void
     searchInputValue: string
     homeSearchInputButtonHandler: Function
+    disabled: boolean
 }
 
 const GeoLocationInput: React.FC<HomeSearchInputPropsModel> = ({
     setSearchInputValue,
     searchInputValue,
     homeSearchInputButtonHandler,
+    disabled,
 }) => {
     const setlocalStorageValue = () => {
         localStorage.setItem('selectCardHeaderText', searchInputValue)
@@ -24,6 +26,7 @@ const GeoLocationInput: React.FC<HomeSearchInputPropsModel> = ({
             <Flex className={Styles.flex_container}>
                 <Flex className={Styles.flex_input_group}>
                     <input
+                        disabled={disabled}
                         className={Styles.input_box}
                         name="search_input"
                         placeholder={t.searchForanything}
