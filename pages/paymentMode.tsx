@@ -115,7 +115,10 @@ const PaymentMode = () => {
                                             alignItems={'center'}
                                             mt="-6px"
                                         >
-                                            <Image src={'./images/visa.svg'} />
+                                            <Image
+                                                alt="visa-img"
+                                                src={'./images/visa.svg'}
+                                            />
                                             <Box pl={'20px'}>
                                                 **** **** **** 1234
                                             </Box>
@@ -142,6 +145,7 @@ const PaymentMode = () => {
                                             mt="-6px"
                                         >
                                             <Image
+                                                alt="card-img"
                                                 src={'./images/master.svg'}
                                             />
                                             <Box pl={'20px'}>

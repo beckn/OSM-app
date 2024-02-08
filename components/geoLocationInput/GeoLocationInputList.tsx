@@ -20,10 +20,18 @@ const GeoLocationInputList: React.FC = () => {
     const handleSelect = async (data: string) => {
         const addressData = await geocodeByAddress(data)
         const latLong = await getLatLng(addressData[0])
+        const { lat, lng } = latLong
+
+        const coordinates = {
+            latitude: lat,
+            longitude: lng,
+        }
+
+        localStorage.setItem('coordinates', JSON.stringify(coordinates))
         dispatch(
             setGeoAddressAndLatLong({
                 geoAddress: data,
-                geoLatLong: `${latLong.lat},${latLong.lng}`,
+                geoLatLong: `${lat},${lng}`,
             })
         )
         closeGeoLocationSearchPage()

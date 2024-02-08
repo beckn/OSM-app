@@ -1,20 +1,27 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import TopSheet from '../components/topSheet/TopSheet'
-import { getUserLocation } from '../utilities/common-utils'
 import { useRouter } from 'next/router'
 import GeoLocationInput from '../components/geoLocationInput/GeoLocationInput'
 import { Box, Flex, Text } from '@chakra-ui/react'
 import { RiArrowRightSLine } from 'react-icons/ri'
 import { useLanguage } from '../hooks/useLanguage'
+import { IGeoLocationSearchPageRootState } from '../lib/types/geoLocationSearchPage'
 
 const HomePage = () => {
     const [searchTerm, setSearchTerm] = useState<string>('')
     const [currentAddress, setCurrentAddress] = useState('')
+    const [isSearchInputDisabled, setIsSearchInputDisabled] = useState(true)
     const [loadingForCurrentAddress, setLoadingForCurrentAddress] =
         useState(true)
     const [currentLocationFetchError, setFetchCurrentLocationError] =
         useState('')
     const { t } = useLanguage()
+    const geoLocationSearchPageSelectedAddress = useSelector(
+        (state: IGeoLocationSearchPageRootState) => {
+            return state.geoLocationSearchPageUI.geoAddress
+        }
+    )
 
     const router = useRouter()
     const apiKeyForGoogle = process.env.NEXT_PUBLIC_GOOGLE_API_KEY
@@ -99,6 +106,15 @@ const HomePage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    useEffect(() => {
+        if (
+            currentAddress.trim().length ||
+            geoLocationSearchPageSelectedAddress.trim().length
+        ) {
+            setIsSearchInputDisabled(false)
+        }
+    }, [currentAddress, geoLocationSearchPageSelectedAddress])
+
     return (
         <>
             <TopSheet
@@ -125,6 +141,7 @@ const HomePage = () => {
             </Box>
             <Box m={'26px'}>
                 <GeoLocationInput
+                    disabled={isSearchInputDisabled}
                     searchInputValue={searchTerm}
                     setSearchInputValue={setSearchTerm}
                     homeSearchInputButtonHandler={() => {
