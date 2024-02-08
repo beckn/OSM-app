@@ -371,7 +371,7 @@ const en: { [key: string]: string } = {
     orderPacked: 'Order Packed',
     outForDelivery: 'Order Out for Delivery',
     orderDelivered: 'Order Delivered',
-    rateStore: 'Rate the store',
+    rateStore: 'Rate the overall experience',
     rateDeliveryExperience: 'Rate the delivery experience',
     addCommentsHere: 'Add your comments here',
     writeExperience: 'Write about your experience..',
@@ -405,7 +405,9 @@ const en: { [key: string]: string } = {
     searchForanything:"Search for anything",
     localeeOpen:"Localee Open",
     homePara:" A global marketplace to discover and buy anything you need. Just type what you want to buy and we'll take care of the rest.",
-    searchbyLocation:"Search store by location"
+    searchbyLocation:"Search store by location",
+    emptyOrderHistoryText: "This space appears quite empty!",
+    noExistingWorkflowText:"No existing order history found"
 }
 
 export default en

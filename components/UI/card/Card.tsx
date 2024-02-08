@@ -22,7 +22,13 @@ const Card: React.FC<Props> = ({ product }) => {
             minH={product.tags.foodType ? '138px' : '168px'}
             maxH={'100%'}
             className="col-span-6 sm:col-span-3 md:col-span-4 lg:col-span-3 2xl:col-span-2 shadow-xl my-1 md:my-4 ltr:mr-2 rtl:ml-1 md:mx-6  bg-[#fff] rounded-xl flex relative"
-        >
+            onClick={() =>
+                localStorage.setItem(
+                    'selectCardHeaderText',
+                    product.descriptor.name
+                )
+            }
+   >
             <Link
                 href={{
                     pathname: '/product',

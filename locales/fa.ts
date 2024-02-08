@@ -387,8 +387,8 @@ const fa: { [key: string]: string } = {
     searchForanything:"Rechercher n'importe quoi",
     localeeOpen:"locale ouvert",
     homePara:" Un marché mondial pour découvrir et acheter tout ce dont vous avez besoin. Tapez simplement ce que vous souhaitez acheter et nous nous occuperons du reste. ",
-    searchbyLocation : "Rechercher un magasin par emplacement"
-
-
+    searchbyLocation : "Rechercher un magasin par emplacement",
+    emptyOrderHistoryText: "Cet espace semble assez vide !",
+    noExistingWorkflowText : "Aucun historique de commandes existant trouvé",
 }
 export default fa

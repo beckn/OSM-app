@@ -18,7 +18,7 @@ const Feedback = () => {
                 textAlign={'center'}
                 pb={'15px'}
             >
-                <Text fontSize={'18px'}>{t.orderDeliveredOnTime}</Text>
+                <Text fontSize={'18px'} fontWeight={600}>{t.orderDeliveredOnTime}</Text>
                 <Text fontSize={'12px'}>{t.shareYourfeedback}</Text>
             </Box>
             <Box mb={'10px'}>
@@ -36,17 +36,9 @@ const Feedback = () => {
                 size={20}
                 transition={''}
             />
-            <StarRating
-                ratingText={t.rateDeliveryExperience}
-                rating={rating}
-                setRating={setRating}
-                count={5}
-                size={20}
-                transition={''}
-            />
             <Box>
                 <Text
-                    fontSize={'12px'}
+                    fontSize={'15px'}
                     mb={'10px'}
                 >
                     {t.addCommentsHere}
@@ -74,7 +66,7 @@ const Feedback = () => {
             />
             <Button
                 buttonText={t.skipForNow}
-                type={'solid'}
+                type={'outline'}
                 handleOnClick={() => {
                     let user = localStorage.getItem('userPhone') as string
                     localStorage.clear()
