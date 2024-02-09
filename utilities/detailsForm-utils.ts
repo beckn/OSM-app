@@ -24,33 +24,37 @@ export const validateForm = (formData: ShippingFormData): FormErrors => {
     }
 
     if (formData.mobileNumber.trim() === '') {
-        errors.mobileNumber = 'errorEmpty' // Indicate the field is empty
-    } else if (!/^\d+$/.test(formData.mobileNumber)) {
-        errors.mobileNumber = 'errorNumber2' // Indicate the field contains non-numeric characters
+        errors.mobileNumber = 'errorNumber'
+    } else if (!/^\d{10}$/.test(formData.mobileNumber)) {
+        errors.mobileNumber = 'errorNumber2'
     }
 
     if (formData.email.trim() === '') {
         errors.email = 'errorEmail'
-    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+    } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formData.email)) {
         errors.email = 'errorEmail2'
     }
-
+    if (formData.city.trim() === '') {
+        errors.city = 'errorCity';
+    }
+    
+    if (formData.country.trim() === '') {
+        errors.country = 'errorCountry';
+    }
+    
+    if (formData.state.trim() === '') {
+        errors.state = 'errorState'
+    }
     if (formData.address.trim() === '') {
         errors.address = 'errorAddress'
     }
 
     if (formData.zipCode.trim() === '') {
         errors.zipCode = 'errorZipcode'
+    }else if (!/^\d{5}(?:\d{1})?$/.test(formData.zipCode)) {
+        errors.zipCode = 'errorZipcode2'
     }
-
-    if (formData.city.trim() === '') {
-        errors.city = 'errorCity'
-    }
-
-    if (formData.city.trim() === '') {
-        errors.country = 'errorCountry'
-    }
-
+   
     return errors
 }
 export const signInValidateForm = (formData: SignInPropsModel): FormErrors => {
