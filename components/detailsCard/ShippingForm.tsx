@@ -94,6 +94,7 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                     mb="0"
                     borderRadius="1.75rem 1.75rem 0px 0px"
                     maxW="lg"
+                    h={'87vh'}
                 >
                     <ModalCloseButton
                         height={'unset'}
@@ -195,7 +196,7 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                                     <label className={style.did_floating_label}>
                                         {t.formCity}
                                     </label>
-                                    {formErrors.address && (
+                                    {formErrors.city && (
                                         <span className={style.error}>
                                             {t[`${formErrors.city}`]}
                                         </span>
@@ -216,7 +217,7 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                                     <label className={style.did_floating_label}>
                                         {t.formCountry}
                                     </label>
-                                    {formErrors.address && (
+                                    {formErrors.country && (
                                         <span className={style.error}>
                                             {t[`${formErrors.country}`]}
                                         </span>
