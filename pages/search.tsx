@@ -41,7 +41,7 @@ const Search = () => {
 
     const searchPayload = {
         context: {
-            domain: 'retail-amsterdam',
+            domain: 'retail',
         },
         message: {
             criteria: {
@@ -74,7 +74,7 @@ const Search = () => {
                 const searchTerm = router.query.searchTerm
                 const searchPayloadWithSearchQuery = {
                     context: {
-                        domain: 'retail-amsterdam',
+                        domain: 'retail',
                     },
                     message: {
                         criteria: {
