@@ -51,33 +51,11 @@ export const getPayloadForConfirmRequest = (
 
             message: {
                 order: {
-                    provider: {
-                        id: initMetaDataPerBpp[bppId].provider.id,
-                    },
+                    provider: initMetaDataPerBpp[bppId].provider,
                     addOns: [],
                     offers: [],
                     billing: initMetaDataPerBpp[bppId].billing,
-                    fulfillment: {
-                        type: initMetaDataPerBpp[bppId].fulfillment.type,
-                        end: {
-                            location: {
-                                gps: initMetaDataPerBpp[bppId].fulfillment.end
-                                    .location.gps,
-                                address:
-                                    initMetaDataPerBpp[bppId].billing.address,
-                            },
-                            contact: {
-                                phone: initMetaDataPerBpp[bppId].billing.phone,
-                                email: 'testemail1@mailinator.com',
-                            },
-                        },
-                        customer: {
-                            person: {
-                                name: initMetaDataPerBpp[bppId].billing.name,
-                            },
-                        },
-                        id: initMetaDataPerBpp[bppId].fulfillment.id,
-                    },
+                    fulfillment: initMetaDataPerBpp[bppId].fulfillment,
                     payment: {
                         ...initMetaDataPerBpp[bppId].payment,
                         status: 'NOT-PAID',

@@ -276,11 +276,6 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
                                         name="zipCode"
                                         value={props.formData.zipCode}
                                         onChange={(e) => {
-                                            e.currentTarget.value =
-                                                e.currentTarget.value.replace(
-                                                    /[^0-9]/g,
-                                                    ''
-                                                )
                                             handleInputChange(e)
                                         }}
                                     />
