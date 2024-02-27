@@ -31,17 +31,19 @@ export const validateForm = (formData: ShippingFormData): FormErrors => {
 
     if (formData.email.trim() === '') {
         errors.email = 'errorEmail'
-    } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formData.email)) {
+    } else if (
+        !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formData.email)
+    ) {
         errors.email = 'errorEmail2'
     }
     if (formData.city.trim() === '') {
-        errors.city = 'errorCity';
+        errors.city = 'errorCity'
     }
-    
+
     if (formData.country.trim() === '') {
-        errors.country = 'errorCountry';
+        errors.country = 'errorCountry'
     }
-    
+
     if (formData.state.trim() === '') {
         errors.state = 'errorState'
     }
@@ -51,10 +53,7 @@ export const validateForm = (formData: ShippingFormData): FormErrors => {
 
     if (formData.zipCode.trim() === '') {
         errors.zipCode = 'errorZipcode'
-    }else if (!/^\d{5}(?:\d{1})?$/.test(formData.zipCode)) {
-        errors.zipCode = 'errorZipcode2'
     }
-   
     return errors
 }
 export const signInValidateForm = (formData: SignInPropsModel): FormErrors => {
