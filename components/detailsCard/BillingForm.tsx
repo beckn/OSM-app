@@ -274,11 +274,6 @@ const BillingForm: React.FC<ShippingFormProps> = (props) => {
                                         name="zipCode"
                                         value={props.billingFormData.zipCode}
                                         onChange={(e) => {
-                                            e.currentTarget.value =
-                                                e.currentTarget.value.replace(
-                                                    /[^0-9]/g,
-                                                    ''
-                                                )
                                             handleInputChange(e)
                                         }}
                                     />
