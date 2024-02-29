@@ -25,8 +25,6 @@ export const validateForm = (formData: ShippingFormData): FormErrors => {
 
     if (formData.mobileNumber.trim() === '') {
         errors.mobileNumber = 'errorNumber'
-    } else if (!/^\d{10}$/.test(formData.mobileNumber)) {
-        errors.mobileNumber = 'errorNumber2'
     }
 
     if (formData.email.trim() === '') {
