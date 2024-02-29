@@ -70,16 +70,7 @@ export const getPayloadForOrderHistoryPost = (
 ) => {
     const { bpp_id, bpp_uri, transaction_id } = statusData[0].context
     const {
-        order: {
-            id,
-            items,
-            quote,
-            payment,
-            provider: {
-                id: providerId,
-                descriptor: { name, short_desc },
-            },
-        },
+        order: { id, items, quote, payment, provider },
     } = statusData[0].message
 
     const ordersPayload = {
@@ -92,10 +83,10 @@ export const getPayloadForOrderHistoryPost = (
             order: {
                 id,
                 provider: {
-                    id: providerId,
+                    id: provider.id,
                     descriptor: {
-                        name,
-                        short_desc,
+                        name: provider?.descriptor?.name ?? '',
+                        short_desc: provider?.descriptor?.short_desc ?? '',
                     },
                 },
                 items,
