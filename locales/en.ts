@@ -239,7 +239,7 @@ const en: { [key: string]: string } = {
     beverages: 'Beverages',
     snacks: 'Snacks',
     dairy: 'Dairy',
-    payAtStore: 'Pay At Store',
+    prePaid: 'pre-paid',
     selectPaymentMethod: 'Select payment method',
     orderDetails: 'Order details',
     trackOrder: 'Track Order',
@@ -403,12 +403,13 @@ const en: { [key: string]: string } = {
         'Please provide the permission to access better & hassle free delivery',
     searchForLocation: 'Search For Location',
     yourLocation: 'Your Location',
-    searchForanything:"Search for anything",
-    localeeOpen:"Localee Open",
-    homePara:" A global marketplace to discover and buy anything you need. Just type what you want to buy and we'll take care of the rest.",
-    searchbyLocation:"Search store by location",
-    emptyOrderHistoryText: "This space appears quite empty!",
-    noExistingWorkflowText:"No existing order history found"
+    searchForanything: 'Search for anything',
+    localeeOpen: 'Localee Open',
+    homePara:
+        " A global marketplace to discover and buy anything you need. Just type what you want to buy and we'll take care of the rest.",
+    searchbyLocation: 'Search store by location',
+    emptyOrderHistoryText: 'This space appears quite empty!',
+    noExistingWorkflowText: 'No existing order history found',
 }
 
 export default en

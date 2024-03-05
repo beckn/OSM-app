@@ -42,7 +42,7 @@ export type ShippingFormData = {
 const CheckoutPage = () => {
     const [formData, setFormData] = useState<ShippingFormData>({
         name: '',
-        mobileNumber: '',
+        mobileNumber: '+',
         email: '',
         address: '',
         zipCode: '',

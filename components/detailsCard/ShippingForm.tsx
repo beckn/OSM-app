@@ -37,10 +37,29 @@ const ShippingForm: React.FC<ShippingFormProps> = (props) => {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
-        if (name === 'name' && !/^[A-Za-z\s]*$/.test(value)) {
-            return
-        }
-        if (name === 'mobileNumber' && !/^\d*$/.test(value)) {
+
+        if (name === 'mobileNumber') {
+            let formattedValue = '+' + value.replace(/[^\d]+/g, '')
+
+            if (formattedValue === '+') {
+                formattedValue = '+'
+            }
+
+            props.setFormData((prevFormData: ShippingFormData) => ({
+                ...prevFormData,
+                [name]: formattedValue,
+            }))
+
+            const updatedFormData = {
+                ...props.formData,
+                [name]: formattedValue,
+            }
+            const errors = validateForm(updatedFormData)
+            setFormErrors((prevErrors) => ({
+                ...prevErrors,
+                [name]: errors[name] || '',
+            }))
+
             return
         }
 
