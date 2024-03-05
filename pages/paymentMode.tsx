@@ -23,7 +23,7 @@ const PaymentMode = () => {
         {
             id: 'pay_at_store',
             isDisabled: false,
-            paymentMethod: t.payAtStore,
+            paymentMethod: t.prePaid,
         },
     ])
     const paymentTypeMapper = {

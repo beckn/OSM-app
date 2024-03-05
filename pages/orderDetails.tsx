@@ -68,7 +68,7 @@ const OrderDetails = () => {
 
     const paymentMethods = {
         'PRE-FULFILLMENT': t.directPay,
-        POST_FULFILLMENT: t.payAtStore,
+        POST_FULFILLMENT: t.prePaid,
     }
 
     interface CancellationType {
@@ -149,11 +149,11 @@ const OrderDetails = () => {
                 transactionId
             )
 
-            trackRequest.fetchData(
-                `${apiUrl}/client/v2/track`,
-                'POST',
-                payloadForTrackRequest
-            )
+            // trackRequest.fetchData(
+            //     `${apiUrl}/client/v2/track`,
+            //     'POST',
+            //     payloadForTrackRequest
+            // )
 
             statusRequest.fetchData(
                 `${apiUrl}/client/v2/status`,
@@ -218,11 +218,11 @@ const OrderDetails = () => {
                     transactionId
                 )
 
-                trackRequest.fetchData(
-                    `${apiUrl}/client/v2/track`,
-                    'POST',
-                    payloadForTrackRequest
-                )
+                // trackRequest.fetchData(
+                //     `${apiUrl}/client/v2/track`,
+                //     'POST',
+                //     payloadForTrackRequest
+                // )
 
                 statusRequest.fetchData(
                     `${apiUrl}/client/v2/status`,
