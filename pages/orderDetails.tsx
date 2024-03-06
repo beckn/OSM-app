@@ -69,6 +69,7 @@ const OrderDetails = () => {
     const paymentMethods = {
         'PRE-FULFILLMENT': t.directPay,
         POST_FULFILLMENT: t.prePaid,
+        ['ON-ORDER']: t.onorder,
     }
 
     interface CancellationType {
@@ -310,7 +311,9 @@ const OrderDetails = () => {
 
     const shippingDetails = {
         name: getExtractedName(orderFromStatusResponse.billing.name),
-        address: `${orderFromStatusResponse.billing.address.door} ${orderFromStatusResponse.billing.address.state}`,
+        address: `${orderFromStatusResponse.billing.address.door ?? ''} ${
+            orderFromStatusResponse.billing.address.state
+        }`,
         phone: orderFromStatusResponse.billing.phone,
     }
 
@@ -470,10 +473,8 @@ const OrderDetails = () => {
                                         fontSize={'12px'}
                                         fontWeight={'400'}
                                     >
-                                        {
-                                            res.message.order.items[0]
-                                                .descriptor.name
-                                        }
+                                        {res.message.order.items[0]?.descriptor
+                                            ?.name ?? ''}
                                     </Text>
                                     {totalQuantityOfOrder(res) !== 1 && (
                                         <Text
