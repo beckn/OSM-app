@@ -240,6 +240,7 @@ const en: { [key: string]: string } = {
     snacks: 'Snacks',
     dairy: 'Dairy',
     prePaid: 'pre-paid',
+    onorder: 'On Order',
     selectPaymentMethod: 'Select payment method',
     orderDetails: 'Order details',
     trackOrder: 'Track Order',

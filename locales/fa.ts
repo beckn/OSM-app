@@ -232,6 +232,7 @@ const fa: { [key: string]: string } = {
     snacks: 'Collations',
     dairy: 'Laitier',
     prePaid: 'pre-paid',
+    onorder: 'On Order',
     selectPaymentMethod: 'Sélectionnez le mode de paiement',
     orderDetails: 'Détails de la commande',
     trackOrder: 'Suivi de commande',
