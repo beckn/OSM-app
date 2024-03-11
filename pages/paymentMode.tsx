@@ -9,7 +9,7 @@ import { cartActions } from '../store/cart-slice'
 import styles from '../components/card/Card.module.css'
 
 const PaymentMode = () => {
-    const [selectedCard, setSelectedCard] = useState(null)
+    const [selectedCard, setSelectedCard] = useState<string | null>(null)
 
     const { t } = useLanguage()
     const [filterMethods, setFilterMethods] = useState<PaymentMethodsInfo[]>([
@@ -226,4 +226,3 @@ const PaymentMode = () => {
 }
 
 export default PaymentMode
-
