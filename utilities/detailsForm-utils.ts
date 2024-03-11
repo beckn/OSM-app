@@ -105,8 +105,6 @@ export const signUpValidateForm = (formData: SignUpPropsModel): FormErrors => {
     }
     if (formData.mobileNumber.trim() === '') {
         errors.mobileNumber = 'errorNumber'
-    } else if (!/^\d{10}$/.test(formData.mobileNumber)) {
-        errors.mobileNumber = 'errorNumber2'
     }
     return errors
 }

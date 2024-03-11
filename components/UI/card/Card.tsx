@@ -43,15 +43,13 @@ const Card: React.FC<Props> = ({ product }) => {
                         <div className="flex items-center h-full  product-img-span">
                             <Image
                                 src={product.descriptor.images[0]}
-                                width={'110px'}
-                                height={'133px'}
                                 alt={product.descriptor.name}
-                                className=" drop-shadow-xl object-contain hover:scale-110 transition-transform duration-300 ease-in-out "
-                            />
+                                className="drop-shadow-xl object-cover hover:scale-110 transition-transform duration-300 ease-in-out w-full h-full"
+                                />
                         </div>
                     </Box>
                     <Box
-                        p={'15px'}
+                        p={'12px'}
                         pt={'11px'}
                         w={'63%'}
                         position={'relative'}
@@ -92,30 +90,10 @@ const Card: React.FC<Props> = ({ product }) => {
                             ) : null}
                         </Flex>
 
-                        {/* {!product.tags.foodType ? (
-                            <Flex
-                                fontSize={'12px'}
-                                alignItems={'center'}
-                                mb={'8px'}
-                            >
-                                <Text fontWeight={'600'}>Author:</Text>
-
-                                <Text
-                                    pl={'3px'}
-                                    noOfLines={1}
-                                    textOverflow="ellipsis"
-                                    whiteSpace="pre-wrap"
-                                    overflowWrap="break-word"
-                                >
-                                    {product.tags.authorName}
-                                </Text>
-                            </Flex>
-                        ) : null} */}
-
                         <Flex
                             fontSize={'12px'}
                             alignItems={'center'}
-                            mb={'8px'}
+                            mb={'25px'}
                         >
                             <Text fontWeight={'600'}>Sold by:</Text>
                             <Text pl={'3px'}>{(product as any).bppName}</Text>
