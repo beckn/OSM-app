@@ -4,7 +4,6 @@ import { FormErrors, signUpValidateForm } from '../utilities/detailsForm-utils'
 import style from '../components/detailsCard/ShippingForm.module.css'
 import Styles from '../components/signIn/SignIn.module.css'
 import { Box, Flex, Image, useToast } from '@chakra-ui/react'
-
 import Button from '../components/button/Button'
 import Router from 'next/router'
 import { SignUpPropsModel } from '../components/signIn/Signin.types'
@@ -17,7 +16,7 @@ const SignUp = () => {
         name: '',
         email: '',
         password: '',
-        mobileNumber: '',
+        mobileNumber: '+',
     })
     const [formErrors, setFormErrors] = useState<FormErrors>({
         name: '',
@@ -27,20 +26,36 @@ const SignUp = () => {
     })
     const [isFormFilled, setIsFormFilled] = useState(false)
     const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL
-
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
-
+        if (name === 'mobileNumber') {
+            let formattedValue = '+' + value.replace(/[^\d]+/g, '')
+            if (formattedValue === '+') {
+                formattedValue = '+'
+            }
+            setFormData((prevFormData: SignUpPropsModel) => ({
+                ...prevFormData,
+                [name]: formattedValue,
+            }))
+            const updatedFormData = {
+                ...formData,
+                [name]: formattedValue,
+            }
+            const errors = signUpValidateForm(updatedFormData)
+            setFormErrors((prevErrors) => ({
+                ...prevErrors,
+                [name]: errors[name] || '',
+            }))
+            return
+        }
         setFormData((prevFormData: SignUpPropsModel) => ({
             ...prevFormData,
             [name]: value,
         }))
-
         const updatedFormData = {
             ...formData,
             [name]: value,
         }
-
         const errors = signUpValidateForm(updatedFormData) as any
         setFormErrors((prevErrors) => ({
             ...prevErrors,
@@ -52,19 +67,15 @@ const SignUp = () => {
                 updatedFormData.password.trim() !== ''
         )
     }
-
     const handleRegister = async () => {
         const errors = signUpValidateForm(formData)
-
         const isFormValid = Object.values(errors).every((error) => error === '')
-
         if (isFormValid) {
             const registrationData = {
                 username: formData.name,
                 email: formData.email,
                 password: formData.password,
             }
-
             try {
                 const response = await fetch(`${baseUrl}/auth/local/register`, {
                     method: 'POST',
@@ -73,25 +84,23 @@ const SignUp = () => {
                     },
                     body: JSON.stringify(registrationData),
                 })
-
                 if (response.ok) {
                     const data = await response.json()
                     const token = data.jwt
-
                     Cookies.set('authToken', token)
                     Router.push('/homePage')
                 } else {
                     const errorData = await response.json()
                     toast({
-                      render: () => (
-                        <CustomToast
-                          title="Error!"
-                          message={errorData.error.message}
-                        />
-                      ),
-                      position: 'top',
-                      duration: 2000,
-                      isClosable: true
+                        render: () => (
+                            <CustomToast
+                                title="Error!"
+                                message={errorData.error.message}
+                            />
+                        ),
+                        position: 'top',
+                        duration: 2000,
+                        isClosable: true,
                     })
                     console.error('Registration failed')
                 }
@@ -102,7 +111,6 @@ const SignUp = () => {
             setFormErrors(errors)
         }
     }
-
     return (
         <>
             <Box className={Styles.main_container}>
