@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Box, Flex, Text, Image, Card, CardBody } from '@chakra-ui/react'
 import Router from 'next/router'
 import { useDispatch } from 'react-redux'
 import Button from '../components/button/Button'
 import CardWithCheckBox, { PaymentMethodsInfo } from '../components/card/Card'
 import { useLanguage } from '../hooks/useLanguage'
-// import creditCardImg from '../public/images/creditCardImg.svg'
 import { cartActions } from '../store/cart-slice'
 import styles from '../components/card/Card.module.css'
 
 const PaymentMode = () => {
-    const [checked, setChecked] = useState(false)
     const [selectedCard, setSelectedCard] = useState(null)
 
     const { t } = useLanguage()
@@ -46,6 +44,7 @@ const PaymentMode = () => {
             const paymentLink =
                 parsedInitResult[0].message.catalogs.responses[0].message.order
                     .payment.uri
+
             if (!paymentLink) {
                 setFilterMethods(
                     filterMethods.filter((_, index) => index === 1)
@@ -60,8 +59,19 @@ const PaymentMode = () => {
     if (!initResult) {
         return <></>
     }
-    const handleChange = (id: any) => {
-        setSelectedCard(id)
+
+    const handleChange = (id: string) => {
+        setSelectedCard(id === selectedCard ? null : id)
+        if (selectedPaymentMethod) {
+            setSelectedPaymentMethod(null)
+        }
+    }
+
+    const handlePaymentMethodChange = (methodId: string | null) => {
+        setSelectedPaymentMethod(methodId)
+        if (selectedCard) {
+            setSelectedCard(null)
+        }
     }
 
     return (
@@ -70,7 +80,6 @@ const PaymentMode = () => {
                 height={'72vh'}
                 position={'relative'}
             >
-                {/* <AppHeader appHeaderText={t.selectPaymentMethod} /> */}
                 <Box>
                     <Flex
                         justifyContent={'space-between'}
@@ -167,7 +176,7 @@ const PaymentMode = () => {
                 <CardWithCheckBox
                     paymentMethods={filterMethods}
                     selectedPaymentMethod={selectedPaymentMethod}
-                    setSelectedPaymentMethod={setSelectedPaymentMethod}
+                    setSelectedPaymentMethod={handlePaymentMethodChange}
                 />
             </Box>
             <Box
@@ -217,3 +226,4 @@ const PaymentMode = () => {
 }
 
 export default PaymentMode
+

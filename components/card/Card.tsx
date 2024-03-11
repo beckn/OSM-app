@@ -11,9 +11,7 @@ export type PaymentMethodsInfo = {
 }
 export interface CardWithCheckBoxPropsModel {
     paymentMethods: PaymentMethodsInfo[]
-    setSelectedPaymentMethod: React.Dispatch<
-        React.SetStateAction<string | null>
-    >
+    setSelectedPaymentMethod: (methodId: string | null) => void
     selectedPaymentMethod: string | null
 }
 

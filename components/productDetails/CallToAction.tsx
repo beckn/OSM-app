@@ -70,10 +70,10 @@ const CallToAction: React.FC<Props> = ({ product }) => {
             </div>
             <div className="flex items-center justify-between mt-6 cursor-pointer">
                 <div
+                    onClick={decrement}
                     className="p-2"
-                    onClick={increment}
                 >
-                    <HiOutlinePlusSm style={{ fontSize: '1.5rem' }} />
+                    <HiMinusSm style={{ fontSize: '1.5rem' }} />
                 </div>
                 <input
                     className="inline-block w-[70px] rtl:pr-8 ltr:pl-7 py-2 mx-1 sm:mx-4 border-[1px] border-gray-400 text-center"
@@ -83,11 +83,12 @@ const CallToAction: React.FC<Props> = ({ product }) => {
                     value={counter}
                     onChange={onInputNumberChangeHandler}
                 />
+
                 <div
-                    onClick={decrement}
                     className="p-2"
+                    onClick={increment}
                 >
-                    <HiMinusSm style={{ fontSize: '1.5rem' }} />
+                    <HiOutlinePlusSm style={{ fontSize: '1.5rem' }} />
                 </div>
             </div>
             <br />
