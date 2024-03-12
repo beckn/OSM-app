@@ -13,7 +13,7 @@ export type CurrencyType = 'GBP' | 'EUR' | 'INR' | 'USD'
 export const formatCurrency = (price: number, currencyType: CurrencyType) => {
     const currencyOptions = {
         GBP: { locale: 'en-GB', currency: 'GBP' },
-        EUR: { locale: 'de-DE', currency: 'EUR' },
+        EUR: { locale: 'nl-NL', currency: 'EUR' },
         INR: { locale: 'en-IN', currency: 'INR' },
         USD: { locale: 'en-US', currency: 'USD' },
     }
