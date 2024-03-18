@@ -1,24 +1,49 @@
 ## Project Introduction
 
-This repository contains User Interface code for Open Street Map commerce application.
+Open Street Commerce is a buyer reference application designed to facilitate the discovery and transaction of services within the retail domain. Built on the beckn framework, it operates within an open network, providing users with access to a wide range of offerings. The application covers the following use cases:
 
+- Book stores
+- Restaurants
+- Retail stores
+
+
+## Features
+1. **Book Stores**: Users have the ability to search for book stores, where they can explore a wide range of literary works, including fiction, non-fiction, educational, and more. Whether they're looking for bestsellers, classics, or niche publications, users can discover book stores offering an extensive selection of reading materials.
+
+2. **Restaurants**: Users can search for restaurants to satisfy their culinary cravings. From cozy cafes to upscale dining establishments, users can explore a variety of cuisines and dining experiences. They can browse menus, read reviews, and find restaurants that match their taste preferences and dietary requirements.
+
+3. **Retail Stores**: Users have the option to search for retail stores offering a diverse range of products. Users can discover retail outlets that cater to their shopping needs. They can explore different brands, check out the latest trends, and find stores conveniently located near them.
+4. Users have the capability to track their orders, allowing them to monitor the status and progress of their purchases from the point of placement to delivery. Through order tracking functionalities, users can stay informed about estimated delivery times, shipment updates, and any potential delays. This feature provides users with visibility and transparency into the logistics of their orders, enhancing their overall shopping experience and ensuring timely receipt of their desired items.
+
+## Technical stack
+React JS
+
+Next
+
+Chakra
 
 ## Release Notes
 
-| Version | Release Date |
+| Name | Version |
 |---------|--------------|
-| 1.0     | 2024-02-02   |
+| OSM     | 1.0.0  |
 
 
 ## Installation/Setup Guide 
-
-
-## User Guide
-
+Clone this repo
+Run npm install -f
+Run npm start
+Keep node version updated
 
 ## Link to Experience Center
 
-[Since this is a headless application there is no Experience Center UI application. ](https://experience-guide.becknprotocol.io/OSC)
+[DSEP ](https://experience.becknprotocol.io/OSC)
+
+## User Guide
+![image](https://github.com/beckn/OSM-app/assets/69658165/11e2ebb1-b027-4858-823b-8903ad5d17f3)
+
+
+
 
 
 ## Contributing guidelines
