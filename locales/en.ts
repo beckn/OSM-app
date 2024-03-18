@@ -411,6 +411,9 @@ const en: { [key: string]: string } = {
     searchbyLocation: 'Search store by location',
     emptyOrderHistoryText: 'This space appears quite empty!',
     noExistingWorkflowText: 'No existing order history found',
+    paymentFailed:"Payment Failed!",
+    yourTranscation:"Your transaction has failed, Please try again!",
+    tryAgain:"try again!"
 }
 
 export default en
