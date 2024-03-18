@@ -11,7 +11,6 @@ import { IGeoLocationSearchPageRootState } from '../lib/types/geoLocationSearchP
 const HomePage = () => {
     const [searchTerm, setSearchTerm] = useState<string>('')
     const [currentAddress, setCurrentAddress] = useState('')
-    const [isSearchInputDisabled, setIsSearchInputDisabled] = useState(true)
     const [loadingForCurrentAddress, setLoadingForCurrentAddress] =
         useState(true)
     const [currentLocationFetchError, setFetchCurrentLocationError] =
@@ -106,15 +105,6 @@ const HomePage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    useEffect(() => {
-        if (
-            currentAddress.trim().length ||
-            geoLocationSearchPageSelectedAddress.trim().length
-        ) {
-            setIsSearchInputDisabled(false)
-        }
-    }, [currentAddress, geoLocationSearchPageSelectedAddress])
-
     return (
         <>
             <TopSheet
@@ -141,11 +131,11 @@ const HomePage = () => {
             </Box>
             <Box m={'26px'}>
                 <GeoLocationInput
-                    disabled={isSearchInputDisabled}
                     searchInputValue={searchTerm}
                     setSearchInputValue={setSearchTerm}
                     homeSearchInputButtonHandler={() => {
                         router.push(`/search?searchTerm=${searchTerm}`)
+                        localStorage.setItem('homePagePathname', router.pathname); 
                     }}
                 />
             </Box>
