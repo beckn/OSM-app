@@ -38,8 +38,8 @@ const Search = () => {
         }
     }
     
-    const searchByLocationPathname = localStorage.getItem('routerPathname');
-    const homePagePathname = localStorage.getItem('homePagePathname');
+    const searchByLocationPathname = typeof window !== 'undefined' ? localStorage.getItem('routerPathname') : null;
+    const homePagePathname = typeof window !== 'undefined' ? localStorage.getItem('homePagePathname') : null;
     const [coordinates, setCoordinates] = useState({ latitude: '', longitude: '' });
     const { latitude, longitude } = coordinates;
 
@@ -125,7 +125,7 @@ const Search = () => {
     }, [router.isReady])
 
     useEffect(()=>{
-          if (localStorage && localStorage.getItem('coordinates')) {
+          if (typeof window !== 'undefined' && localStorage && localStorage.getItem('coordinates')) {
             const parsedCoordinates = JSON.parse(
                 localStorage.getItem('coordinates') as string
             )
@@ -153,7 +153,7 @@ const Search = () => {
     },[providerId])
 
     useEffect(() => {
-        if (localStorage) {
+        if (typeof window !== 'undefined' && localStorage) {
             const stringifiedOptiontags = localStorage.getItem('optionTags')
             const stringifiedSelectedOption =
                 localStorage.getItem('selectedOption')
