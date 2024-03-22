@@ -34,9 +34,9 @@ const OrderConfirmation = () => {
         setPaymentType(router?.query?.paymentType as string)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [router.isReady])
-
+    console.log(paymentType)
     useEffect(() => {
-        if (initResponse && paymentType.trim().length) {
+        if (initResponse && paymentType) {
             const initMetaDataPerBpp = getInitMetaDataPerBpp(initResponse)
 
             const payLoadForConfirmRequest = getPayloadForConfirmRequest(

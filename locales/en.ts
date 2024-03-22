@@ -413,7 +413,8 @@ const en: { [key: string]: string } = {
     noExistingWorkflowText: 'No existing order history found',
     paymentFailed:"Payment Failed!",
     yourTranscation:"Your transaction has failed, Please try again!",
-    tryAgain:"try again!"
+    tryAgain:"try again!",
+    paymentStatus:"while we process your payment. This may take a moment until your payment status is updated."
 }
 
 export default en
