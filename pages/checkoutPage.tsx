@@ -27,6 +27,8 @@ import { useRouter } from 'next/router'
 import { formatCurrency } from '../utilities/currencyFormat'
 import LoaderWithMessage from '../components/loader/LoaderWithMessage'
 import { toast } from 'react-toastify'
+import axios from 'axios'
+import { getAmountFromInitRequest } from '../utilities/calculateTotal'
 
 export type ShippingFormData = {
     name: string
@@ -74,6 +76,9 @@ const CheckoutPage = () => {
     const { t, locale } = useLanguage()
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
     const cartItems = useSelector((state: ICartRootState) => state.cart.items)
+    const [token, setToken] = useState('')
+    const [paymentLink, setPaymentLink] = useState('')
+    const paymentapiUrl = process.env.NEXT_PUBLIC_PAYMENT_URL
     const transactionId = useSelector(
         (state: { transactionId: TransactionIdRootState }) =>
             state.transactionId
@@ -104,6 +109,59 @@ const CheckoutPage = () => {
         )
     }
 
+    useEffect(() => {
+        axios
+            .post(`${paymentapiUrl}/get-token`, {
+                customerName: 'OSC',
+                widgetID: '393ed315-c1a0-4978-bc92-fbc55793b180',
+            })
+            .then((response) => {
+                setToken(response.data.data.access_token)
+            })
+            .catch((error) => {
+                console.error('Error fetching token:', error)
+            })
+    }, [])
+
+    useEffect(() => {
+        if (initRequest.data) {
+            const amount = getAmountFromInitRequest(initRequest.data);
+            generatePaymentLink(token, transactionId, amount)
+        }
+    }, [initRequest.data])
+
+    const generatePaymentLink = async (
+        token: any,
+        transcationId: any,
+        amount: any
+    ) => {
+        axios
+            .post(
+                `${paymentapiUrl}/generate-one-time-payment-link`,
+                {
+                    bookingId: transactionId.transactionId,
+                    amount: amount,
+                    service: 'retail',
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            )
+            .then((response) => {
+                setPaymentLink(response.data.paymentLink)
+            })
+            .catch((error) => {
+                console.error('Error generating payment link:', error)
+            })
+    }
+
+    const handleProceedToCheckout = () => {
+        localStorage.setItem('token', token);
+         window.open(paymentLink, '_blank')
+        router.push('/paymentStatus')
+        }
     useEffect(() => {
         if (typeof window !== 'undefined') {
             if (localStorage.getItem('shippingAdress')) {
@@ -451,7 +509,7 @@ const CheckoutPage = () => {
 
             <ButtonComp
                 buttonText={t.proceedToCheckout}
-                handleOnClick={() => router.push('/paymentMode')}
+                handleOnClick={handleProceedToCheckout}
                 isDisabled={!isInitResultPresent()}
                 type={'solid'}
             />

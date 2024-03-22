@@ -9,7 +9,7 @@ const PaymentFailure = () => {
     const router = useRouter()
     const { t } = useLanguage()
     const handleTryAgain=()=>{
-        console.log("object")
+        router.push('/checkoutPage')
     }
     return (
         <Box>
