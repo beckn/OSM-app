@@ -1,5 +1,4 @@
-#!/bin/bash
-
+#!/bin/sh
 # Run npm run build
 npm run build
 
