@@ -3,10 +3,17 @@ import { useLanguage } from '../hooks/useLanguage'
 import { useRouter } from 'next/router'
 import React from 'react'
 import Button from '../components/button/Button'
+import { useDispatch } from 'react-redux'
+import { cartActions } from '../store/cart-slice'
 
 const OrderCancellation = () => {
     const { t } = useLanguage()
     const router = useRouter()
+    const dispatch = useDispatch()
+    const handleBackHome=()=>{
+        dispatch(cartActions.clearCart())
+        router.push('/homePage')
+    }
     return (
         <Box
             className="hideScroll"
@@ -59,7 +66,7 @@ const OrderCancellation = () => {
                     buttonText={'Go Back Home'}
                     isDisabled={false}
                     type={'solid'}
-                    handleOnClick={() => router.push('/homePage')}
+                    handleOnClick={handleBackHome}
                 />
                 <Button
                     buttonText={'View Details'}
