@@ -23,7 +23,8 @@ const cartIconBlackList = [
     '/paymentMode',
     '/orderCancellation',
     '/searchByLocation',
-    '/paymentFailure'
+    '/paymentFailure',
+    '/paymentStatus'
 ]
 
 const backIconList = ['/', '/orderDetails']
@@ -42,7 +43,8 @@ const storeHeaderBlackList = [
     '/paymentMode',
     '/signUp',
     '/search',
-    '/paymentFailure'
+    '/paymentFailure',
+    '/paymentStatus'
 ]
 const headerValues = {
     '/checkoutPage': 'Billing & Shipping',
@@ -54,7 +56,8 @@ const headerValues = {
     '/paymentMode': 'Select Payment Method',
     "/orderConfirmation":"Order Confirmation",
     '/search': 'Search Result',
-    '/paymentFailure':"Payment Gateway"
+    '/paymentFailure':"Payment Gateway",
+    '/paymentStatus':"Payment Status"
 }
 
 const headerValuesFrench = {

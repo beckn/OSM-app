@@ -48,6 +48,8 @@ import BottomModal from '../components/BottomModal'
 import LoaderWithMessage from '../components/loader/LoaderWithMessage'
 import styles from '../components/card/Card.module.css'
 import CancelOrder from '../components/orderDetails/cancelOrder/cancel-order'
+import { useDispatch } from 'react-redux'
+import { cartActions } from '../store/cart-slice'
 
 const OrderDetails = () => {
     const [allOrderDelivered, setAllOrderDelivered] = useState(false)
@@ -65,6 +67,7 @@ const OrderDetails = () => {
     const { orderId } = router.query
     const cancelRequest = useRequest()
     const { t } = useLanguage()
+    const dispatch = useDispatch()
 
     const paymentMethods = {
         'PRE-FULFILLMENT': t.directPay,
@@ -652,6 +655,7 @@ const OrderDetails = () => {
                 isDisabled={false}
                 type={'solid'}
                 handleOnClick={() => {
+                    dispatch(cartActions.clearCart())
                     Router.push('/homePage')
                 }}
             />

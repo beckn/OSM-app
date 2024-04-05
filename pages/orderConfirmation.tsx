@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
 import { Box, Image, Stack, Text } from '@chakra-ui/react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import orderConfirmmark from '../public/images/orderConfirmmark.svg'
 import { useLanguage } from '../hooks/useLanguage'
 import useRequest from '../hooks/useRequest'
@@ -13,12 +13,14 @@ import {
 import { TransactionIdRootState } from '../lib/types/cart'
 import LoaderWithMessage from '../components/loader/LoaderWithMessage'
 import Button from '../components/button/Button'
+import { cartActions } from '../store/cart-slice'
 
 const OrderConfirmation = () => {
     const [paymentType, setPaymentType] = useState('')
     const { t } = useLanguage()
     const confirmRequest = useRequest()
     const router = useRouter()
+    const dispatch = useDispatch()
     const initResponse = useSelector(
         (state: any) => state.initResponse.initResponse
     )
@@ -34,9 +36,8 @@ const OrderConfirmation = () => {
         setPaymentType(router?.query?.paymentType as string)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [router.isReady])
-
     useEffect(() => {
-        if (initResponse && paymentType.trim().length) {
+        if (initResponse && paymentType) {
             const initMetaDataPerBpp = getInitMetaDataPerBpp(initResponse)
 
             const payLoadForConfirmRequest = getPayloadForConfirmRequest(
@@ -110,6 +111,10 @@ const OrderConfirmation = () => {
 
         return <></>
     }
+    const handleBackHome=()=>{
+        dispatch(cartActions.clearCart())
+        router.push('/homePage')
+    }
 
     return (
         <Box position={'relative'}>
@@ -148,7 +153,7 @@ const OrderConfirmation = () => {
                         buttonText={'Go Back Home'}
                         isDisabled={false}
                         type={'outline'}
-                        handleOnClick={() => router.push('/homePage')}
+                        handleOnClick={handleBackHome}
                     />
                 </Box>
             </Stack>
