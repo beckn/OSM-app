@@ -10,6 +10,7 @@ import PaymentDetails from '../components/detailsCard/PaymentDetails'
 import AddShippingButton from '../components/detailsCard/AddShippingButton'
 import {
     CartItemForRequest,
+    CartRetailItem,
     DataPerBpp,
     ICartRootState,
     TransactionIdRootState,
@@ -20,41 +21,51 @@ import { responseDataActions } from '../store/responseData-slice'
 import {
     areShippingAndBillingDetailsSame,
     getPayloadForInitRequest,
-    getSubTotalAndDeliveryCharges,
-    getTotalCartItems,
 } from '../utilities/checkout-utils'
-import Loader from '../components/loader/Loader'
 import AddBillingButton from '../components/detailsCard/AddBillingButton'
 import { useRouter } from 'next/router'
+import { formatCurrency } from '../utilities/currencyFormat'
+import LoaderWithMessage from '../components/loader/LoaderWithMessage'
+import { toast } from 'react-toastify'
 
 export type ShippingFormData = {
     name: string
     mobileNumber: string
     email: string
     address: string
+    city: string
+    country: string
+    state: string
     zipCode: string
 }
 
 const CheckoutPage = () => {
     const [formData, setFormData] = useState<ShippingFormData>({
-        name: 'Antoine Dubois',
-        mobileNumber: '0612345678',
-        email: 'antoine.dubois@gmail.com',
-        address: '15 Rue du Soleil, Paris, France',
-        zipCode: '75001',
+        name: '',
+        mobileNumber: '+',
+        email: '',
+        address: '',
+        zipCode: '',
+        city: '',
+        country: '',
+        state: '',
     })
-
+    const [isShippingFormFilled, setIsShippingFormFilled] = useState(false)
+    const [isBillingFormFilled, setIsBillingFormFilled] = useState(false)
     const [
         isBillingAddressSameAsShippingAddress,
         setIsBillingAddressSameAsShippingAddress,
     ] = useState(true)
-
-    const [billingFormData, setBillingFormData] = useState<ShippingFormData>({
-        name: 'Antoine Dubois',
-        mobileNumber: '0612345678',
-        email: 'antoine.dubois@gmail.com',
-        address: '15 Rue du Soleil, Paris, France',
-        zipCode: '75001',
+    const [billingFormData, setBillingFormData] =
+        useState<ShippingFormData>(formData)
+    const [quoteResponse, setQuoteResponse] = useState<any>(null)
+    const [
+        isBillingAddressCheckboxChecked,
+        setIsBillingAddressCheckboxChecked,
+    ] = useState(true)
+    const [isFormSubmitted, setIsFormSubmitted] = useState({
+        shippingForm: false,
+        billingForm: false,
     })
 
     const router = useRouter()
@@ -68,25 +79,30 @@ const CheckoutPage = () => {
             state.transactionId
     )
 
-    useEffect(() => {
-        if (localStorage) {
-            if (localStorage.getItem('userPhone')) {
-                const copiedFormData = structuredClone(formData)
-                const copiedBillingFormData = structuredClone(billingFormData)
+    const fetchInit = (
+        cartItems: CartRetailItem[],
+        transactionId: TransactionIdRootState,
+        formData: ShippingFormData,
+        billingFormData: ShippingFormData,
+        apiUrl: string
+    ) => {
+        const cartItemsPerBppPerProvider: DataPerBpp = getCartItemsPerBpp(
+            cartItems as CartItemForRequest[]
+        )
 
-                copiedFormData.mobileNumber = localStorage.getItem(
-                    'userPhone'
-                ) as string
-                copiedBillingFormData.mobileNumber = localStorage.getItem(
-                    'userPhone'
-                ) as string
+        const payLoadForInitRequest = getPayloadForInitRequest(
+            cartItemsPerBppPerProvider,
+            transactionId,
+            formData,
+            billingFormData
+        )
 
-                setFormData(copiedFormData)
-                setBillingFormData(copiedBillingFormData)
-            }
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+        return initRequest.fetchData(
+            `${apiUrl}/client/v2/initialize_order`,
+            'POST',
+            payLoadForInitRequest
+        )
+    }
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -94,13 +110,41 @@ const CheckoutPage = () => {
                 setFormData(
                     JSON.parse(localStorage.getItem('shippingAdress') as string)
                 )
+                setIsFormSubmitted((prevState) => {
+                    return { ...prevState, shippingForm: true }
+                })
+                setIsShippingFormFilled(true)
             }
             if (localStorage.getItem('billingAddress')) {
                 setBillingFormData(
                     JSON.parse(localStorage.getItem('billingAddress') as string)
                 )
+                setIsFormSubmitted((prevState) => {
+                    return { ...prevState, billingForm: true }
+                })
+                setIsBillingFormFilled(true)
+            }
+
+            if (
+                localStorage.getItem('shippingAdress') &&
+                localStorage.getItem('billingAddress')
+            ) {
+                const shippingFormDataFromStorage = JSON.parse(
+                    localStorage.getItem('shippingAdress') as string
+                )
+                const billingFormDataFromStorage = JSON.parse(
+                    localStorage.getItem('billingAddress') as string
+                )
+                fetchInit(
+                    cartItems,
+                    transactionId,
+                    shippingFormDataFromStorage,
+                    billingFormDataFromStorage,
+                    apiUrl as string
+                )
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
@@ -147,35 +191,48 @@ const CheckoutPage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [billingFormData])
 
-    const formSubmitHandler = () => {
-        if (formData) {
-            // TODO :_ To check this again
-
-            // if (isBillingAddressSameAsShippingAddress) {
-            //   const copiedFormData = structuredClone(formData);
-            //   setBillingFormData(copiedFormData);
-            // }
-
-            const cartItemsPerBppPerProvider: DataPerBpp = getCartItemsPerBpp(
-                cartItems as CartItemForRequest[]
-            )
-
-            const payLoadForInitRequest = getPayloadForInitRequest(
-                cartItemsPerBppPerProvider,
-                transactionId,
-                formData,
-                billingFormData
-            )
-            initRequest.fetchData(
-                `${apiUrl}/client/v2/initialize_order`,
-                'POST',
-                payLoadForInitRequest
-            )
+    useEffect(() => {
+        if (localStorage && localStorage.getItem('quoteResponse')) {
+            const stringifiedQuoteResponse =
+                localStorage.getItem('quoteResponse')
+            setQuoteResponse(JSON.parse(stringifiedQuoteResponse as string))
         }
+    }, [])
+
+    useEffect(() => {
+        if (isBillingAddressCheckboxChecked) {
+            setBillingFormData(formData)
+        }
+
+        if (Object.keys(formData).every((key) => formData[key].trim().length)) {
+            setIsShippingFormFilled(true)
+            setIsBillingFormFilled(true)
+        }
+    }, [isBillingAddressCheckboxChecked, formData])
+
+    const formSubmitHandlerForShippingForm = () => {
+        setIsShippingFormFilled(true)
+        setIsFormSubmitted((prevState) => {
+            return { ...prevState, shippingForm: true }
+        })
+        return
+    }
+
+    const formSubmitHandlerForBillingForm = () => {
+        setIsBillingFormFilled(true)
+        setIsFormSubmitted((prevState) => {
+            return { ...prevState, billingForm: true }
+        })
+        return
     }
 
     if (initRequest.loading) {
-        return <Loader loadingText={t['initializingOrderLoader']} />
+        return (
+            <LoaderWithMessage
+                loadingText={t.initializingOrderLoaderText}
+                loadingSubText={t.initializingOrderLoaderSubText}
+            />
+        )
     }
 
     const isInitResultPresent = () => {
@@ -186,6 +243,19 @@ const CheckoutPage = () => {
         }
 
         return !!initRequest.data
+    }
+
+    if (
+        initRequest.error ||
+        (initRequest.data &&
+            (initRequest.data[0].message.catalogs.responses.length === 0 ||
+                initRequest.data[0].message.catalogs.responses?.[0]?.error))
+    ) {
+        toast.error('Something went wrong', {
+            position: 'top-center',
+        })
+
+        return <></>
     }
 
     return (
@@ -202,14 +272,17 @@ const CheckoutPage = () => {
                                     title={item.descriptor.name}
                                     description={item.descriptor.short_desc}
                                     quantity={item.quantity}
-                                    price={`${t.currencySymbol}${(parseFloat(item.price.value) * item.quantity).toFixed(2)}`}
+                                    price={formatCurrency(
+                                        parseFloat(item.price.value),
+                                        item.price.currency
+                                    )}
                                 />
                             </>
                         )
                     })}
                 </DetailsCard>
             </Box>
-            {!isInitResultPresent() ? (
+            {!isFormSubmitted.shippingForm ? (
                 <Box>
                     <Flex
                         pb={'10px'}
@@ -220,13 +293,13 @@ const CheckoutPage = () => {
                     </Flex>
                     <DetailsCard>
                         <AddShippingButton
-                            imgFlag={!initRequest.data}
+                            imgFlag={!isFormSubmitted.shippingForm}
                             formData={formData}
                             setFormData={setFormData}
                             addShippingdetailsBtnText={
                                 t.addShippingdetailsBtnText
                             }
-                            formSubmitHandler={formSubmitHandler}
+                            formSubmitHandler={formSubmitHandlerForShippingForm}
                         />
                     </DetailsCard>
                 </Box>
@@ -239,11 +312,11 @@ const CheckoutPage = () => {
                     >
                         <Text fontSize={'17px'}>{t.shipping}</Text>
                         <AddShippingButton
-                            imgFlag={!isInitResultPresent()}
+                            imgFlag={!isShippingFormFilled}
                             formData={formData}
                             setFormData={setFormData}
                             addShippingdetailsBtnText={t.changeText}
-                            formSubmitHandler={formSubmitHandler}
+                            formSubmitHandler={formSubmitHandlerForShippingForm}
                         />
                     </Flex>
 
@@ -268,8 +341,14 @@ const CheckoutPage = () => {
                         <AddBillingButton
                             billingFormData={billingFormData}
                             setBillingFormData={setBillingFormData}
-                            addBillingdetailsBtnText={t.changeText}
-                            billingFormSubmitHandler={formSubmitHandler}
+                            addBillingdetailsBtnText={
+                                !isBillingAddressCheckboxChecked
+                                    ? t.changeText
+                                    : ''
+                            }
+                            billingFormSubmitHandler={
+                                formSubmitHandlerForBillingForm
+                            }
                         />
                         {/* TODO :- Will enable this button after demo */}
                         {/* <Text
@@ -290,6 +369,11 @@ const CheckoutPage = () => {
                                 pr={'12px'}
                                 fontSize={'17px'}
                                 defaultChecked
+                                onChange={() =>
+                                    setIsBillingAddressCheckboxChecked(
+                                        (prevValue) => !prevValue
+                                    )
+                                }
                             >
                                 {t.orderDetailsCheckboxText}
                             </Checkbox>
@@ -308,7 +392,9 @@ const CheckoutPage = () => {
                             billingFormData={billingFormData}
                             setBillingFormData={setBillingFormData}
                             addBillingdetailsBtnText={t.changeText}
-                            billingFormSubmitHandler={formSubmitHandler}
+                            billingFormSubmitHandler={
+                                formSubmitHandlerForBillingForm
+                            }
                         />
                     </Flex>
 
@@ -323,7 +409,7 @@ const CheckoutPage = () => {
 
             {/* end payment method */}
             {/* start payment details */}
-            {initRequest.data && (
+            {quoteResponse?.length > 0 && (
                 <Box>
                     <Flex
                         pb={'10px'}
@@ -335,38 +421,40 @@ const CheckoutPage = () => {
                     <DetailsCard>
                         <PaymentDetails
                             qoute={
-                                initRequest.data[0].message.catalogs
-                                    .responses[0].message.order.quote
+                                initRequest.data
+                                    ? initRequest.data[0].message.catalogs
+                                          .responses[0].message.order.quote
+                                    : quoteResponse[0].message.catalogs.order
+                                          .quote
                             }
                         />
                     </DetailsCard>
                 </Box>
             )}
+
             {/* end payment details */}
-            {!isInitResultPresent() ? (
-                <Box
-                    position={'absolute'}
-                    left={'5%'}
-                    width={'90%'}
-                    bottom={'0'}
-                >
-                    <ButtonComp
-                        buttonText={t.proceedToPay}
-                        background={'rgba(var(--color-primary))'}
-                        color={'rgba(var(--text-color))'}
-                        handleOnClick={() => {}}
-                        isDisabled={true}
-                    />
-                </Box>
-            ) : (
-                <ButtonComp
-                    buttonText={t.proceedToCheckout}
-                    background={'rgba(var(--color-primary))'}
-                    color={'rgba(var(--text-color))'}
-                    handleOnClick={() => router.push('/paymentMode')}
-                    isDisabled={false}
-                />
-            )}
+
+            <ButtonComp
+                buttonText={t.calcAmount}
+                handleOnClick={() => {
+                    fetchInit(
+                        cartItems,
+                        transactionId,
+                        formData,
+                        billingFormData,
+                        apiUrl as string
+                    )
+                }}
+                isDisabled={!(isShippingFormFilled && isBillingFormFilled)}
+                type={'outline'}
+            />
+
+            <ButtonComp
+                buttonText={t.proceedToCheckout}
+                handleOnClick={() => router.push('/paymentMode')}
+                isDisabled={!isInitResultPresent()}
+                type={'solid'}
+            />
         </>
     )
 }

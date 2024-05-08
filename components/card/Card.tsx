@@ -4,66 +4,57 @@ import { useLanguage } from '../../hooks/useLanguage'
 
 import styles from './Card.module.css'
 
-export interface CardWithCheckBoxPropsModel {
+export type PaymentMethodsInfo = {
     paymentMethod: string
-    setChecked: React.Dispatch<React.SetStateAction<boolean>>
+    isDisabled: boolean
+    id: string
+}
+export interface CardWithCheckBoxPropsModel {
+    paymentMethods: PaymentMethodsInfo[]
+    setSelectedPaymentMethod: (methodId: string | null) => void
+    selectedPaymentMethod: string | null
 }
 
 const CardWithCheckBox: React.FC<CardWithCheckBoxPropsModel> = (props) => {
-    const { t } = useLanguage()
-
-    const handleChange = () => {
-        props.setChecked((prevValue) => !prevValue)
+    const handleChange = (id: string) => {
+        props.setSelectedPaymentMethod(
+            id === props.selectedPaymentMethod ? null : id
+        )
     }
 
     return (
         <Card className="border_radius_all">
             <CardBody padding={'15px 20px'}>
-                <Box
-                    className={styles.checkbox}
-                    mb={'15px'}
-                    fontSize={'15px'}
-                >
-                    <input
-                        type="checkbox"
-                        id="checkbox"
-                        onChange={handleChange}
-                    />
-                    <label htmlFor="checkbox">
-                        <Text
-                            mt={'-3px'}
-                            position={'absolute'}
-                            width={'50vw'}
-                            marginLeft="40px"
+                {props.paymentMethods.map((method) => {
+                    return (
+                        <Box
+                            key={method.id}
+                            className={styles.checkbox}
+                            fontSize={'15px'}
+                            pointerEvents={method.isDisabled ? 'none' : 'auto'}
+                            opacity={method.isDisabled ? '0.5' : '1'}
                         >
-                            {props.paymentMethod}
-                        </Text>
-                    </label>
-                </Box>
-                <Box
-                    pointerEvents={'none'}
-                    opacity={'0.5'}
-                    className={styles.checkbox}
-                    fontSize={'15px'}
-                >
-                    <input
-                        type="checkbox"
-                        id="checkbox_Click_Collect"
-                        // disabled={true}
-                        checked={false}
-                        onChange={handleChange}
-                    />
-                    <label htmlFor="checkbox_Click_Collect">
-                        <Text
-                            mt={'-3px'}
-                            position={'absolute'}
-                            width={'50vw'}
-                            marginLeft="40px"
-                        >
-                            {t.clickAndCollect}
-                        </Text>
-                    </label>
-                </Box>
+                            <input
+                                type="checkbox"
+                                id={method.id}
+                                onChange={() => handleChange(method.id)}
+                                checked={
+                                    method.id === props.selectedPaymentMethod
+                                }
+                            />
+                            <label htmlFor={method.id}>
+                                <Text
+                                    mt={'-3px'}
+                                    position={'absolute'}
+                                    width={'50vw'}
+                                    marginLeft="40px"
+                                >
+                                    {method.paymentMethod}
+                                </Text>
+                            </label>
+                        </Box>
+                    )
+                })}
             </CardBody>
         </Card>
     )

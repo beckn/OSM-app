@@ -1,3 +1,4 @@
+import { StatusResponseModel } from '../lib/types/order-details.types'
 import { ResponseModel } from '../lib/types/responseModel'
 
 const generateRandomID = () => {
@@ -29,13 +30,13 @@ export const storeOrderDetails = (orderDetails: ResponseModel[]) => {
     return localStorage.setItem('orders', JSON.stringify(updatedOrders))
 }
 
-export const getDataPerBpp = (confirmData: ResponseModel[]) => {
+export const getDataPerBpp = (confirmData: StatusResponseModel[]) => {
     const responsesPerBpp = {}
 
     confirmData.map((data) => {
         const bppId = data.context.bpp_id
         responsesPerBpp[bppId] = {
-            ...data.message.responses[0].message.order,
+            ...data.message.order,
         }
     })
 
@@ -63,3 +64,40 @@ export const generateAlphanumericID = (function () {
         return id
     }
 })()
+
+export const getPayloadForOrderHistoryPost = (
+    statusData: StatusResponseModel[]
+) => {
+    const { bpp_id, bpp_uri, transaction_id } = statusData[0].context
+    const {
+        order: { id, items, quote, payment, provider },
+    } = statusData[0].message
+
+    const ordersPayload = {
+        context: {
+            bpp_id,
+            bpp_uri,
+            transaction_id,
+        },
+        message: {
+            order: {
+                id,
+                provider: {
+                    id: provider.id,
+                    descriptor: {
+                        name: provider?.descriptor?.name ?? '',
+                        short_desc: provider?.descriptor?.short_desc ?? '',
+                    },
+                },
+                items,
+                quote,
+                payments: payment,
+            },
+        },
+        category: {
+            set: [6],
+        },
+    }
+
+    return ordersPayload
+}

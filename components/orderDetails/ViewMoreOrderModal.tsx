@@ -70,13 +70,15 @@ const ViewMoreOrderModal: React.FC<ViewMoreOrderModalProps> = (props) => {
                                     justifyContent={'space-between'}
                                 >
                                     <Box>
-                                        <Text>{item.descriptor.name}</Text>
+                                        <Text>
+                                            {item?.descriptor?.name ?? ''}
+                                        </Text>
                                         <Text
                                             fontSize={'12px'}
                                             fontWeight={'600'}
                                             pt={'5px'}
                                         >
-                                            x {item.quantity.count}
+                                            x {item?.quantity?.count}
                                         </Text>
                                     </Box>
                                     <Text
@@ -85,7 +87,7 @@ const ViewMoreOrderModal: React.FC<ViewMoreOrderModalProps> = (props) => {
                                         color={'rgba(var(--color-primary))'}
                                     >
                                         {t.currencySymbol}
-                                        {item.price.offered_value}
+                                        {item?.price?.offered_value}
                                     </Text>
                                 </Flex>
                             )
@@ -93,8 +95,7 @@ const ViewMoreOrderModal: React.FC<ViewMoreOrderModalProps> = (props) => {
 
                         <ButtonComp
                             buttonText={'Close'}
-                            background={'rgba(var(--color-primary))'}
-                            color={'rgba(var(--text-color))'}
+                            type={'solid'}
                             isDisabled={false}
                             handleOnClick={props.onClose}
                         />

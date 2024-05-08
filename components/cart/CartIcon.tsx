@@ -20,16 +20,8 @@ const Basket = () => {
 
   const nodeRef = useRef<HTMLDivElement>(null);
 
-  function onMouseHoverHandler(toggle: boolean) {
-    dispatch(cartUiActions.toggleCartBox(toggle));
-  }
-
   return (
-    <div
-      className="relative"
-      onMouseOver={() => onMouseHoverHandler(true)}
-      onMouseOut={() => onMouseHoverHandler(false)}
-    >
+    <div className="relative">
       <Link href="/cart">
         <a className="relative flex items-center ltr:md:pl-6 rtl:md:pr-6 rtl:md:border-r-2 rtl:md:border-r-slate-300 ltr:md:border-l-2 ltr:md:border-l-slate-300 z-50">
           <AiOutlineShoppingCart style={{ fontSize: "1.6rem" }} />

@@ -22,7 +22,13 @@ const Card: React.FC<Props> = ({ product }) => {
             minH={product.tags.foodType ? '138px' : '168px'}
             maxH={'100%'}
             className="col-span-6 sm:col-span-3 md:col-span-4 lg:col-span-3 2xl:col-span-2 shadow-xl my-1 md:my-4 ltr:mr-2 rtl:ml-1 md:mx-6  bg-[#fff] rounded-xl flex relative"
-        >
+            onClick={() =>
+                localStorage.setItem(
+                    'selectCardHeaderText',
+                    product.descriptor.name
+                )
+            }
+   >
             <Link
                 href={{
                     pathname: '/product',
@@ -37,15 +43,13 @@ const Card: React.FC<Props> = ({ product }) => {
                         <div className="flex items-center h-full  product-img-span">
                             <Image
                                 src={product.descriptor.images[0]}
-                                width={'110px'}
-                                height={'133px'}
                                 alt={product.descriptor.name}
-                                className=" drop-shadow-xl object-contain hover:scale-110 transition-transform duration-300 ease-in-out "
-                            />
+                                className="drop-shadow-xl object-cover hover:scale-110 transition-transform duration-300 ease-in-out w-full h-full"
+                                />
                         </div>
                     </Box>
                     <Box
-                        p={'15px'}
+                        p={'12px'}
                         pt={'11px'}
                         w={'63%'}
                         position={'relative'}
@@ -86,30 +90,10 @@ const Card: React.FC<Props> = ({ product }) => {
                             ) : null}
                         </Flex>
 
-                        {!product.tags.foodType ? (
-                            <Flex
-                                fontSize={'12px'}
-                                alignItems={'center'}
-                                mb={'8px'}
-                            >
-                                <Text fontWeight={'600'}>Author:</Text>
-
-                                <Text
-                                    pl={'3px'}
-                                    noOfLines={1}
-                                    textOverflow="ellipsis"
-                                    whiteSpace="pre-wrap"
-                                    overflowWrap="break-word"
-                                >
-                                    {product.tags.authorName}
-                                </Text>
-                            </Flex>
-                        ) : null}
-
                         <Flex
                             fontSize={'12px'}
                             alignItems={'center'}
-                            mb={'8px'}
+                            mb={'25px'}
                         >
                             <Text fontWeight={'600'}>Sold by:</Text>
                             <Text pl={'3px'}>{(product as any).bppName}</Text>
@@ -122,18 +106,21 @@ const Card: React.FC<Props> = ({ product }) => {
                             width={'calc(100% - 30px)'}
                         >
                             <ProductPrice
+                                currency={product.price.currency}
                                 price={parseFloat(product.price.value)}
                             />
-                            <Flex alignItems={'center'}>
-                                {/* eslint-disable-next-line jsx-a11y/alt-text */}
-                                <Image src={StarIcon} />
-                                <Text
-                                    fontSize={'12px'}
-                                    pl={'5px'}
-                                >
-                                    {product.tags.rating}
-                                </Text>
-                            </Flex>
+                            {product?.tags?.rating && (
+                                <Flex alignItems={'center'}>
+                                    {/* eslint-disable-next-line jsx-a11y/alt-text */}
+                                    <Image src={StarIcon} />
+                                    <Text
+                                        fontSize={'12px'}
+                                        pl={'5px'}
+                                    >
+                                        {product.tags.rating}
+                                    </Text>
+                                </Flex>
+                            )}
                         </Flex>
                     </Box>
                 </a>

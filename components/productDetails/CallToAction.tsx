@@ -65,14 +65,15 @@ const CallToAction: React.FC<Props> = ({ product }) => {
                 <ProductPrice
                     price={parseFloat(product.price.value)}
                     isLargeSize={true}
+                    currency={product.price.currency}
                 />
             </div>
             <div className="flex items-center justify-between mt-6 cursor-pointer">
                 <div
+                    onClick={decrement}
                     className="p-2"
-                    onClick={increment}
                 >
-                    <HiOutlinePlusSm style={{ fontSize: '1.5rem' }} />
+                    <HiMinusSm style={{ fontSize: '1.5rem' }} />
                 </div>
                 <input
                     className="inline-block w-[70px] rtl:pr-8 ltr:pl-7 py-2 mx-1 sm:mx-4 border-[1px] border-gray-400 text-center"
@@ -82,28 +83,18 @@ const CallToAction: React.FC<Props> = ({ product }) => {
                     value={counter}
                     onChange={onInputNumberChangeHandler}
                 />
+
                 <div
-                    onClick={decrement}
                     className="p-2"
+                    onClick={increment}
                 >
-                    <HiMinusSm style={{ fontSize: '1.5rem' }} />
+                    <HiOutlinePlusSm style={{ fontSize: '1.5rem' }} />
                 </div>
             </div>
             <br />
             <Button
-                buttonText={
-                    <Flex
-                        justifyContent={'center'}
-                        alignItems={'center'}
-                    >
-                        <BsCartPlus
-                            style={{ fontSize: '1.2rem', margin: '0 0.4rem' }}
-                        />
-                        {t.addToCart}
-                    </Flex>
-                }
-                background={'rgba(var(--color-primary))'}
-                color={'rgba(var(--text-color))'}
+                buttonText={t.addToCart}
+                type={'solid'}
                 isDisabled={false}
                 handleOnClick={addToCartHandler}
             />

@@ -3,11 +3,13 @@ import { Box, Flex, Text, Image } from '@chakra-ui/react'
 import pendingIcon from '../../public/images/pending.svg'
 import completedIcon from '../../public/images/completed.svg'
 import { useLanguage } from '../../hooks/useLanguage'
+import { PaymentParams } from './order-history.types'
+import { formatCurrency } from '../../utilities/currencyFormat'
 
 interface OrderHistoryDetailsPropsModel {
     createdAt: string
     orderId: string
-    totalAmount: number
+    totalAmountWithCurrency: PaymentParams
     quantity: number
     orderState: string
 }
@@ -45,7 +47,10 @@ const OrderHistoryDetails: React.FC<OrderHistoryDetailsPropsModel> = (
                 pb={'5px'}
                 fontSize={'12px'}
             >
-                {t.currencySymbol} {props.totalAmount}
+                {formatCurrency(
+                    parseFloat(props.totalAmountWithCurrency.amount),
+                    props.totalAmountWithCurrency.currency
+                )}
             </Text>
             <Flex
                 fontSize={'10px'}

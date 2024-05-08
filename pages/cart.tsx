@@ -20,6 +20,7 @@ import {
     getPayloadForQuoteRequest,
 } from '../utilities/cart-utils'
 import EmptyCart from '../components/cart/EmptyCart'
+import LoaderWithMessage from '../components/loader/LoaderWithMessage'
 
 const Cart = () => {
     const [itemsForCart, setItemsForCart] = useState<CartRetailItem[]>([])
@@ -84,8 +85,17 @@ const Cart = () => {
         router.push('/checkoutPage')
     }
 
+    // if (quoteRequest.loading || isLoadingForCartCountChange) {
+    //     return <Loader loadingText={t.quoteRequestLoader} />
+    // }
+
     if (quoteRequest.loading || isLoadingForCartCountChange) {
-        return <Loader loadingText={t.quoteRequestLoader} />
+        return (
+            <LoaderWithMessage
+                loadingText={t.quoteRequestLoaderText}
+                loadingSubText={t.quoteRequestLoaderSubText}
+            />
+        )
     }
 
     if (!itemsForCart.length) {

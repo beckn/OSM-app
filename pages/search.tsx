@@ -8,6 +8,8 @@ import { responseDataActions } from '../store/responseData-slice'
 import { RetailItem } from '../lib/types/products'
 import Loader from '../components/loader/Loader'
 import { useLanguage } from '../hooks/useLanguage'
+import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
 
 //Mock data for testing search API. Will remove after the resolution of CORS issue
 
@@ -23,14 +25,135 @@ const Search = () => {
 
     const { data, loading, error, fetchData } = useRequest()
 
+    const router = useRouter()
     const categoryMap = {
         Books: { en: 'BookEnglish', fa: 'BookFrench' },
         restaurant: { en: 'FoodEnglish', fa: 'FoodFrench' },
         Shopping: { en: 'retail', fa: 'retail' },
     }
 
+    const categoryName = () => {
+        if (tagValue && categoryMap[tagValue]) {
+            return categoryMap[tagValue][locale] || categoryMap[tagValue]['en']
+        }
+    }
+    
+    const searchByLocationPathname = typeof window !== 'undefined' ? localStorage.getItem('routerPathname') : null;
+    const homePagePathname = typeof window !== 'undefined' ? localStorage.getItem('homePagePathname') : null;
+    const [coordinates, setCoordinates] = useState({ latitude: '', longitude: '' });
+    const { latitude, longitude } = coordinates;
+
+    const searchPayload = {
+        context: {
+            domain: 'retail',
+        },
+        message: {
+            criteria: {
+                dropLocation: '48.85041854,2.343660801',
+                categoryName: "Retail",
+                providerId: providerId,
+            },
+        },
+    }
+    const generateSearchPayload = (pathname:any,searchString:string) => {
+        if (pathname===homePagePathname) {
+            return {
+                context: {
+                    domain: 'retail',
+                },
+                message: {
+                    criteria: {
+                        dropLocation: '48.85041854,2.343660801',
+                        categoryName: "Retail",
+                        searchString: searchString,
+                    },
+                },
+            };
+        } else if (pathname===searchByLocationPathname) {
+            return {
+                context: {
+                    domain: 'retail',
+                },
+                message: {
+                    criteria: {
+                        dropLocation: `${latitude},${longitude}`,
+                        categoryName: "Retail",
+                        providerId: providerId,
+                        searchString: searchString,
+                    },
+                },
+            };
+        }
+    };
+    const fetchDataForSearch = (searchString: string) => {
+        let payload;
+       
+        if (homePagePathname) {
+            payload = generateSearchPayload(homePagePathname,searchString);
+        } else if (searchByLocationPathname){
+            payload = generateSearchPayload(searchByLocationPathname,searchString);
+        }
+    
+        fetchData(`${apiUrl}/client/v2/search`, 'POST', payload);
+    }
+    
+
     useEffect(() => {
-        if (localStorage) {
+        const searchTerm = router.query.searchTerm
+            if (router.query.searchTerm) {
+                const searchPayloadWithSearchQuery = {
+                    context: {
+                        domain: 'retail',
+                    },
+                    message: {
+                        criteria: {
+                            dropLocation: '12.9063433,77.5856825',
+                            // dropLocation: `${latitude},${longitude}`,
+                            categoryName: 'Retail',
+                            searchString: searchTerm,
+                        },
+                    },
+                }
+
+                fetchData(
+                    `${apiUrl}/client/v2/search`,
+                    'POST',
+                    searchPayloadWithSearchQuery
+                )
+            }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [router.isReady])
+
+    useEffect(()=>{
+          if (typeof window !== 'undefined' && localStorage && localStorage.getItem('coordinates')) {
+            const parsedCoordinates = JSON.parse(
+                localStorage.getItem('coordinates') as string
+            )
+            setCoordinates(parsedCoordinates);
+
+            const searchPayloadWithLocValues = {
+                ...searchPayload,
+                message: {
+                    ...searchPayload.message,
+                    criteria: {
+                        ...searchPayload.message.criteria,
+                        dropLocation: `${latitude},${longitude}`,
+                    },
+                },
+            }
+            if (providerId) {
+                fetchData(
+                    `${apiUrl}/client/v2/search`,
+                    'POST',
+                    searchPayloadWithLocValues
+                ) 
+            }
+
+          }
+    },[providerId])
+
+    useEffect(() => {
+        if (typeof window !== 'undefined' && localStorage) {
             const stringifiedOptiontags = localStorage.getItem('optionTags')
             const stringifiedSelectedOption =
                 localStorage.getItem('selectedOption')
@@ -44,74 +167,6 @@ const Search = () => {
         }
     }, [])
 
-    const categoryName = () => {
-        if (tagValue && categoryMap[tagValue]) {
-            return categoryMap[tagValue][locale] || categoryMap[tagValue]['en']
-        }
-    }
-
-    const searchPayload = {
-        context: {
-            domain: 'retail',
-        },
-        message: {
-            criteria: {
-                dropLocation: '48.85041854,2.343660801',
-                categoryName: categoryName(),
-                providerId: providerId,
-            },
-        },
-    }
-
-    const fetchDataForSearch = (searchString: string) =>
-        fetchData(`${apiUrl}/client/v2/search`, 'POST', {
-            ...searchPayload,
-            message: {
-                ...searchPayload.message,
-                criteria: {
-                    ...searchPayload.message.criteria,
-                    searchString: searchString,
-                },
-            },
-        })
-
-    useEffect(() => {
-        if (localStorage && localStorage.getItem('searchItems')) {
-            const cachedSearchResults = localStorage.getItem('searchItems')
-            if (cachedSearchResults) {
-                const parsedCachedResults = JSON.parse(cachedSearchResults)
-                if (providerId) {
-                    if (!parsedCachedResults.hasOwnProperty(providerId)) {
-                        fetchData(
-                            `${apiUrl}/client/v2/search`,
-                            'POST',
-                            searchPayload
-                        )
-                    }
-                }
-            }
-        } else {
-            if (providerId) {
-                fetchData(`${apiUrl}/client/v2/search`, 'POST', searchPayload)
-            }
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [providerId])
-
-    useEffect(() => {
-        if (localStorage) {
-            const cachedSearchResults = localStorage.getItem('searchItems')
-            if (cachedSearchResults) {
-                const parsedCachedResults = JSON.parse(cachedSearchResults)
-                const parsedCachedResultsArray =
-                    Object.keys(parsedCachedResults)
-                const firstKey = parsedCachedResultsArray[0]
-                setItems(parsedCachedResults[firstKey])
-            }
-        }
-    }, [])
-
     useEffect(() => {
         if (data) {
             dispatch(
@@ -119,6 +174,7 @@ const Search = () => {
                     data.context.transaction_id
                 )
             )
+            localStorage.setItem('transactionId', data.context.transaction_id)
             const allItems = data.message.catalogs.flatMap((catalog: any) => {
                 if (
                     catalog.message &&
@@ -156,6 +212,21 @@ const Search = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data])
 
+    if (error) {
+        toast.error('Something went wrong', {
+            position: 'top-center',
+        })
+    }
+const handleSearchChange = (text: string) => {
+    setSearchString(text);
+    router.push({
+        pathname: '/search',
+        query: { searchTerm: text },
+    });
+    fetchDataForSearch(text);
+};
+
+
     return (
         <>
             <Box
@@ -168,14 +239,7 @@ const Search = () => {
                 width={'100%'}
                 mt={'-20px'}
             >
-                <SearchBar
-                    searchString={searchString}
-                    handleChange={(text: string) => {
-                        localStorage.removeItem('searchItems')
-                        setSearchString(text)
-                        fetchDataForSearch(text)
-                    }}
-                />
+                <SearchBar searchString={searchString} handleChange={handleSearchChange} />
             </Box>
             <div>
                 {loading ? (
